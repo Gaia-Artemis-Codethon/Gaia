@@ -13,7 +13,7 @@ class Button extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed != null ? () => onPressed!() : null,
       style: style?? ElevatedButton.styleFrom(
-        backgroundColor: Colors.orange
+        backgroundColor: const Color(0xFFF6917B),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
