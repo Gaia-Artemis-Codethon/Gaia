@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
- final String? text;
+ final Text? text;
  final Icon? icon;
  final Function? onPressed;
  final ButtonStyle? style;
@@ -18,7 +18,8 @@ class Button extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(text ?? ''),
+          text?? const Text(''),
+          const SizedBox(width: 10),
           icon ?? const Icon(Icons.add),
         ],
       ),
