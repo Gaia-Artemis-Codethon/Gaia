@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/pages/first_home_page.dart';
 import '../components/button.dart';
-import 'package:flutter_application_huerto/service/supabase.dart';
+import '../service/supabase.dart';
 
 import '../models/community.dart';
 import '../service/community_supabase.dart';
@@ -37,25 +38,24 @@ class _CreateCommunityState extends State<CreateCommunity> {
   }
 
   void _createCommunityByName() {
- String communityName = _communityNameController.text;
- // Llamar a addCommunityByName con el Map de la comunidad
- CommunitySupabase().addCommunityByName(communityName).then((_) {
-    print("Comunidad añadida con éxito");
- }).catchError((error) {
-    print("Error al añadir la comunidad: $error");
- });
-}
+    String communityName = _communityNameController.text;
+    // Llamar a addCommunityByName con el Map de la comunidad
+    CommunitySupabase().addCommunityByName(communityName).then((_) {
+      print("Comunidad añadida con éxito");
+    }).catchError((error) {
+      print("Error al añadir la comunidad: $error");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(onPressed: () {}, child: const Icon(Icons.arrow_back)),
-            const Text('CREA UNA COMUNIDAD'),
-          ],
+        title: const Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            'CREA UNA COMUNIDAD',
+          ),
         ),
       ),
       body: Column(

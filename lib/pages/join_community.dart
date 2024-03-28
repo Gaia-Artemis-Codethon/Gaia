@@ -1,60 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/pages/first_home_page.dart';
 import '../components/button.dart';
-import 'package:flutter_application_huerto/service/supabase.dart';
+import '../service/supabase.dart';
 
 import '../service/community_supabase.dart';
 
 class JoinCommunity extends StatefulWidget {
- const JoinCommunity({Key? key}) : super(key: key);
+  const JoinCommunity({Key? key}) : super(key: key);
 
- @override
- _JoinCommunityState createState() => _JoinCommunityState();
+  @override
+  _JoinCommunityState createState() => _JoinCommunityState();
 }
 
 class _JoinCommunityState extends State<JoinCommunity> {
- final TextEditingController _communityIdController = TextEditingController();
- bool _isButtonEnabled = false;
+  final TextEditingController _communityIdController = TextEditingController();
+  bool _isButtonEnabled = false;
 
- @override
- void initState() {
+  @override
+  void initState() {
     super.initState();
     _communityIdController.addListener(_updateButtonState);
- }
+  }
 
- @override
- void dispose() {
+  @override
+  void dispose() {
     _communityIdController.removeListener(_updateButtonState);
     _communityIdController.dispose();
     super.dispose();
- }
+  }
 
- void _updateButtonState() {
+  void _updateButtonState() {
     setState(() {
       _isButtonEnabled = _communityIdController.text.isNotEmpty;
     });
- }
+  }
 
-void _readCommunityById() {
- String communityId = _communityIdController.text;
- CommunitySupabase().readCommunityById(communityId).then((data) {
-    // Handle the data returned from readCommunityById
-    print("Data: $data");
- }).catchError((error) {
-    // Handle any errors
-    print("Error: $error");
- });
-}
+  void _readCommunityById() {
+    String communityId = _communityIdController.text;
+    CommunitySupabase().readCommunityById(communityId).then((data) {
+      // Handle the data returned from readCommunityById
+      print("Data: $data");
+    }).catchError((error) {
+      // Handle any errors
+      print("Error: $error");
+    });
+  }
 
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(onPressed: () {}, child: const Icon(Icons.arrow_back)),
-            const Text('ÚNETE A UNA COMUNIDAD'),
-          ],
+        title: const Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            'ÚNETE A UNA COMUNIDAD',
+          ),
         ),
       ),
       body: Column(
@@ -100,8 +100,8 @@ void _readCommunityById() {
                 controller: _communityIdController,
                 style: const TextStyle(fontSize: 18, color: Colors.black),
                 decoration: InputDecoration(
-                 filled: true,
-                 fillColor: Colors.green[100],
+                  filled: true,
+                  fillColor: Colors.green[100],
                 ),
               ),
             ),
@@ -123,5 +123,5 @@ void _readCommunityById() {
         ],
       ),
     );
- }
+  }
 }

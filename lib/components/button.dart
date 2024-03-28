@@ -6,7 +6,7 @@ class Button extends StatelessWidget {
  final Function? onPressed;
  final ButtonStyle? style;
 
- Button({Key? key, this.text, this.icon, this.onPressed, this.style}) : super(key: key);
+ const Button({super.key, this.text, this.icon, this.onPressed, this.style});
 
  @override
  Widget build(BuildContext context) {

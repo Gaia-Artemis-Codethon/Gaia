@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_huerto/pages/create_community.dart';
+import 'package:flutter_application_huerto/pages/join_community.dart';
 
 import '../components/button.dart';
 
@@ -15,7 +17,8 @@ class FirstHomePage extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 28,
-              backgroundImage: NetworkImage('https://example.com/profile-pic.jpg'),
+              backgroundImage:
+                  NetworkImage('https://example.com/profile-pic.jpg'),
             ),
             Text('Sin comunidad'),
           ],
@@ -68,7 +71,13 @@ class FirstHomePage extends StatelessWidget {
                             Icons.arrow_forward,
                             color: Colors.white,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const JoinCommunity()),
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -115,7 +124,14 @@ class FirstHomePage extends StatelessWidget {
                             Icons.arrow_forward,
                             color: Colors.white,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CreateCommunity()),
+                            );
+                          },
                         ),
                       ),
                     ],
