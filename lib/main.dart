@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/pages/create_community.dart';
+import 'package:flutter_application_huerto/pages/join_community.dart';
 import 'components/button.dart';
 import 'components/navigation.dart';
 import 'pages/first_home_page.dart';
@@ -16,8 +18,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Flutter Demo',
-      home: FirstHomePage(),
+      home: CreateCommunity(),
       debugShowCheckedModeBanner: false,
     );
   }
+
+  
+
 }

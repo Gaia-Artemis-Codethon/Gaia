@@ -2,17 +2,17 @@ import 'package:supabase/supabase.dart';
 
 class Supabase {
   static String supabaseUrl = "https://pxafmjqslgpswndqzfvm.supabase.co";
-  static String supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4YWZtanFzbGdwc3duZHF6ZnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAzNjYzNjIsImV4cCI6MjAyNTk0MjM2Mn0.xbGjWmYqPUO3i2g1_4tmE7sWhI_c9ymFqckSA_CaFOs";
+  static String supabaseKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4YWZtanFzbGdwc3duZHF6ZnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAzNjYzNjIsImV4cCI6MjAyNTk0MjM2Mn0.xbGjWmYqPUO3i2g1_4tmE7sWhI_c9ymFqckSA_CaFOs";
 
   final client = SupabaseClient(supabaseUrl, supabaseKey);
 
   Future<void> addData(String table, Map<String, dynamic> object) async {
-    final data = await client.from(table).insert(object);
-
-    if (data != null) {
-      print('Error al insertar datos: ${data}');
-    } else {
-      print('Datos insertados con éxito');
+    try {
+      final data = await client.from(table).insert(object);
+      print("Data added to supabase: $table");
+    } catch (e) {
+      print("Error: $e");
     }
   }
 
@@ -27,7 +27,7 @@ class Supabase {
   }
 
   Future<void> updateData(
-      String table, int id, Map<String, dynamic> newValues) async {
+      String table, String id, Map<String, dynamic> newValues) async {
     final data = await client.from(table).update(newValues).eq('id', id);
 
     if (data != null) {
@@ -37,7 +37,7 @@ class Supabase {
     }
   }
 
-  Future<void> deleteData(String table, int id) async {
+  Future<void> deleteData(String table, String id) async {
     final data = await client.from(table).delete().eq('id', id);
 
     if (data != null) {
