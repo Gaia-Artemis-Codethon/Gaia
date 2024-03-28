@@ -68,13 +68,15 @@ class _CreateCommunityState extends State<CreateCommunity> {
             child: Text(
               "Crea una nueva comunidad",
               textAlign: TextAlign.left,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24), // Aumenta el tamaño de la fuente aquí
             ),
           ),
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              "Huerto urbano con tus vecinos",
+              "Disfruta creando el mejor huerto urbano de Valencia",
               textAlign: TextAlign.left,
             ),
           ),
