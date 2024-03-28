@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../components/button.dart';
 import 'package:flutter_application_huerto/service/supabase.dart';
 
-import '../models/comuntityAdd.dart';
+import '../models/community.dart';
 import '../service/community_supabase.dart';
 
 class CreateCommunity extends StatefulWidget {
