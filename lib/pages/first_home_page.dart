@@ -10,8 +10,8 @@ class FirstHomePage extends StatelessWidget {
   const FirstHomePage({Key? key}) : super(key: key);
 
   Future<DecorationImage?> _fetchBackgroundImage() async {
-    final url =
-        'https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/43e255b6d012dc03c387ecfaa875acef.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvNDNlMjU1YjZkMDEyZGMwM2MzODdlY2ZhYTg3NWFjZWYuanBnIiwiaWF0IjoxNzExNzI0NTcwLCJleHAiOjE3NDMyNjA1NzB9.VXDAUk4BmYRBIn4Nz4QHCWjGYDOni3VklwhCluSeqjk&t=2024-03-29T15%3A02%3A50.693Z';
+    const url =
+        "https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/fondo%20stardew.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZm9uZG8gc3RhcmRldy5qcGciLCJpYXQiOjE3MTE3MzE5MDgsImV4cCI6MTc0MzI2NzkwOH0.-SOPg_DugDXrRy3ECACu4yrupCMQBZMaPfcT_Bzz59g&t=2024-03-29T17%3A05%3A09.286Z";
 
     try {
       final response = await http.get(Uri.parse(url));

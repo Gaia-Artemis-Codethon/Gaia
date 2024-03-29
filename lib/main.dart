@@ -10,6 +10,7 @@ import 'models/userLoged.dart';
 
 
 void main() async {
+  runApp(const MyApp());
   await Supabase.initialize(
       url: "https://pxafmjqslgpswndqzfvm.supabase.co",
       anonKey:
@@ -17,19 +18,17 @@ void main() async {
   await SupabaseService().signInWithEmailAndPassword('user@example.com', 'qwerty');
   final userId = await SupabaseService().getUserId();
   final user = await UserSupabase().getUserById(userId!);
-  runApp(MyApp(user: user));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.user});
+  const MyApp({super.key});
 
-  final UserLoged user;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
-      home: user.community_id == null? FirstHomePage() : JoinCommunity(),
+      home: FirstHomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
