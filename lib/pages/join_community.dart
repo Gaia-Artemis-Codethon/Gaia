@@ -3,7 +3,7 @@ import 'package:flutter_guid/flutter_guid.dart';
 import '../components/button.dart';
 import '../models/community.dart';
 import '../models/userLoged.dart';
-import '../service/supabase.dart';
+import '../service/supabaseService.dart';
 
 import '../service/community_supabase.dart';
 import '../service/user_supabase.dart';

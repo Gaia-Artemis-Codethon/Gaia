@@ -48,25 +48,23 @@ class SupabaseService {
     }
   }
 
-  Future<String> signInWithEmailAndPassword(
+  Future<void> signInWithEmailAndPassword(
       String email, String password) async {
     try {
       final data = await client.auth.signInWithPassword(
         email: email,
         password: password,
       );
-      return data.user!.id;
     } catch (e) {
       print('Error al iniciar sesión: $e');
-      return "";
     }
   }
 
   Future<Guid?> getUserId() async {
     try {
-      final user = client.auth.currentUser!.id;
-      if (user != null) {
-        return Guid(user);
+      final userId = client.auth.currentUser!.id;
+      if (userId != null) {
+        return Guid(userId);
       } else {
         throw Exception('No hay usuario autenticado');
       }

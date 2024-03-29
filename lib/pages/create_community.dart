@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/models/userLoged.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
 import '../components/button.dart';
-import '../service/supabase.dart';
+import '../service/supabaseService.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import '../models/community.dart';
 import '../service/community_supabase.dart';

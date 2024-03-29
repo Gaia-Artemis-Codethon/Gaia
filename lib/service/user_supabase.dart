@@ -1,8 +1,6 @@
-import 'package:flutter_application_huerto/models/community.dart';
 import 'package:flutter_application_huerto/models/userLoged.dart';
-import 'package:flutter_application_huerto/service/supabase.dart';
+import 'package:flutter_application_huerto/service/supabaseService.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserSupabase {
   final client = SupabaseService().client;
