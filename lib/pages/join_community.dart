@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_huerto/pages/first_home_page.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import '../components/button.dart';
+import '../models/community.dart';
+import '../models/userLoged.dart';
 import '../service/supabase.dart';
 
 import '../service/community_supabase.dart';
+import '../service/user_supabase.dart';
 
 class JoinCommunity extends StatefulWidget {
   const JoinCommunity({Key? key}) : super(key: key);
@@ -35,15 +38,57 @@ class _JoinCommunityState extends State<JoinCommunity> {
     });
   }
 
-  void _readCommunityById() {
-    String communityId = _communityIdController.text;
-    CommunitySupabase().readCommunityById(communityId).then((data) {
-      // Handle the data returned from readCommunityById
-      print("Data: $data");
-    }).catchError((error) {
-      // Handle any errors
-      print("Error: $error");
-    });
+  void _readCommunityById() async {
+    try {
+      Guid communityId = Guid(_communityIdController.text);
+      Community? community =
+          await CommunitySupabase().readCommunityById(communityId);
+      _updateUserIdCommunity(community!);
+    } catch (e) {
+      var scaffoldMessenger = ScaffoldMessenger.of(
+          context);
+          _showErrorDialog(context, "ID de la comunidad incorrecto");
+    }
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cerrar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updateUserIdCommunity(Community community) async {
+    try {
+      Guid? userId = await SupabaseService().getUserId();
+      if (userId == null) {
+        print("User ID is null");
+        return;
+      }
+      UserLoged user = await UserSupabase().getUserById(userId);
+      UserLoged updatedUser = UserLoged(
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          community_id: community.id);
+      await UserSupabase().updateUser(userId, updatedUser);
+      print("User updated successfully");
+    } catch (e) {
+      print("Error updating user: $e");
+    }
   }
 
   @override

@@ -1,8 +1,10 @@
-class Community {
-  final String? id;
-  final String? name;
+import 'package:flutter_guid/flutter_guid.dart';
 
-  Community({this.id, this.name});
+class Community {
+  final Guid id;
+  final String name;
+
+  Community({required this.id, required this.name});
 
   factory Community.fromJson(Map<String, dynamic> json) {
     return Community(

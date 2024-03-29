@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_huerto/pages/first_home_page.dart';
+import 'package:flutter_application_huerto/models/userLoged.dart';
+import 'package:flutter_application_huerto/service/user_supabase.dart';
 import '../components/button.dart';
 import '../service/supabase.dart';
-
+import 'package:flutter_guid/flutter_guid.dart';
 import '../models/community.dart';
 import '../service/community_supabase.dart';
 
@@ -37,14 +38,33 @@ class _CreateCommunityState extends State<CreateCommunity> {
     });
   }
 
-  void _createCommunityByName() {
+  void _createCommunityByName() async {
     String communityName = _communityNameController.text;
+    Community community = Community(id: Guid.newGuid, name: communityName);
     // Llamar a addCommunityByName con el Map de la comunidad
-    CommunitySupabase().addCommunityByName(communityName).then((_) {
-      print("Comunidad añadida con éxito");
-    }).catchError((error) {
-      print("Error al añadir la comunidad: $error");
-    });
+    await CommunitySupabase()
+        .addCommunityByNameAndId(community.id, community.name);
+    _updateUserIdCommunity(community);
+  }
+
+  void _updateUserIdCommunity(Community community) async {
+    try {
+      Guid? userId = await SupabaseService().getUserId();
+      if (userId == null) {
+        print("User ID is null");
+        return;
+      }
+      UserLoged user = await UserSupabase().getUserById(userId);
+      UserLoged updatedUser = UserLoged(
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          community_id: community.id);
+      await UserSupabase().updateUser(userId, updatedUser);
+      print("User updated successfully");
+    } catch (e) {
+      print("Error updating user: $e");
+    }
   }
 
   @override

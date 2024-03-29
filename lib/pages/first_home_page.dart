@@ -14,14 +14,14 @@ class FirstHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          /*children: [
             CircleAvatar(
               radius: 28,
               backgroundImage:
-                  NetworkImage('https://example.com/profile-pic.jpg'),
+                  NetworkImage(''),
             ),
             Text('Sin comunidad'),
-          ],
+          ],*/
         ),
       ),
       body: Column(
