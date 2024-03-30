@@ -15,14 +15,32 @@ class UserSupabase {
     await SupabaseService().updateData("User", id.value, newValues);
   }
 
-  Future<UserLoged> getUserById(Guid id) async {
+  Future<UserLoged?> getUserById(Guid id) async {
     final data = await SupabaseService().readData("User", id.value);
-    final user = UserLoged(
-      id: Guid(data[0]['id']), // Asegúrate de convertir el ID a Guid si es necesario
-      name: data[0]['name'],
-      email: data[0]['email'],
-      community_id: Guid(data[0]['community_id']), // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
-    );
-    return user;
+    if (data.length == 0) {
+      return null;
+    } else {
+      if (data[0]["community_id"] == null) {
+        final user = UserLoged(
+          id: Guid(data[0]
+              ['id']), // Asegúrate de convertir el ID a Guid si es necesario
+          name: data[0]['name'],
+          email: data[0]['email'],
+          community_id:
+              null, // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
+        );
+        return user;
+      } else {
+        final user = UserLoged(
+          id: Guid(data[0]
+              ['id']), // Asegúrate de convertir el ID a Guid si es necesario
+          name: data[0]['name'],
+          email: data[0]['email'],
+          community_id: Guid(data[0][
+              'community_id']), // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
+        );
+        return user;
+      }
+    }
   }
 }

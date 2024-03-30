@@ -1,5 +1,7 @@
 import 'package:flutter_application_huerto/models/community.dart';
+import 'package:flutter_application_huerto/models/userLoged.dart';
 import 'package:flutter_application_huerto/service/supabaseService.dart';
+import 'package:flutter_application_huerto/service/user_supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase/supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
@@ -18,6 +20,20 @@ class CommunitySupabase {
               'name']); // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
 
       return community;
+    } catch (e) {
+      print('Error al leer datos: $e');
+      return null;
+    }
+  }
+
+  Future<String?> readCommunityNameByUserCommunityId(Guid id) async {
+    try {
+      UserLoged user = await UserSupabase().getUserById(id) as UserLoged;
+      final data =
+          await client.from("Community").select("name").eq("id", user.community_id!.value);
+      final name = data[0]['name'] as String;
+      print(name);
+      return name;
     } catch (e) {
       print('Error al leer datos: $e');
       return null;

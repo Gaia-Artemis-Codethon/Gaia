@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/pages/home_page.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import '../components/button.dart';
 import '../models/community.dart';
@@ -38,16 +39,15 @@ class _JoinCommunityState extends State<JoinCommunity> {
     });
   }
 
-  void _readCommunityById() async {
+  Future<void> _readCommunityById() async {
     try {
       Guid communityId = Guid(_communityIdController.text);
       Community? community =
           await CommunitySupabase().readCommunityById(communityId);
       _updateUserIdCommunity(community!);
     } catch (e) {
-      var scaffoldMessenger = ScaffoldMessenger.of(
-          context);
-          _showErrorDialog(context, "ID de la comunidad incorrecto");
+      var scaffoldMessenger = ScaffoldMessenger.of(context);
+      _showErrorDialog(context, "ID de la comunidad incorrecto");
     }
   }
 
@@ -78,7 +78,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
         print("User ID is null");
         return;
       }
-      UserLoged user = await UserSupabase().getUserById(userId);
+      UserLoged user = await UserSupabase().getUserById(userId) as UserLoged;
       UserLoged updatedUser = UserLoged(
           id: user.id,
           name: user.name,
@@ -157,7 +157,16 @@ class _JoinCommunityState extends State<JoinCommunity> {
                 "Continuar",
                 textAlign: TextAlign.center,
               ),
-              onPressed: _isButtonEnabled ? _readCommunityById : null,
+              onPressed: _isButtonEnabled
+                  ? () async => {
+                        await _readCommunityById(),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()),
+                        ),
+                      }
+                  : null,
               icon: const Icon(Icons.arrow_forward),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFF6917B),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/models/userLoged.dart';
+import 'package:flutter_application_huerto/pages/home_page.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
 import '../components/button.dart';
 import '../service/supabaseService.dart';
@@ -38,7 +39,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
     });
   }
 
-  void _createCommunityByName() async {
+  Future<void> _createCommunityByName() async {
     String communityName = _communityNameController.text;
     Community community = Community(id: Guid.newGuid, name: communityName);
     // Llamar a addCommunityByName con el Map de la comunidad
@@ -54,7 +55,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
         print("User ID is null");
         return;
       }
-      UserLoged user = await UserSupabase().getUserById(userId);
+      UserLoged user = await UserSupabase().getUserById(userId) as UserLoged;
       UserLoged updatedUser = UserLoged(
           id: user.id,
           name: user.name,
@@ -128,7 +129,14 @@ class _CreateCommunityState extends State<CreateCommunity> {
                 textAlign: TextAlign.center,
               ),
               onPressed:
-                  _isButtonEnabled ? () => {_createCommunityByName()} : null,
+                  _isButtonEnabled ? () async => {
+                    await _createCommunityByName(),
+                    Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()),
+                        ),
+                    } : null,
               icon: const Icon(Icons.arrow_forward),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFF6917B),

@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import '../components/button.dart';
 
 class FirstHomePage extends StatelessWidget {
-  const FirstHomePage({Key? key}) : super(key: key);
+  const FirstHomePage({super.key});
 
   Future<DecorationImage?> _fetchBackgroundImage() async {
     const url =
@@ -36,10 +36,17 @@ class FirstHomePage extends StatelessWidget {
       builder: (context, AsyncSnapshot<DecorationImage?> snapshot) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            title: const Text(
-              'Your App Title',
-              style: TextStyle(color: Colors.black),
+            backgroundColor: Colors.white,
+            title: const Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'SIN COMUNIDAD',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            leading: const CircleAvatar(
+              backgroundImage: AssetImage(
+                  "https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/fondo%20stardew.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZm9uZG8gc3RhcmRldy5qcGciLCJpYXQiOjE3MTE3MzE5MDgsImV4cCI6MTc0MzI2NzkwOH0.-SOPg_DugDXrRy3ECACu4yrupCMQBZMaPfcT_Bzz59g&t=2024-03-29T17%3A05%3A09.286Z"),
             ),
             elevation: 0,
           ),
