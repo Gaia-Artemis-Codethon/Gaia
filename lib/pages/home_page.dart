@@ -11,49 +11,62 @@ import '../components/button.dart';
 import '../models/community.dart';
 
 class HomePage extends StatelessWidget {
- const HomePage({super.key});
+  const HomePage({super.key});
 
- Future<String> _readCommunityName() async {
+  Future<String> _readCommunityName() async {
     Guid guid = await SupabaseService().getUserId() as Guid;
-    String name = await CommunitySupabase().readCommunityNameByUserCommunityId(guid) as String;
+    String name = await CommunitySupabase()
+        .readCommunityNameByUserCommunityId(guid) as String;
     return name;
- }
+  }
 
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: FutureBuilder<String>(
-          future: _readCommunityName(),
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Show a loading indicator while waiting for the future to complete
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}'); // Show error message if the future completes with an error
-            } else {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                 const Text(
-                    'MI COMUNIDAD',
-                    style: TextStyle(color: Colors.black),
-                 ),
-                 Text(
-                    snapshot.data ?? 'Default Community Name', // Use the data from the future, or a default value if the future is null
-                    style: TextStyle(color: Colors.black),
-                 ),
-                ],
-              );
-            }
-          },
-        ),
-        leading: const CircleAvatar(
-          backgroundImage: AssetImage(
-            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+        elevation: 0,
+        title: // Espacio entre el avatar y el texto
+            Expanded(
+          child: FutureBuilder<String>(
+            future: _readCommunityName(),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator(); // Show a loading indicator while waiting for the future to complete
+              } else if (snapshot.hasError) {
+                return Text(
+                    'Error: ${snapshot.error}'); // Show error message if the future completes with an error
+              } else {
+                return Row(children: [
+                  const CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      "https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/garanjero.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZ2FyYW5qZXJvLnBuZyIsImlhdCI6MTcxMTgyMDc1MiwiZXhwIjoxNzQzMzU2NzUyfQ.qD5udNgpp3AM2tuGfbRD6PJgYzBWnO56ThtCmkIsi8U&t=2024-03-30T17%3A45%3A52.037Z",
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'MI COMUNIDAD',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        Text(
+                          snapshot.data ??
+                              'Default Community Name', // Use the data from the future, or a default value if the future is null
+                          style: const TextStyle(color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ]);
+              }
+            },
           ),
         ),
-        elevation: 0,
       ),
       body: Center(
         child: Column(
@@ -82,5 +95,5 @@ class HomePage extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
- }
+  }
 }

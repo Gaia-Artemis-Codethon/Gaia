@@ -44,8 +44,8 @@ class _CreateCommunityState extends State<CreateCommunity> {
     Community community = Community(id: Guid.newGuid, name: communityName);
     // Llamar a addCommunityByName con el Map de la comunidad
     await CommunitySupabase()
-        .addCommunityByNameAndId(community.id, community.name);
-    _updateUserIdCommunity(community);
+        .addCommunityByNameAndId(community.id, community.name)
+        .then((_) => _updateUserIdCommunity(community));
   }
 
   void _updateUserIdCommunity(Community community) async {
@@ -128,15 +128,16 @@ class _CreateCommunityState extends State<CreateCommunity> {
                 "Continuar",
                 textAlign: TextAlign.center,
               ),
-              onPressed:
-                  _isButtonEnabled ? () async => {
-                    await _createCommunityByName(),
-                    Navigator.push(
+              onPressed: _isButtonEnabled
+                  ? () async => {
+                        await _createCommunityByName(),
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const HomePage()),
                         ),
-                    } : null,
+                      }
+                  : null,
               icon: const Icon(Icons.arrow_forward),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFF6917B),
