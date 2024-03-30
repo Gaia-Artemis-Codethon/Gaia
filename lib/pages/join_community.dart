@@ -94,6 +94,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFECF4E8),
       appBar: AppBar(
         title: const Align(
           alignment: Alignment.centerRight,
@@ -156,6 +157,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
               text: const Text(
                 "Continuar",
                 textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
               ),
               onPressed: _isButtonEnabled
                   ? () async => {
@@ -167,7 +169,10 @@ class _JoinCommunityState extends State<JoinCommunity> {
                         ),
                       }
                   : null,
-              icon: const Icon(Icons.arrow_forward),
+              icon: const Icon(
+                Icons.arrow_forward,
+                color: Colors.white,             
+                ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFF6917B),
                 alignment: Alignment.center,

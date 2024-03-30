@@ -71,6 +71,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFECF4E8),
       appBar: AppBar(
         title: const Align(
           alignment: Alignment.centerRight,
@@ -126,6 +127,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
             child: Button(
               text: const Text(
                 "Continuar",
+                style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               onPressed: _isButtonEnabled
@@ -138,7 +140,10 @@ class _CreateCommunityState extends State<CreateCommunity> {
                         ),
                       }
                   : null,
-              icon: const Icon(Icons.arrow_forward),
+              icon: const Icon(
+                Icons.arrow_forward,
+                color: Colors.white,             
+                ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFF6917B),
                 alignment: Alignment.center,

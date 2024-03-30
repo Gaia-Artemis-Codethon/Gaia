@@ -11,7 +11,7 @@ class FirstHomePage extends StatelessWidget {
 
   Future<DecorationImage?> _fetchBackgroundImage() async {
     const url =
-        "https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/fondo%20stardew.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZm9uZG8gc3RhcmRldy5qcGciLCJpYXQiOjE3MTE3MzE5MDgsImV4cCI6MTc0MzI2NzkwOH0.-SOPg_DugDXrRy3ECACu4yrupCMQBZMaPfcT_Bzz59g&t=2024-03-29T17%3A05%3A09.286Z";
+        "https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/stardew.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvc3RhcmRldy5qcGciLCJpYXQiOjE3MTE4MjU2ODcsImV4cCI6MTc0MzM2MTY4N30.IiSnJdTdOvGepJACjdLNJJzCgkwwhMcSxRNYoNclhkw&t=2024-03-30T19%3A08%3A07.204Z";
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -45,8 +45,8 @@ class FirstHomePage extends StatelessWidget {
               ),
             ),
             leading: const CircleAvatar(
-              backgroundImage: AssetImage(
-                  "https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/fondo%20stardew.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZm9uZG8gc3RhcmRldy5qcGciLCJpYXQiOjE3MTE3MzE5MDgsImV4cCI6MTc0MzI2NzkwOH0.-SOPg_DugDXrRy3ECACu4yrupCMQBZMaPfcT_Bzz59g&t=2024-03-29T17%3A05%3A09.286Z"),
+              backgroundImage: NetworkImage(
+                  "https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/garanjero.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZ2FyYW5qZXJvLnBuZyIsImlhdCI6MTcxMTgyMDc1MiwiZXhwIjoxNzQzMzU2NzUyfQ.qD5udNgpp3AM2tuGfbRD6PJgYzBWnO56ThtCmkIsi8U&t=2024-03-30T17%3A45%3A52.037Z"),
             ),
             elevation: 0,
           ),
