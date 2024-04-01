@@ -17,9 +17,19 @@ class SupabaseService {
     }
   }
 
-  Future<List<dynamic>> readData(String table, String id) async {
+  Future<List<dynamic>> readData(String table) async {
     try {
       final data = await client.from(table).select();
+      return data as List<dynamic>;
+    } catch (e) {
+      print('Error al leer datos: $e');
+      return [];
+    }
+  }
+
+  Future<dynamic> readDataById(String table, String id) async {
+    try {
+      final data = await client.from(table).select().eq("id", id);
       return data as List<dynamic>;
     } catch (e) {
       print('Error al leer datos: $e');

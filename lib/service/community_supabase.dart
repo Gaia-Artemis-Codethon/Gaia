@@ -29,10 +29,11 @@ class CommunitySupabase {
   Future<String?> readCommunityNameByUserCommunityId(Guid id) async {
     try {
       UserLoged user = await UserSupabase().getUserById(id) as UserLoged;
-      final data =
-          await client.from("Community").select("name").eq("id", user.community_id!.value);
+      final data = await client
+          .from("Community")
+          .select("name")
+          .eq("id", user.community_id!.value);
       final name = data[0]['name'] as String;
-      print(name);
       return name;
     } catch (e) {
       print('Error al leer datos: $e');
