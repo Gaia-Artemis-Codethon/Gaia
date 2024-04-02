@@ -42,9 +42,8 @@ class HomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          "https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/garanjero.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZ2FyYW5qZXJvLnBuZyIsImlhdCI6MTcxMTgyMDc1MiwiZXhwIjoxNzQzMzU2NzUyfQ.qD5udNgpp3AM2tuGfbRD6PJgYzBWnO56ThtCmkIsi8U&t=2024-03-30T17%3A45%3A52.037Z",
-                        ),
+                        backgroundImage: AssetImage(
+                            "images/granjero.png"), // Cambiado a la imagen local
                       ),
                       const SizedBox(width: 10),
                       Align(
