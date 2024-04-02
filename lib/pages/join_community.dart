@@ -5,62 +5,67 @@ import '../components/button.dart';
 import '../models/community.dart';
 import '../models/userLoged.dart';
 import '../service/supabaseService.dart';
+import 'package:flutter/widgets.dart';
 
 import '../service/community_supabase.dart';
 import '../service/user_supabase.dart';
 
 class JoinCommunity extends StatefulWidget {
-  const JoinCommunity({Key? key}) : super(key: key);
+ const JoinCommunity({Key? key}) : super(key: key);
 
-  @override
-  _JoinCommunityState createState() => _JoinCommunityState();
+ @override
+ _JoinCommunityState createState() => _JoinCommunityState();
 }
 
 class _JoinCommunityState extends State<JoinCommunity> {
-  final TextEditingController _communityIdController = TextEditingController();
-  bool _isButtonEnabled = false;
+ final TextEditingController _communityIdController = TextEditingController();
+ bool _isButtonEnabled = false;
 
-  @override
-  void initState() {
+ @override
+ void initState() {
     super.initState();
     _communityIdController.addListener(_updateButtonState);
-  }
+ }
 
-  @override
-  void dispose() {
+ @override
+ void dispose() {
     _communityIdController.removeListener(_updateButtonState);
     _communityIdController.dispose();
     super.dispose();
-  }
+ }
 
-  void _updateButtonState() {
+ void _updateButtonState() {
     setState(() {
       _isButtonEnabled = _communityIdController.text.isNotEmpty;
     });
-  }
+ }
 
-  Future<void> _readCommunityById() async {
+ Future<Community?> _readCommunityById() async {
     try {
       Guid communityId = Guid(_communityIdController.text);
-      Community? community =
-          await CommunitySupabase().readCommunityById(communityId);
-      _updateUserIdCommunity(community!);
+      Community? community = await CommunitySupabase().readCommunityById(communityId);
+      if (community == null) {
+        _showErrorDialog(context, "La comunidad con el ID proporcionado no existe.");
+        return null;
+      }
+      _updateUserIdCommunity(community);
+      return community;
     } catch (e) {
-      var scaffoldMessenger = ScaffoldMessenger.of(context);
-      _showErrorDialog(context, "ID de la comunidad incorrecto");
+      _showErrorDialog(context, "Error al leer la comunidad: ID incorrecto.");
+      return null;
     }
-  }
+ }
 
-  void _showErrorDialog(BuildContext context, String message) {
+ void _showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
+          title: const Text('Error'),
           content: Text(message),
           actions: <Widget>[
             TextButton(
-              child: Text('Cerrar'),
+              child: const Text('Cerrar'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -69,9 +74,9 @@ class _JoinCommunityState extends State<JoinCommunity> {
         );
       },
     );
-  }
+ }
 
-  void _updateUserIdCommunity(Community community) async {
+ void _updateUserIdCommunity(Community community) async {
     try {
       Guid? userId = await SupabaseService().getUserId();
       if (userId == null) {
@@ -89,10 +94,10 @@ class _JoinCommunityState extends State<JoinCommunity> {
     } catch (e) {
       print("Error updating user: $e");
     }
-  }
+ }
 
-  @override
-  Widget build(BuildContext context) {
+ @override
+ Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFECF4E8),
       appBar: AppBar(
@@ -146,8 +151,8 @@ class _JoinCommunityState extends State<JoinCommunity> {
                 controller: _communityIdController,
                 style: const TextStyle(fontSize: 18, color: Colors.black),
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.green[100],
+                 filled: true,
+                 fillColor: Colors.green[100],
                 ),
               ),
             ),
@@ -160,27 +165,29 @@ class _JoinCommunityState extends State<JoinCommunity> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: _isButtonEnabled
-                  ? () async => {
-                        await _readCommunityById(),
+                 ? () async {
+                      Community? community = await _readCommunityById();
+                      if (community != null) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const HomePage()),
-                        ),
+                        );
                       }
-                  : null,
+                    }
+                 : null,
               icon: const Icon(
                 Icons.arrow_forward,
-                color: Colors.white,             
-                ),
+                color: Colors.white,
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFF6917B),
                 alignment: Alignment.center,
               ),
             ),
-          ),
+          )
         ],
       ),
     );
-  }
+ }
 }

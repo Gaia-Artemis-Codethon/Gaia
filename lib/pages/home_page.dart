@@ -38,62 +38,56 @@ class HomePage extends StatelessWidget {
                 return Text(
                     'Error: ${snapshot.error}'); // Show error message if the future completes with an error
               } else {
-                return Row(children: [
-                  const CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      "https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/garanjero.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZ2FyYW5qZXJvLnBuZyIsImlhdCI6MTcxMTgyMDc1MiwiZXhwIjoxNzQzMzU2NzUyfQ.qD5udNgpp3AM2tuGfbRD6PJgYzBWnO56ThtCmkIsi8U&t=2024-03-30T17%3A45%3A52.037Z",
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'MI COMUNIDAD',
-                          style: TextStyle(color: Colors.black),
+                return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          "https://pxafmjqslgpswndqzfvm.supabase.co/storage/v1/object/sign/images/garanjero.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZ2FyYW5qZXJvLnBuZyIsImlhdCI6MTcxMTgyMDc1MiwiZXhwIjoxNzQzMzU2NzUyfQ.qD5udNgpp3AM2tuGfbRD6PJgYzBWnO56ThtCmkIsi8U&t=2024-03-30T17%3A45%3A52.037Z",
                         ),
-                        Text(
-                          snapshot.data ??
-                              'Default Community Name', // Use the data from the future, or a default value if the future is null
-                          style: const TextStyle(color: Colors.black),
-                          overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(width: 10),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'MI COMUNIDAD',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            Text(
+                              snapshot.data ??
+                                  'Default Community Name', // Use the data from the future, or a default value if the future is null
+                              style: const TextStyle(color: Colors.black),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                ]);
+                      ),
+                    ]);
               }
             },
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Bienvenido',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Crear Comunidad'),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      body: Column(
+        children: [
+          Text(
+            "El tiempo",
+            style: TextStyle(color: Colors.black, fontSize: 24),
+          ),
+          SizedBox(height: 10),
+          Text(
+            "Mi parcela",
+            style: TextStyle(color: Colors.black, fontSize: 24),
+          ),
+          SizedBox(height: 10),
+          Text(
+            "Mis tareas",
+            style: TextStyle(color: Colors.black, fontSize: 24),
+          ),
+        ],
       ),
     );
   }

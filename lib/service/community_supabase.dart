@@ -13,15 +13,19 @@ class CommunitySupabase {
     try {
       final data =
           await client.from("Community").select("*").eq("id", id.value);
-      final community = Community(
-          id: Guid(data[0]
-              ['id']), // Asegúrate de convertir el ID a Guid si es necesario
-          name: data[0][
-              'name']); // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
+      if (data.isEmpty) {
+        return null;
+      } else {
+        final community = Community(
+            id: Guid(data[0]
+                ['id']), // Asegúrate de convertir el ID a Guid si es necesario
+            name: data[0][
+                'name']); // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
 
-      return community;
+        return community;
+      }
     } catch (e) {
-      print('Error al leer datos: $e');
+      print('Error en clase community_supabase al leer datos: $e');
       return null;
     }
   }
