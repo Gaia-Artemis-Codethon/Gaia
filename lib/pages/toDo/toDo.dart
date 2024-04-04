@@ -37,11 +37,11 @@ class _ToDoState extends State<ToDo> {
         child: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Add_Task(widget.userId),
+              builder: (context) => Add_Task(widget.userId, updateTasks),
             ));
           },
           backgroundColor: Colors.green.shade200,
-          child: Icon(Icons.add, size: 30),
+          child: const Icon(Icons.add, size: 30),
         ),
       ),
       body: SafeArea(

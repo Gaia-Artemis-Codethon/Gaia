@@ -10,7 +10,8 @@ import '../../service/task_supabase.dart';
 
 class Add_Task extends StatefulWidget {
   final Guid userId;
-  const Add_Task(this.userId,{super.key});
+  final VoidCallback onTaskStatusChanged; 
+  const Add_Task(this.userId, this.onTaskStatusChanged,{super.key});
 
   @override
   State<Add_Task> createState() => _Add_TaskState();
@@ -52,8 +53,7 @@ class _Add_TaskState extends State<Add_Task> {
           onPressed: () async{
              await TaskSupabase().addTask(
                 Task(id: Guid.newGuid, name:  title.text, status: false, user_id: widget.userId));
-            setState(() {
-            });
+            widget.onTaskStatusChanged();
             Navigator.pop(context);
           },
           child: const Text('add task'),

@@ -92,8 +92,10 @@ class _Task_WidgetState extends State<Task_Widget> {
         direction: Axis.horizontal, // main axis (rows or columns)
         children: [
           GestureDetector(
-            onTap: () {
-              TaskSupabase().deleteTask(widget._note.id);
+            onTap: () async {
+              await TaskSupabase().deleteTask(widget._note.id);
+              widget.onTaskStatusChanged();
+
             },
             child: 
           Container(
