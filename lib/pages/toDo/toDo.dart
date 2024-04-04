@@ -7,29 +7,30 @@ import '../../const/colors.dart';
 import '../../widgets/strem_note.dart';
 
 class ToDo extends StatefulWidget {
-  final Guid userId;
-  const ToDo(this.userId, {super.key});
+ final Guid userId;
+ const ToDo(this.userId, {super.key});
 
-  @override
-  State<ToDo> createState() => _ToDoState();
+ @override
+ State<ToDo> createState() => _ToDoState();
 }
 
 bool show = true;
 
 class _ToDoState extends State<ToDo> {
 
-  void updateTasks() {
+ void updateTasks() {
     setState(() {});
  }
-  @override
-  void initState() {
+
+ @override
+ void initState() {
     super.initState();
     setState(() {
     });
-  }
-  
-  @override
-  Widget build(BuildContext context) {
+ }
+
+ @override
+ Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       floatingActionButton: Visibility(
@@ -61,26 +62,30 @@ class _ToDoState extends State<ToDo> {
           },
           child: Column(
             children: [
-              SizedBox(
-                height: 400, // Ajusta la altura según sea necesario
-                child: StreamNote(false, widget.userId, updateTasks),
-              ),
-              Text(
-                'isDone',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey.shade500,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: SizedBox(
+                 height: 200, // Ajusta la altura según sea necesario
+                 child: StreamNote(false, widget.userId, updateTasks),
                 ),
               ),
-              SizedBox(
-                height: 400, // Ajusta la altura según sea necesario
-                child: StreamNote(true, widget.userId, updateTasks),
+                Text(
+                 'isDone',
+                 style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey.shade500,
+                    fontWeight: FontWeight.bold,
+                 ),
+                ),
+              Expanded(
+                child: SizedBox(
+                 height: 200, // Ajusta la altura según sea necesario
+                 child: StreamNote(true, widget.userId, updateTasks),
+                ),
               ),
             ],
           ),
         ),
       ),
     );
-  }
+ }
 }
