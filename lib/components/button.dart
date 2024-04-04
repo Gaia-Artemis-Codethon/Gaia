@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/const/colors.dart';
 
 class Button extends StatelessWidget {
  final Text? text;
@@ -13,7 +14,7 @@ class Button extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed != null ? () => onPressed!() : null,
       style: style?? ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFFF6917B),
+        backgroundColor: OurColors().backgroundColorButton
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

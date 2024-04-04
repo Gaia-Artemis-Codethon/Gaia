@@ -37,6 +37,10 @@ class SupabaseService {
     }
   }
 
+  Stream<AuthChangeEvent> authStateChanges() {
+    return Supabase.instance.client.auth.onAuthStateChange.map((event) => event.event);
+ }
+
   Future<void> updateData(
       String table, String id, Map<String, dynamic> newValues) async {
     final data = await client.from(table).update(newValues).eq('id', id);

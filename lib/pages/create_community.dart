@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_huerto/models/userLoged.dart';
 import 'package:flutter_application_huerto/pages/home_page.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
+import 'package:flutter_guid/flutter_guid_error.dart';
 import '../components/button.dart';
+import '../const/colors.dart';
+import '../models/userLoged.dart';
 import '../service/supabaseService.dart';
+
 import 'package:flutter_guid/flutter_guid.dart';
 import '../models/community.dart';
 import '../service/community_supabase.dart';
@@ -39,39 +42,40 @@ class _CreateCommunityState extends State<CreateCommunity> {
     });
   }
 
-  Future<void> _createCommunityByName() async {
+  Future<Community> _createCommunityByName() async {
     String communityName = _communityNameController.text;
     Community community = Community(id: Guid.newGuid, name: communityName);
     // Llamar a addCommunityByName con el Map de la comunidad
     await CommunitySupabase()
-        .addCommunityByNameAndId(community.id, community.name)
-        .then((_) => _updateUserIdCommunity(community));
+        .addCommunityByNameAndId(community.id, community.name);
+    return community;
   }
 
-  void _updateUserIdCommunity(Community community) async {
+  Future<Guid?> _updateUserIdCommunity(Community community) async {
     try {
-      Guid? userId = await SupabaseService().getUserId();
-      if (userId == null) {
+      Guid? Id = await SupabaseService().getUserId();
+      if (Id == null) {
         print("User ID is null");
-        return;
       }
-      UserLoged user = await UserSupabase().getUserById(userId) as UserLoged;
+      UserLoged user = await UserSupabase().getUserById(Id!) as UserLoged;
       UserLoged updatedUser = UserLoged(
           id: user.id,
           name: user.name,
           email: user.email,
           community_id: community.id);
-      await UserSupabase().updateUser(userId, updatedUser);
+      await UserSupabase().updateUser(Id, updatedUser);
       print("User updated successfully");
+      return Id;
     } catch (e) {
       print("Error updating user: $e");
+      return await SupabaseService().getUserId();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFECF4E8),
+      backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
         title: const Align(
           alignment: Alignment.centerRight,
@@ -131,21 +135,23 @@ class _CreateCommunityState extends State<CreateCommunity> {
                 textAlign: TextAlign.center,
               ),
               onPressed: _isButtonEnabled
-                  ? () async => {
-                        await _createCommunityByName(),
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()),
+                  ? () async {
+                      Community communityAux = await _createCommunityByName();
+                      Guid? id = await _updateUserIdCommunity(communityAux);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(id!),
                         ),
-                      }
+                      );
+                    }
                   : null,
               icon: const Icon(
                 Icons.arrow_forward,
-                color: Colors.white,             
-                ),
+                color: Colors.white,
+              ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF6917B),
+                backgroundColor: OurColors().backgroundColorButton,
                 alignment: Alignment.center,
               ),
             ),

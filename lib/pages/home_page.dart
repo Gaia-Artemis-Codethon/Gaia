@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application_huerto/pages/create_community.dart';
 import 'package:flutter_application_huerto/pages/join_community.dart';
+import 'package:flutter_application_huerto/pages/toDo.dart';
 import 'package:flutter_application_huerto/service/community_supabase.dart';
 import 'package:flutter_application_huerto/service/supabaseService.dart';
 import 'package:flutter_guid/flutter_guid.dart';
@@ -11,65 +11,65 @@ import '../components/button.dart';
 import '../models/community.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+ final Guid userId;
+ const HomePage(this.userId, {super.key});
 
-  Future<String> _readCommunityName() async {
+ Future<String> _readCommunityName() async {
+    print(userId);
     Guid guid = await SupabaseService().getUserId() as Guid;
     String name = await CommunitySupabase()
         .readCommunityNameByUserCommunityId(guid) as String;
     return name;
-  }
+ }
 
-  @override
-  Widget build(BuildContext context) {
+
+ @override
+ Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: // Espacio entre el avatar y el texto
-            Expanded(
-          child: FutureBuilder<String>(
-            future: _readCommunityName(),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator(); // Show a loading indicator while waiting for the future to complete
-              } else if (snapshot.hasError) {
-                return Text(
-                    'Error: ${snapshot.error}'); // Show error message if the future completes with an error
-              } else {
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const CircleAvatar(
-                        backgroundImage: AssetImage(
-                            "images/granjero.png"), // Cambiado a la imagen local
-                      ),
-                      const SizedBox(width: 10),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'MI COMUNIDAD',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            Text(
-                              snapshot.data ??
-                                  'Default Community Name', // Use the data from the future, or a default value if the future is null
-                              style: const TextStyle(color: Colors.black),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ]);
-              }
-            },
-          ),
-        ),
-      ),
+ automaticallyImplyLeading: false,
+ backgroundColor: Colors.white,
+ elevation: 0,
+ title: FutureBuilder<String>(
+    future: _readCommunityName(),
+    builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const CircularProgressIndicator(); // Muestra un indicador de carga mientras se espera la respuesta
+      } else if (snapshot.hasError) {
+        return Text(
+            'Error: ${snapshot.error}'); // Muestra un mensaje de error si la future se completa con un error
+      } else {
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const CircleAvatar(
+                backgroundImage: AssetImage(
+                    "images/granjero.png"), // Cambiado a la imagen local
+              ),
+              const SizedBox(width: 10),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                    const Text(
+                      'MI COMUNIDAD',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    Text(
+                      snapshot.data ??
+                           'Default Community Name', // Usa los datos de la future, o un valor predeterminado si la future es null
+                      style: const TextStyle(color: Colors.black),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                 ],
+                ),
+              ),
+            ]);
+      }
+    },
+ ),
+),
       body: Column(
         children: [
           Text(
@@ -83,11 +83,23 @@ class HomePage extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            "Mis tareas",
+            "ToDo",
             style: TextStyle(color: Colors.black, fontSize: 24),
           ),
+          Button(
+            text: Text("ToDo"),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                 builder: (context) => ToDo(userId),
+                ),
+              );
+            },
+          )
         ],
       ),
     );
-  }
+ }
+
 }
