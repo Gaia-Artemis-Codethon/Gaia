@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
@@ -7,25 +6,25 @@ import '../../models/task.dart';
 import '../../service/supabaseService.dart';
 import '../../service/task_supabase.dart';
 
-
 class Add_Task extends StatefulWidget {
-  final Guid userId;
-  final VoidCallback onTaskStatusChanged; 
-  const Add_Task(this.userId, this.onTaskStatusChanged,{super.key});
+ final Guid userId;
+ final VoidCallback onTaskStatusChanged;
+ const Add_Task(this.userId, this.onTaskStatusChanged, {super.key});
 
-  @override
-  State<Add_Task> createState() => _Add_TaskState();
+ @override
+ State<Add_Task> createState() => _Add_TaskState();
 }
 
 class _Add_TaskState extends State<Add_Task> {
-  final title = TextEditingController();
-  final subtitle = TextEditingController();
+ final title = TextEditingController();
+ final subtitle = TextEditingController();
 
-  FocusNode _focusNode1 = FocusNode();
-  FocusNode _focusNode2 = FocusNode();
-  int indexx = 0;
-  @override
-  Widget build(BuildContext context) {
+ FocusNode _focusNode1 = FocusNode();
+ FocusNode _focusNode2 = FocusNode();
+ int indexx = 0;
+
+ @override
+ Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       body: SafeArea(
@@ -34,14 +33,19 @@ class _Add_TaskState extends State<Add_Task> {
           children: [
             name_widgets(),
             const SizedBox(height: 20),
-            button()
+            ValueListenableBuilder<TextEditingValue>(
+              valueListenable: title,
+              builder: (context, value, child) {
+                return button(value.text.isNotEmpty);
+              },
+            ),
           ],
         ),
       ),
     );
-  }
+ }
 
-  Widget button() {
+ Widget button(bool isEnabled) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -50,12 +54,12 @@ class _Add_TaskState extends State<Add_Task> {
             backgroundColor: Colors.green.shade200,
             minimumSize: const Size(170, 48),
           ),
-          onPressed: () async{
-             await TaskSupabase().addTask(
-                Task(id: Guid.newGuid, name:  title.text, status: false, user_id: widget.userId));
+          onPressed: isEnabled ? () async {
+            await TaskSupabase().addTask(
+              Task(id: Guid.newGuid, name: title.text, status: false, user_id: widget.userId));
             widget.onTaskStatusChanged();
             Navigator.pop(context);
-          },
+          } : null,
           child: const Text('add task'),
         ),
         ElevatedButton(
@@ -70,7 +74,7 @@ class _Add_TaskState extends State<Add_Task> {
         ),
       ],
     );
-  }
+ }
 
   Container imagess() {
     return Container(
