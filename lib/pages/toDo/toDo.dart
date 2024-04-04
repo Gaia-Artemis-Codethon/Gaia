@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_application_huerto/pages/add_note.dart';
+import 'package:flutter_application_huerto/pages/toDo/add_note.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
-import '../const/colors.dart';
-import '../widgets/strem_note.dart';
+import '../../const/colors.dart';
+import '../../widgets/strem_note.dart';
 
 class ToDo extends StatefulWidget {
   final Guid userId;

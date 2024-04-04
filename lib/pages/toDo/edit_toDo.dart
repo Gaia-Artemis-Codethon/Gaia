@@ -3,7 +3,7 @@ import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/models/task.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
-import '../service/task_supabase.dart';
+import '../../service/task_supabase.dart';
 
 class EditToDo extends StatefulWidget {
   final Task _note;

@@ -1,28 +1,32 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/models/task.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+import '../../const/colors.dart';
+import '../../service/supabaseService.dart';
+import '../../service/task_supabase.dart';
 
-import '../const/colors.dart';
-import '../models/task.dart';
-import '../service/supabaseService.dart';
-import '../service/task_supabase.dart';
-
-
-class Add_Task extends StatefulWidget {
-  const Add_Task({super.key});
+class Edit_Screen extends StatefulWidget {
+  Task _note;
+  Edit_Screen(this._note, {super.key});
 
   @override
-  State<Add_Task> createState() => _Add_TaskState();
+  State<Edit_Screen> createState() => _Edit_ScreenState();
 }
 
-class _Add_TaskState extends State<Add_Task> {
-  final title = TextEditingController();
-  final subtitle = TextEditingController();
+class _Edit_ScreenState extends State<Edit_Screen> {
+  TextEditingController? title;
+  TextEditingController? subtitle;
 
   FocusNode _focusNode1 = FocusNode();
   FocusNode _focusNode2 = FocusNode();
   int indexx = 0;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    title = TextEditingController(text: widget._note.name);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
@@ -30,8 +34,8 @@ class _Add_TaskState extends State<Add_Task> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            name_widgets(),
-            SizedBox(height: 20),
+            name_widget(),
+            const SizedBox(height: 20),
             button()
           ],
         ),
@@ -46,25 +50,25 @@ class _Add_TaskState extends State<Add_Task> {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green.shade200,
-            minimumSize: Size(170, 48),
+            minimumSize: const Size(170, 48),
           ),
-          onPressed: () async{
+          onPressed: () async {
             final Guid? userId = await SupabaseService().getUserId();
-             await TaskSupabase().addTask(
-                Task(id: Guid.newGuid, name:  title.text, status: false, user_id: userId));
+            await TaskSupabase().updateTask(
+                Task(id: Guid(widget._note.id as String?), name: title!.text, status: false, user_id: userId));
             Navigator.pop(context);
           },
-          child: Text('add task'),
+          child: const Text('add task'),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
-            minimumSize: Size(170, 48),
+            minimumSize: const Size(170, 48),
           ),
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
       ],
     );
@@ -94,7 +98,7 @@ class _Add_TaskState extends State<Add_Task> {
                   ),
                 ),
                 width: 140,
-                margin: EdgeInsets.all(8),
+                margin: const EdgeInsets.all(8),
                 child: Column(
                   children: [
                     Image.asset('images/${index}.png'),
@@ -108,7 +112,7 @@ class _Add_TaskState extends State<Add_Task> {
     );
   }
 
-  Widget name_widgets() {
+  Widget name_widget() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
@@ -119,14 +123,14 @@ class _Add_TaskState extends State<Add_Task> {
         child: TextField(
           controller: title,
           focusNode: _focusNode1,
-          style: TextStyle(fontSize: 18, color: Colors.black),
+          style: const TextStyle(fontSize: 18, color: Colors.black),
           decoration: InputDecoration(
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               hintText: 'name',
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Color(0xffc5c5c5),
                   width: 2.0,
                 ),
@@ -134,7 +138,7 @@ class _Add_TaskState extends State<Add_Task> {
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                  color: Colors.green.shade200,
+                  color:  Colors.green.shade200,
                   width: 2.0,
                 ),
               )),
@@ -155,13 +159,13 @@ class _Add_TaskState extends State<Add_Task> {
           maxLines: 3,
           controller: subtitle,
           focusNode: _focusNode2,
-          style: TextStyle(fontSize: 18, color: Colors.black),
+          style: const TextStyle(fontSize: 18, color: Colors.black),
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             hintText: 'subtitle',
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Color(0xffc5c5c5),
                 width: 2.0,
               ),

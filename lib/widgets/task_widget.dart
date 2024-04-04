@@ -3,7 +3,7 @@ import 'package:flutter_application_huerto/main.dart';
 import 'package:flutter_application_huerto/models/task.dart';
 import 'package:flutter_application_huerto/service/task_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import '../pages/edit_toDo.dart';
+import '../pages/toDo/edit_toDo.dart';
 
 class Task_Widget extends StatefulWidget {
  final Task _note;

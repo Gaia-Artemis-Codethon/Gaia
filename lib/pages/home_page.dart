@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/pages/create_community.dart';
 import 'package:flutter_application_huerto/pages/join_community.dart';
-import 'package:flutter_application_huerto/pages/toDo.dart';
+import 'package:flutter_application_huerto/pages/toDo/toDo.dart';
 import 'package:flutter_application_huerto/service/community_supabase.dart';
 import 'package:flutter_application_huerto/service/supabaseService.dart';
 import 'package:flutter_guid/flutter_guid.dart';
