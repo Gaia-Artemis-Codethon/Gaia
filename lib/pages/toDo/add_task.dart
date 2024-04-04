@@ -32,7 +32,7 @@ class _Add_TaskState extends State<Add_Task> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             name_widgets(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             button()
           ],
         ),
@@ -47,24 +47,26 @@ class _Add_TaskState extends State<Add_Task> {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green.shade200,
-            minimumSize: Size(170, 48),
+            minimumSize: const Size(170, 48),
           ),
           onPressed: () async{
              await TaskSupabase().addTask(
                 Task(id: Guid.newGuid, name:  title.text, status: false, user_id: widget.userId));
+            setState(() {
+            });
             Navigator.pop(context);
           },
-          child: Text('add task'),
+          child: const Text('add task'),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
-            minimumSize: Size(170, 48),
+            minimumSize: const Size(170, 48),
           ),
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
       ],
     );
@@ -94,7 +96,7 @@ class _Add_TaskState extends State<Add_Task> {
                   ),
                 ),
                 width: 140,
-                margin: EdgeInsets.all(8),
+                margin: const EdgeInsets.all(8),
                 child: Column(
                   children: [
                     Image.asset('images/${index}.png'),
@@ -119,14 +121,14 @@ class _Add_TaskState extends State<Add_Task> {
         child: TextField(
           controller: title,
           focusNode: _focusNode1,
-          style: TextStyle(fontSize: 18, color: Colors.black),
+          style: const TextStyle(fontSize: 18, color: Colors.black),
           decoration: InputDecoration(
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               hintText: 'name',
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Color(0xffc5c5c5),
                   width: 2.0,
                 ),
@@ -155,13 +157,13 @@ class _Add_TaskState extends State<Add_Task> {
           maxLines: 3,
           controller: subtitle,
           focusNode: _focusNode2,
-          style: TextStyle(fontSize: 18, color: Colors.black),
+          style: const TextStyle(fontSize: 18, color: Colors.black),
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             hintText: 'subtitle',
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Color(0xffc5c5c5),
                 width: 2.0,
               ),

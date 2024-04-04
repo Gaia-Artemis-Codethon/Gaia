@@ -36,6 +36,9 @@ class _StreamNoteState extends State<StreamNote> {
               key: UniqueKey(),
               onDismissed: (direction) {
                 TaskSupabase().deleteTask(task.id);
+                setState(() {
+                  tasksList.removeAt(index);
+                });
                 // Actualiza el stream después de eliminar una tarea
               },
               child: Task_Widget(task),

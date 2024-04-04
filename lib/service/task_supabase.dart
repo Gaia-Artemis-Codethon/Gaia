@@ -73,7 +73,7 @@ class TaskSupabase {
         .from('Task')
         .select()
         .eq('user_id', userId.value)
-        .eq('status', true)
+        .eq('status', 'true')
         .asStream()
         .map((event) => event as List<Map<String, dynamic>>)
         .map(
@@ -85,7 +85,7 @@ class TaskSupabase {
         .from('Task')
         .select()
         .eq('user_id', userId.value)
-        .eq('status', false)
+        .eq('status', 'false')
         .asStream()
         .map((event) => event as List<Map<String, dynamic>>)
         .map(
@@ -93,11 +93,12 @@ class TaskSupabase {
   }
 
   Stream<List<Task>> stream(Guid userId, bool status) {
+    print("$userId $status");
     return client
         .from('Task')
         .select('*')
         .eq('user_id', userId.value)
-        .eq('status', status)
+        .eq('status', '$status')
         .asStream()
         .map((event) => event as List<Map<String, dynamic>>)
         .map((list) => list.map((item) => Task.fromJson(item) as Task).toList())

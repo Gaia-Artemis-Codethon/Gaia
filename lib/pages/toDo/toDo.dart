@@ -17,6 +17,14 @@ class ToDo extends StatefulWidget {
 bool show = true;
 
 class _ToDoState extends State<ToDo> {
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

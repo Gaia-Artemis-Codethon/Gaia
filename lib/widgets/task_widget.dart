@@ -58,12 +58,14 @@ class _Task_WidgetState extends State<Task_Widget> {
                         Checkbox(
                           activeColor: Colors.green.shade200,
                           value: isDone,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             setState(() {
                               isDone = !isDone;
                             });
-                            TaskSupabase()
+                            await TaskSupabase()
                                 .taskIsDone(Task(id: widget._note.id, status: isDone, name: widget._note.name, user_id: widget._note.user_id));
+                            setState(() {
+                            });
                           },
                         )
                       ],
