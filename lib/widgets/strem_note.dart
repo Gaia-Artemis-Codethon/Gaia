@@ -10,12 +10,12 @@ import 'task_widget.dart';
 final supabase = SupabaseService().client;
 
 class StreamNote extends StatefulWidget {
-  final bool done;
-  final Guid userId;
-  StreamNote(this.done, this.userId, {Key? key}) : super(key: key);
+ final bool done;
+ final Guid userId;
+ StreamNote(this.done, this.userId, {Key? key}) : super(key: key);
 
-  @override
-  State<StreamNote> createState() => _StreamNoteState();
+ @override
+ State<StreamNote> createState() => _StreamNoteState();
 }
 
 class _StreamNoteState extends State<StreamNote> {
@@ -36,6 +36,7 @@ class _StreamNoteState extends State<StreamNote> {
               key: UniqueKey(),
               onDismissed: (direction) {
                 TaskSupabase().deleteTask(task.id);
+                // Actualiza el stream después de eliminar una tarea
               },
               child: Task_Widget(task),
             );

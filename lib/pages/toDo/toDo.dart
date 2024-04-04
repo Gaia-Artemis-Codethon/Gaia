@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_application_huerto/pages/toDo/add_note.dart';
+import 'package:flutter_application_huerto/pages/toDo/add_task.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
 import '../../const/colors.dart';
@@ -26,7 +26,7 @@ class _ToDoState extends State<ToDo> {
         child: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Add_Task(),
+              builder: (context) => Add_Task(widget.userId),
             ));
           },
           backgroundColor: Colors.green.shade200,

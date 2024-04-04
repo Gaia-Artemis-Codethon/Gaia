@@ -88,6 +88,11 @@ class _Task_WidgetState extends State<Task_Widget> {
         runSpacing: 4.0, // gap between lines
         direction: Axis.horizontal, // main axis (rows or columns)
         children: [
+          GestureDetector(
+            onTap: () {
+              TaskSupabase().deleteTask(widget._note.id);
+            },
+            child: 
           Container(
             width: 90,
             height: 28,
@@ -95,8 +100,8 @@ class _Task_WidgetState extends State<Task_Widget> {
               color: Colors.green.shade200,
               borderRadius: BorderRadius.circular(18),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
+            child: const Padding(
+              padding: EdgeInsets.symmetric(
                 horizontal: 12,
                 vertical: 6,
               ),
@@ -107,6 +112,7 @@ class _Task_WidgetState extends State<Task_Widget> {
               ),
             ),
           ),
+      ),
           const SizedBox(width: 20),
           GestureDetector(
             onTap: () {
@@ -121,16 +127,16 @@ class _Task_WidgetState extends State<Task_Widget> {
                 color: const Color(0xffE2F6F1),
                 borderRadius: BorderRadius.circular(18),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
                  horizontal: 12,
                  vertical: 6,
                 ),
                 child: Row(
                  children: [
                     //Image.asset('images/icon_edit.png'),
-                    const SizedBox(width: 10),
-                    const Text(
+                    SizedBox(width: 10),
+                    Text(
                       'edit',
                       style: TextStyle(
                         fontSize: 14,
