@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/models/task.dart';
-import 'package:flutter_application_huerto/service/supabaseService.dart';
-import 'package:flutter_guid/flutter_guid.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_application_huerto/service/task_supabase.dart';
-
+import 'package:flutter_guid/flutter_guid.dart';
 import 'task_widget.dart';
-
-final supabase = SupabaseService().client;
 
 class StreamNote extends StatefulWidget {
  final bool done;
  final Guid userId;
- StreamNote(this.done, this.userId, {Key? key}) : super(key: key);
+ final VoidCallback onTaskStatusChanged; // Añadido para recibir el callback
+
+ StreamNote(this.done, this.userId, this.onTaskStatusChanged, {Key? key}) : super(key: key);
 
  @override
  State<StreamNote> createState() => _StreamNoteState();
@@ -37,11 +34,11 @@ class _StreamNoteState extends State<StreamNote> {
               onDismissed: (direction) {
                 TaskSupabase().deleteTask(task.id);
                 setState(() {
-                  tasksList.removeAt(index);
+                 tasksList.removeAt(index);
                 });
                 // Actualiza el stream después de eliminar una tarea
               },
-              child: Task_Widget(task),
+              child: Task_Widget(task, widget.onTaskStatusChanged), // Pasa el callback aquí
             );
           },
           itemCount: tasksList.length,
@@ -50,4 +47,5 @@ class _StreamNoteState extends State<StreamNote> {
     );
  }
 }
+
 

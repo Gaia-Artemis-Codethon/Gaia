@@ -7,7 +7,9 @@ import '../pages/toDo/edit_toDo.dart';
 
 class Task_Widget extends StatefulWidget {
  final Task _note;
- Task_Widget(this._note, {Key? key}) : super(key: key);
+ final VoidCallback onTaskStatusChanged; // Nuevo argumento para el callback
+
+ const Task_Widget(this._note, this.onTaskStatusChanged, {super.key});
 
  @override
  State<Task_Widget> createState() => _Task_WidgetState();
@@ -64,8 +66,7 @@ class _Task_WidgetState extends State<Task_Widget> {
                             });
                             await TaskSupabase()
                                 .taskIsDone(Task(id: widget._note.id, status: isDone, name: widget._note.name, user_id: widget._note.user_id));
-                            setState(() {
-                            });
+                            widget.onTaskStatusChanged(); 
                           },
                         )
                       ],
@@ -119,7 +120,7 @@ class _Task_WidgetState extends State<Task_Widget> {
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => EditToDo(widget._note, userId!),
+                builder: (context) => EditToDo(widget._note, userId!, widget.onTaskStatusChanged),
               ));
             },
             child: Container(

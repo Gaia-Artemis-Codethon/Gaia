@@ -18,6 +18,9 @@ bool show = true;
 
 class _ToDoState extends State<ToDo> {
 
+  void updateTasks() {
+    setState(() {});
+ }
   @override
   void initState() {
     super.initState();
@@ -59,8 +62,8 @@ class _ToDoState extends State<ToDo> {
           child: Column(
             children: [
               SizedBox(
-                height: 200, // Ajusta la altura según sea necesario
-                child: StreamNote(false, widget.userId),
+                height: 400, // Ajusta la altura según sea necesario
+                child: StreamNote(false, widget.userId, updateTasks),
               ),
               Text(
                 'isDone',
@@ -71,8 +74,8 @@ class _ToDoState extends State<ToDo> {
                 ),
               ),
               SizedBox(
-                height: 200, // Ajusta la altura según sea necesario
-                child: StreamNote(true, widget.userId),
+                height: 400, // Ajusta la altura según sea necesario
+                child: StreamNote(true, widget.userId, updateTasks),
               ),
             ],
           ),
