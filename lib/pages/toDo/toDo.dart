@@ -61,27 +61,31 @@ class _ToDoState extends State<ToDo> {
           child: Column(
             children: [
               // Espacio entre el encabezado y la primera tarjeta
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Encabezado "Is not done" con forma circular y color sugerido
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.3), // Color sugerido
-                  borderRadius: BorderRadius.circular(20.0), // Forma circular
-                ),
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  'Por hacer',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue.shade500,
-                    fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0), // Ajustar el padding aquí
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.3), // Color sugerido
+                    borderRadius: BorderRadius.circular(20.0), // Forma circular
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: Text(
+                    'Por hacer',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.blue.shade500,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
               // Espacio entre el encabezado y la lista
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -90,27 +94,31 @@ class _ToDoState extends State<ToDo> {
               ),
               // Separador "isDone"
               // Espacio entre el separador y la segunda lista
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               // Encabezado "isDone" con forma circular y color sugerido
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.3), // Color sugerido
-                  borderRadius: BorderRadius.circular(20.0), // Forma circular
-                ),
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  'Hecho',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue.shade500,
-                    fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0), // Ajustar el padding aquí
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.3), // Color sugerido
+                    borderRadius: BorderRadius.circular(20.0), // Forma circular
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Text(
+                    'Hecho',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.blue.shade500,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
               // Espacio entre el encabezado y la segunda lista
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),

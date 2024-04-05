@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/main.dart';
 import 'package:flutter_application_huerto/models/task.dart';
 import 'package:flutter_application_huerto/service/task_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import '../pages/toDo/edit_toDo.dart';
 
-class Task_Widget extends StatefulWidget {
-  final Task _note;
+class TaskWidget extends StatefulWidget {
+  final Task note;
   final VoidCallback onTaskStatusChanged; // Nuevo argumento para el callback
 
-  const Task_Widget(this._note, this.onTaskStatusChanged, {super.key});
+  const TaskWidget(this.note, this.onTaskStatusChanged, {super.key});
 
   @override
-  State<Task_Widget> createState() => _Task_WidgetState();
+  State<TaskWidget> createState() => _TaskWidgetState();
 }
 
-class _Task_WidgetState extends State<Task_Widget> {
+class _TaskWidgetState extends State<TaskWidget> {
   @override
   Widget build(BuildContext context) {
-    bool isDone = widget._note.status;
+    bool isDone = widget.note.status;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
@@ -40,7 +41,6 @@ class _Task_WidgetState extends State<Task_Widget> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
-              const SizedBox(width: 25),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,11 +49,13 @@ class _Task_WidgetState extends State<Task_Widget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget._note.name,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            widget.note.name,
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                         Checkbox(
@@ -64,17 +66,17 @@ class _Task_WidgetState extends State<Task_Widget> {
                               isDone = !isDone;
                             });
                             await TaskSupabase().taskIsDone(Task(
-                                id: widget._note.id,
+                                id: widget.note.id,
                                 status: isDone,
-                                name: widget._note.name,
-                                user_id: widget._note.user_id));
+                                name: widget.note.name,
+                                user_id: widget.note.user_id));
                             widget.onTaskStatusChanged();
                           },
                         )
                       ],
                     ),
                     const Spacer(),
-                    edit_time(),
+                    editTime(),
                   ],
                 ),
               ),
@@ -85,85 +87,97 @@ class _Task_WidgetState extends State<Task_Widget> {
     );
   }
 
-  Widget edit_time() {
+  Widget editTime() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Wrap(
-        // Use Wrap instead of Row
-        spacing: 8.0, // gap between adjacent widgets
-        runSpacing: 4.0, // gap between lines
-        direction: Axis.horizontal, // main axis (rows or columns)
-        children: [
-          GestureDetector(
-            onTap: () async {
-              await TaskSupabase().deleteTask(widget._note.id);
-              widget.onTaskStatusChanged();
-            },
-            child: Container(
-              width: 90,
-              height: 28,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 196, 36, 18),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                child: Row(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Wrap(
+            spacing: 8.0,
+            runSpacing: 4.0,
+            direction: Axis.horizontal,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  await TaskSupabase().deleteTask(widget.note.id);
+                  widget.onTaskStatusChanged();
+                },
+                child: Column(
+                  // Wrap each button and text in a Column
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Align text in the center
                   children: [
-                    //Image.asset('images/icon_edit.png'),
-                    SizedBox(width: 10),
-                    Text(
-                      'Eliminar',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      width: 90,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        color: OurColors().deleteButton,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 0,
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Eliminar',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
+                    const SizedBox(height: 4), // Add SizedBox for spacing
                   ],
                 ),
               ),
-            ),
-          ),
-          const SizedBox(width: 20),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    EditToDo(widget._note, userId!, widget.onTaskStatusChanged),
-              ));
-            },
-            child: Container(
-              width: 90,
-              height: 28,
-              decoration: BoxDecoration(
-                color: const Color(0xffE2F6F1),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                child: Row(
+              const SizedBox(width: 20),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => EditToDo(
+                        widget.note, userId!, widget.onTaskStatusChanged),
+                  ));
+                },
+                child: Column(
+                  // Wrap each button and text in a Column
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Align text in the center
                   children: [
-                    //Image.asset('images/icon_edit.png'),
-                    SizedBox(width: 10),
-                    Text(
-                      'editar',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      width: 90,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade200,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 0,
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Editar',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
+                    const SizedBox(height: 4), // Add SizedBox for spacing
                   ],
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

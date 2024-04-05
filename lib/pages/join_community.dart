@@ -202,7 +202,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
                 color: Colors.white,
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: OurColors().backgroundColorButton,
+                backgroundColor: OurColors().continueButton,
                 alignment: Alignment.center,
               ),
             ),
