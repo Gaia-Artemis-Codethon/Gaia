@@ -10,20 +10,24 @@ import 'models/userLoged.dart';
 
 UserLoged? user;
 Guid? userId;
+bool isInitialized = false; // Variable para verificar si Supabase ya está inicializado
 
 Future<void> initializeApp() async {
-  await Supabase.initialize(
-      url: "https://pxafmjqslgpswndqzfvm.supabase.co",
-      anonKey:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4YWZtanFzbGdwc3duZHF6ZnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAzNjYzNjIsImV4cCI6MjAyNTk0MjM2Mn0.xbGjWmYqPUO3i2g1_4tmE7sWhI_c9ymFqckSA_CaFOs");
-  await SupabaseService()
-      .signInWithEmailAndPassword('user@example.com', 'qwerty');
-  userId = await SupabaseService().getUserId();
-  user = await UserSupabase().getUserById(userId!);
+ if (!isInitialized) { // Verifica si ya se ha inicializado
+    await Supabase.initialize(
+        url: "https://pxafmjqslgpswndqzfvm.supabase.co",
+        anonKey:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4YWZtanFzbGdwc3duZHF6ZnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAzNjYzNjIsImV4cCI6MjAyNTk0MjM2Mn0.xbGjWmYqPUO3i2g1_4tmE7sWhI_c9ymFqckSA_CaFOs");
+    await SupabaseService()
+        .signInWithEmailAndPassword('user@example.com', 'qwerty');
+    userId = await SupabaseService().getUserId();
+    user = await UserSupabase().getUserById(userId!);
+    isInitialized = true; // Marca que Supabase ya está inicializado
+ }
 }
 
 void main() {
-  runApp(const MyApp());
+ runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
