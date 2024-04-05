@@ -10,10 +10,12 @@ import 'models/userLoged.dart';
 
 UserLoged? user;
 Guid? userId;
-bool isInitialized = false; // Variable para verificar si Supabase ya está inicializado
+bool isInitialized =
+    false; // Variable para verificar si Supabase ya está inicializado
 
 Future<void> initializeApp() async {
- if (!isInitialized) { // Verifica si ya se ha inicializado
+  if (!isInitialized) {
+    // Verifica si ya se ha inicializado
     await Supabase.initialize(
         url: "https://pxafmjqslgpswndqzfvm.supabase.co",
         anonKey:
@@ -23,18 +25,18 @@ Future<void> initializeApp() async {
     userId = await SupabaseService().getUserId();
     user = await UserSupabase().getUserById(userId!);
     isInitialized = true; // Marca que Supabase ya está inicializado
- }
+  }
 }
 
 void main() {
- runApp(const MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
- const MyApp({super.key});
+  const MyApp({super.key});
 
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       home: FutureBuilder<void>(
@@ -51,5 +53,5 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
     );
- }
+  }
 }
