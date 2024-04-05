@@ -7,30 +7,28 @@ import '../../const/colors.dart';
 import '../../widgets/strem_note.dart';
 
 class ToDo extends StatefulWidget {
- final Guid userId;
- const ToDo(this.userId, {super.key});
+  final Guid userId;
+  const ToDo(this.userId, {super.key});
 
- @override
- State<ToDo> createState() => _ToDoState();
+  @override
+  State<ToDo> createState() => _ToDoState();
 }
 
 bool show = true;
 
 class _ToDoState extends State<ToDo> {
-
- void updateTasks() {
+  void updateTasks() {
     setState(() {});
- }
+  }
 
- @override
- void initState() {
+  @override
+  void initState() {
     super.initState();
-    setState(() {
-    });
- }
+    setState(() {});
+  }
 
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       floatingActionButton: Visibility(
@@ -62,24 +60,61 @@ class _ToDoState extends State<ToDo> {
           },
           child: Column(
             children: [
-              Expanded(
-                child: SizedBox(
-                 height: 200, // Ajusta la altura según sea necesario
-                 child: StreamNote(false, widget.userId, updateTasks),
+              // Espacio entre el encabezado y la primera tarjeta
+              SizedBox(height: 20),
+              // Encabezado "Is not done" con forma circular y color sugerido
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.3), // Color sugerido
+                  borderRadius: BorderRadius.circular(20.0), // Forma circular
+                ),
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Por hacer',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.blue.shade500,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-                Text(
-                 'isDone',
-                 style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey.shade500,
-                    fontWeight: FontWeight.bold,
-                 ),
-                ),
+              // Espacio entre el encabezado y la lista
+              SizedBox(height: 10),
               Expanded(
-                child: SizedBox(
-                 height: 200, // Ajusta la altura según sea necesario
-                 child: StreamNote(true, widget.userId, updateTasks),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: StreamNote(false, widget.userId, updateTasks),
+                ),
+              ),
+              // Separador "isDone"
+              // Espacio entre el separador y la segunda lista
+              SizedBox(height: 10),
+              // Encabezado "isDone" con forma circular y color sugerido
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.3), // Color sugerido
+                  borderRadius: BorderRadius.circular(20.0), // Forma circular
+                ),
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Hecho',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.blue.shade500,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              // Espacio entre el encabezado y la segunda lista
+              SizedBox(height: 10),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: StreamNote(true, widget.userId, updateTasks),
                 ),
               ),
             ],
@@ -87,5 +122,5 @@ class _ToDoState extends State<ToDo> {
         ),
       ),
     );
- }
+  }
 }
