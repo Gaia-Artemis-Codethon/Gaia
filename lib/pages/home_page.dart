@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_huerto/pages/create_community.dart';
-import 'package:flutter_application_huerto/pages/join_community.dart';
+import 'package:flutter_application_huerto/pages/map/mapPage.dart';
 import 'package:flutter_application_huerto/pages/toDo/toDo.dart';
 import 'package:flutter_application_huerto/service/community_supabase.dart';
 import 'package:flutter_application_huerto/service/supabaseService.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:http/http.dart' as http;
-
 import '../components/button.dart';
-import '../models/community.dart';
 
 class HomePage extends StatelessWidget {
  final Guid userId;
  const HomePage(this.userId, {super.key});
 
  Future<String> _readCommunityName() async {
-    print(userId);
     Guid guid = await SupabaseService().getUserId() as Guid;
     String name = await CommunitySupabase()
         .readCommunityNameByUserCommunityId(guid) as String;
@@ -72,27 +67,42 @@ class HomePage extends StatelessWidget {
 ),
       body: Column(
         children: [
-          Text(
+          const Text(
             "El tiempo",
             style: TextStyle(color: Colors.black, fontSize: 24),
           ),
-          SizedBox(height: 10),
-          Text(
+          const SizedBox(height: 10),
+          const Text(
             "Mi parcela",
             style: TextStyle(color: Colors.black, fontSize: 24),
           ),
-          SizedBox(height: 10),
-          Text(
+          const SizedBox(height: 10),
+          const Text(
             "ToDo",
             style: TextStyle(color: Colors.black, fontSize: 24),
           ),
           Button(
-            text: Text("ToDo"),
+            text: const Text("ToDo"),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                  builder: (context) => ToDo(userId),
+                ),
+              );
+            },
+          ),
+          const Text(
+            "Map",
+            style: TextStyle(color: Colors.black, fontSize: 24),
+          ),
+          Button(
+            text: const Text("Map"),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                 builder: (context) => MapPage(userId)
                 ),
               );
             },

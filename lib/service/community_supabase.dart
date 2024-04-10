@@ -2,8 +2,6 @@ import 'package:flutter_application_huerto/models/community.dart';
 import 'package:flutter_application_huerto/models/userLoged.dart';
 import 'package:flutter_application_huerto/service/supabaseService.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase/supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
 class CommunitySupabase {
