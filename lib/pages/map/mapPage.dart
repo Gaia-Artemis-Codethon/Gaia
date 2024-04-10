@@ -10,7 +10,7 @@ import 'landDetail.dart';
 
 const MAP_KEY = '9b116f76-e8c1-4133-b90d-c7bd4b68c8c7';
 const styleUrl =
-    "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png";
+    "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 class MapPage extends StatefulWidget {
   final Guid userId;
@@ -71,8 +71,8 @@ class _MapPageState extends State<MapPage> {
         point: LatLng(land.latitude, land.longitude),
         child: IconButton(
             icon: const Icon(
-              Icons.location_on_outlined,
-              color: Colors.white,
+              Icons.location_on,
+              color: Colors.black,
             ),
             onPressed: () async {
               await Navigator.push(
