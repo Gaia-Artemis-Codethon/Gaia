@@ -93,7 +93,6 @@ class TaskSupabase {
   }
 
   Stream<List<Task>> stream(Guid userId, bool status) {
-    print("$userId $status");
     return client
         .from('Task')
         .select('*')
