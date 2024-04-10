@@ -8,7 +8,6 @@ import '../../models/land.dart';
 import '../../service/land_supabase.dart';
 import 'landDetail.dart';
 
-// ignore: constant_identifier_names
 const MAP_KEY = '9b116f76-e8c1-4133-b90d-c7bd4b68c8c7';
 const styleUrl =
     "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png";
@@ -23,19 +22,44 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   LatLng? myPosition;
+  List<Land> lands = [];
   List<Marker> markers = [];
+
   @override
   void initState() {
-    getCurrentLocation();
-    loadMarkers();
     super.initState();
+    getCurrentLocation();
+    loadLands();
   }
 
-  void loadMarkers() async {
-    List<Land> lands = await LandSupabase().readLands();
+  void loadLands() async {
+    lands = await LandSupabase().readLands();
     setState(() {
+      // Ordenar las lands por proximidad
+      lands.sort(
+          (a, b) => _calculateDistance(a).compareTo(_calculateDistance(b)));
+      // Transformar las lands en marcadores
       markers = transformLandsToMarkers(lands);
+      markers.add(
+        Marker(
+          width: 80.0,
+          height: 80.0,
+          point: myPosition!,
+          child: const Icon(
+            Icons.location_on,
+            color: Colors.blue,
+            size: 50.0,
+          ),
+        ),
+      );
     });
+  }
+
+  double _calculateDistance(Land land) {
+    if (myPosition == null) return double.infinity;
+    final landPosition = LatLng(land.latitude, land.longitude);
+    var distance = const Distance();
+    return distance(myPosition!, landPosition);
   }
 
   List<Marker> transformLandsToMarkers(List<Land> lands) {
@@ -76,39 +100,7 @@ class _MapPageState extends State<MapPage> {
     Position position = await determinePosition();
     setState(() {
       myPosition = LatLng(position.latitude, position.longitude);
-      print(myPosition);
     });
-  }
-
-  Widget infoMarcador() {
-    return Container(
-      child: Column(
-        children: [
-          const Text(
-            'Marcador',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                  icon: const Icon(
-                    Icons.location_on_outlined,
-                    color: Colors.white,
-                  ),
-                  onPressed: () async {}),
-            ],
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -121,21 +113,44 @@ class _MapPageState extends State<MapPage> {
       ),
       body: myPosition == null
           ? const CircularProgressIndicator()
-          : FlutterMap(
-              options: MapOptions(center: myPosition, zoom: 18),
+          : Column(
               children: [
-                TileLayer(
-                  urlTemplate: styleUrl,
-                  additionalOptions: const {
-                    'accessToken': MAP_KEY,
-                  },
+                Expanded(
+                  child: FlutterMap(
+                    options: MapOptions(center: myPosition, zoom: 18),
+                    children: [
+                      TileLayer(
+                        urlTemplate: styleUrl,
+                        additionalOptions: const {
+                          'accessToken': MAP_KEY,
+                        },
+                      ),
+                      MarkerLayer(markers: markers),
+                    ],
+                  ),
                 ),
-                MarkerLayer(
-                  markers: markers,
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: lands.length,
+                    itemBuilder: (context, index) {
+                      final land = lands[index];
+                      return ListTile(
+                        title: Text(land.location),
+                        subtitle: Text(
+                            'Tamaño: ${land.size}, Proximidad: ${_calculateDistance(land).toStringAsFixed(2)} metros'),
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LandDetailPage(land)),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
     );
   }
 }
-
