@@ -25,11 +25,31 @@ class _MapPageState extends State<MapPage> {
   List<Land> lands = [];
   List<Marker> markers = [];
 
+  // Flag to track permission status
+  bool hasLocationPermission = false;
+
   @override
   void initState() {
     super.initState();
-    getCurrentLocation();
-    loadLands();
+    _requestLocationPermission();
+  }
+
+  void _requestLocationPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    setState(() {
+      hasLocationPermission = permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse;
+    });
+
+    if (hasLocationPermission) {
+      // Proceed with location access if permission granted
+      getCurrentLocation();
+      loadLands();
+    }
   }
 
   void loadLands() async {
@@ -63,37 +83,32 @@ class _MapPageState extends State<MapPage> {
   }
 
   List<Marker> transformLandsToMarkers(List<Land> lands) {
-    print(lands);
     return lands.map((land) {
       return Marker(
         width: 80.0,
         height: 80.0,
         point: LatLng(land.latitude, land.longitude),
         child: IconButton(
-            icon: const Icon(
-              Icons.location_on,
-              color: Colors.black,
-            ),
-            onPressed: () async {
-              await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => LandDetailPage(land)));
-            }),
+          icon: const Icon(
+            Icons.location_on,
+            color: Colors.black,
+          ),
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LandDetailPage(land),
+              ),
+            );
+          },
+        ),
       );
     }).toList();
   }
 
   Future<Position> determinePosition() async {
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('error');
-      }
-    }
-    return await Geolocator.getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition();
+    return position;
   }
 
   void getCurrentLocation() async {
@@ -103,7 +118,7 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  @override
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -111,46 +126,60 @@ class _MapPageState extends State<MapPage> {
         title: const Text('Mapa'),
         backgroundColor: Colors.blueAccent,
       ),
-      body: myPosition == null
-          ? const CircularProgressIndicator()
-          : Column(
-              children: [
-                Expanded(
-                  child: FlutterMap(
-                    options: MapOptions(center: myPosition, zoom: 18),
-                    children: [
-                      TileLayer(
-                        urlTemplate: styleUrl,
-                        additionalOptions: const {
-                          'accessToken': MAP_KEY,
-                        },
-                      ),
-                      MarkerLayer(markers: markers),
-                    ],
+      body: !hasLocationPermission
+          ? Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Permiso de ubicación necesario'),
+                  ElevatedButton(
+                    onPressed: _requestLocationPermission,
+                    child: const Text('Solicitar permiso'),
                   ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: lands.length,
-                    itemBuilder: (context, index) {
-                      final land = lands[index];
-                      return ListTile(
-                        title: Text(land.location),
-                        subtitle: Text(
-                            'Tamaño: ${land.size}, Proximidad: ${_calculateDistance(land).toStringAsFixed(2)} metros'),
-                        onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LandDetailPage(land)),
+                ],
+              ),
+            )
+          : myPosition == null
+              ? const CircularProgressIndicator()
+              : Column(
+                  children: [
+                    Expanded(
+                      child: FlutterMap(
+                        options: MapOptions(center: myPosition, zoom: 18),
+                        children: [
+                          TileLayer(
+                            urlTemplate: styleUrl,
+                            additionalOptions: const {
+                              'accessToken': MAP_KEY,
+                            },
+                          ),
+                          MarkerLayer(markers: markers),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: lands.length,
+                        itemBuilder: (context, index) {
+                          final land = lands[index];
+                          return ListTile(
+                            title: Text(land.location),
+                            subtitle: Text(
+                              'Tamaño: ${land.size}, Proximidad: ${_calculateDistance(land).toStringAsFixed(2)} metros'),
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LandDetailPage(land),
+                                ),
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
     );
   }
 }
