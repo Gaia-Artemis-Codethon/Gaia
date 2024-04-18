@@ -145,7 +145,6 @@ class _MapPageState extends State<MapPage> {
         child: CircularProgressIndicator(),
       );
     }
-    final MapController mapController = new MapController();
 
     return Scaffold(
       appBar: AppBar(
