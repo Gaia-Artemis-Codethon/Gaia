@@ -28,42 +28,45 @@ class _MapPageState extends State<MapPage> {
   List<Land> lands = [];
   List<Marker> markers = [];
 
+  late int indexLand;
+
   @override
   void initState() {
     super.initState();
     _requestLocationPermission();
+    indexLand = -1;
   }
 
   void _requestLocationPermission() async {
-  LocationPermission permission = await Geolocator.requestPermission();
+    LocationPermission permission = await Geolocator.requestPermission();
 
-  setState(() {
-    hasLocationPermission = permission == LocationPermission.always ||
-        permission == LocationPermission.whileInUse;
-  });
+    setState(() {
+      hasLocationPermission = permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse;
+    });
 
-  if (permission == LocationPermission.denied) {
-    // Handle permission denied case (e.g., show a message)
-    setState(() {
-      isLoading = false;
-      loadLands();
-    });
-    print("Location permission denied");
-  } else if (permission == LocationPermission.deniedForever) {
-    setState(() {
-      isLoading = false;
-      loadLands();
-    });
-    // Handle permanently denied case (e.g., show a message)
-    print("Location permission permanently denied");
-  } else {
-    // Permission granted, proceed with location access
-    await getCurrentLocation().then((_) => setState(() {
-      isLoading = false;
-      loadLands();
-    }));
+    if (permission == LocationPermission.denied) {
+      // Handle permission denied case (e.g., show a message)
+      setState(() {
+        isLoading = false;
+        loadLands();
+      });
+      print("Location permission denied");
+    } else if (permission == LocationPermission.deniedForever) {
+      setState(() {
+        isLoading = false;
+        loadLands();
+      });
+      // Handle permanently denied case (e.g., show a message)
+      print("Location permission permanently denied");
+    } else {
+      // Permission granted, proith location access
+      await getCurrentLocation().then((_) => setState(() {
+            isLoading = false;
+            loadLands();
+          }));
+    }
   }
-}
 
   Future<Position> determinePosition() async {
     Position position = await Geolocator.getCurrentPosition();
@@ -89,19 +92,19 @@ class _MapPageState extends State<MapPage> {
           (a, b) => _calculateDistance(a).compareTo(_calculateDistance(b)));
       // Transformar las lands en marcadores
       markers = transformLandsToMarkers(lands);
-      if(hasLocationPermission){
+      if (hasLocationPermission) {
         markers.add(
-        Marker(
-          width: 80.0,
-          height: 80.0,
-          point: myPosition!,
-          child: const Icon(
-            Icons.location_on,
-            color: Colors.blue,
-            size: 50.0,
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: myPosition!,
+            child: const Icon(
+              Icons.location_on,
+              color: Colors.blue,
+              size: 50.0,
+            ),
           ),
-        ),
-      );
+        );
       }
     });
   }
@@ -116,13 +119,14 @@ class _MapPageState extends State<MapPage> {
   List<Marker> transformLandsToMarkers(List<Land> lands) {
     return lands.map((land) {
       return Marker(
-        width: 80.0,
-        height: 80.0,
+        width: 50.0,
+        height: 50.0,
         point: LatLng(land.latitude, land.longitude),
         child: IconButton(
           icon: const Icon(
             Icons.location_on,
             color: Colors.black,
+            size: 50.0,
           ),
           onPressed: () async {
             await Navigator.push(
@@ -141,7 +145,8 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return const Center(
-          child: CircularProgressIndicator()); // Show loading indicator
+        child: CircularProgressIndicator(), // Show loading indicator
+      );
     }
 
     return Scaffold(
@@ -157,10 +162,15 @@ class _MapPageState extends State<MapPage> {
             Expanded(
               child: FlutterMap(
                 options: MapOptions(
-                  center: hasLocationPermission
-                      ? myPosition
-                      : const LatLng(39.4702, -0.3898), // Center of Valencia
+                  initialCenter: indexLand != -1
+                      ? LatLng(
+                          lands[indexLand].latitude, lands[indexLand].longitude)
+                      : (hasLocationPermission
+                          ? myPosition!
+                          : const LatLng(
+                              39.4702, -0.3898)), // Center of Valencia
                   zoom: 18,
+                  keepAlive: false,
                 ),
                 children: [
                   TileLayer(
@@ -185,13 +195,10 @@ class _MapPageState extends State<MapPage> {
                           ? 'Tamaño: ${land.size}, Proximidad: ${_calculateDistance(land).toStringAsFixed(2)} metros'
                           : 'Tamaño: ${land.size}, Proximidad: No disponible',
                     ),
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LandDetailPage(land),
-                        ),
-                      );
+                    onTap: () {
+                      setState(() {
+                        indexLand = index;
+                      });
                     },
                   );
                 },
