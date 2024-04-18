@@ -148,6 +148,7 @@ class _MapPageState extends State<MapPage> {
         child: CircularProgressIndicator(), // Show loading indicator
       );
     }
+    final MapController mapController = new MapController();
 
     return Scaffold(
       appBar: AppBar(
@@ -161,6 +162,7 @@ class _MapPageState extends State<MapPage> {
           children: [
             Expanded(
               child: FlutterMap(
+                mapController: mapController,
                 options: MapOptions(
                   initialCenter: indexLand != -1
                       ? LatLng(
@@ -170,7 +172,6 @@ class _MapPageState extends State<MapPage> {
                           : const LatLng(
                               39.4702, -0.3898)), // Center of Valencia
                   zoom: 18,
-                  keepAlive: false,
                 ),
                 children: [
                   TileLayer(
@@ -198,6 +199,10 @@ class _MapPageState extends State<MapPage> {
                     onTap: () {
                       setState(() {
                         indexLand = index;
+                        mapController.move(
+                            LatLng(lands[indexLand].latitude,
+                                lands[indexLand].longitude),
+                            18);
                       });
                     },
                   );
