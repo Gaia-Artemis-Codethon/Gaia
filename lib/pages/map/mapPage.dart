@@ -20,7 +20,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  // Flag to track permission status and UI loading state
+  final MapController mapController = MapController();
   bool hasLocationPermission = false;
   bool isLoading = true;
 
@@ -46,7 +46,6 @@ class _MapPageState extends State<MapPage> {
     });
 
     if (permission == LocationPermission.denied) {
-      // Handle permission denied case (e.g., show a message)
       setState(() {
         isLoading = false;
         loadLands();
@@ -57,10 +56,8 @@ class _MapPageState extends State<MapPage> {
         isLoading = false;
         loadLands();
       });
-      // Handle permanently denied case (e.g., show a message)
       print("Location permission permanently denied");
     } else {
-      // Permission granted, proith location access
       await getCurrentLocation().then((_) => setState(() {
             isLoading = false;
             loadLands();
@@ -87,10 +84,8 @@ class _MapPageState extends State<MapPage> {
   void loadLands() async {
     lands = await LandSupabase().readLands();
     setState(() {
-      // Ordenar las lands por proximidad
       lands.sort(
           (a, b) => _calculateDistance(a).compareTo(_calculateDistance(b)));
-      // Transformar las lands en marcadores
       markers = transformLandsToMarkers(lands);
       if (hasLocationPermission) {
         markers.add(
@@ -98,10 +93,16 @@ class _MapPageState extends State<MapPage> {
             width: 80.0,
             height: 80.0,
             point: myPosition!,
-            child: const Icon(
-              Icons.location_on,
-              color: Colors.blue,
-              size: 50.0,
+            child: IconButton(
+              icon: const Icon(
+                Icons.location_on,
+                color: Colors.blue,
+                size: 30.0, // Reducir el tamaño del icono
+              ),
+              onPressed: () {
+                // Centra el mapa en la ubicación actual
+                mapController.move(myPosition!, 18);
+              },
             ),
           ),
         );
@@ -126,15 +127,11 @@ class _MapPageState extends State<MapPage> {
           icon: const Icon(
             Icons.location_on,
             color: Colors.black,
-            size: 50.0,
+            size: 30.0, // Reducir el tamaño del icono
           ),
-          onPressed: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LandDetailPage(land),
-              ),
-            );
+          onPressed: () {
+            // Centra el mapa en la ubicación de la propiedad
+            mapController.move(LatLng(land.latitude, land.longitude), 18);
           },
         ),
       );
@@ -145,7 +142,7 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return const Center(
-        child: CircularProgressIndicator(), // Show loading indicator
+        child: CircularProgressIndicator(),
       );
     }
 
@@ -156,19 +153,18 @@ class _MapPageState extends State<MapPage> {
         backgroundColor: Colors.blueAccent,
       ),
       body: StatefulBuilder(
-        // Wrap the body with StatefulBuilder
         builder: (context, setState) => Column(
           children: [
             Expanded(
               child: FlutterMap(
+                mapController: mapController,
                 options: MapOptions(
                   initialCenter: indexLand != -1
                       ? LatLng(
                           lands[indexLand].latitude, lands[indexLand].longitude)
                       : (hasLocationPermission
                           ? myPosition!
-                          : const LatLng(
-                              39.4702, -0.3898)), // Center of Valencia
+                          : const LatLng(39.4702, -0.3898)),
                   zoom: 18,
                   keepAlive: false,
                 ),
@@ -198,6 +194,10 @@ class _MapPageState extends State<MapPage> {
                     onTap: () {
                       setState(() {
                         indexLand = index;
+                        mapController.move(
+                            LatLng(
+                                lands[index].latitude, lands[index].longitude),
+                            18);
                       });
                     },
                   );
