@@ -145,6 +145,7 @@ class _MapPageState extends State<MapPage> {
         child: CircularProgressIndicator(),
       );
     }
+    final MapController mapController = new MapController();
 
     return Scaffold(
       appBar: AppBar(
@@ -166,7 +167,6 @@ class _MapPageState extends State<MapPage> {
                           ? myPosition!
                           : const LatLng(39.4702, -0.3898)),
                   zoom: 18,
-                  keepAlive: false,
                 ),
                 children: [
                   TileLayer(
@@ -195,8 +195,8 @@ class _MapPageState extends State<MapPage> {
                       setState(() {
                         indexLand = index;
                         mapController.move(
-                            LatLng(
-                                lands[index].latitude, lands[index].longitude),
+                            LatLng(lands[indexLand].latitude,
+                                lands[indexLand].longitude),
                             18);
                       });
                     },
