@@ -14,20 +14,17 @@ class LandDetailPage extends StatelessWidget {
         backgroundColor: Colors.blueAccent,
       ),
       body: Column(children: [
-              const Text(
-      'Detalles',
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 20.0,
-        fontWeight: FontWeight.bold,
-      ),
-              ),
-              const SizedBox(
-      height: 10.0,
-              ),
-              Text(land.size.toString()),
-              Text(land.location.toString()),
-            ]),
+        const Text(
+          'Detalles',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(land.size.toString()),
+        Text(land.location.toString()),
+      ]),
     );
   }
 }

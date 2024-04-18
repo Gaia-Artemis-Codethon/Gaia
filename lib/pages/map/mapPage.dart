@@ -147,15 +147,11 @@ class _MapPageState extends State<MapPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Mapa'),
-        backgroundColor: Colors.blueAccent,
-      ),
       body: StatefulBuilder(
         builder: (context, setState) => Column(
           children: [
             Expanded(
+              flex: 3,
               child: FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
@@ -166,6 +162,7 @@ class _MapPageState extends State<MapPage> {
                           ? myPosition!
                           : const LatLng(39.4702, -0.3898)),
                   zoom: 18,
+                  keepAlive: false,
                 ),
                 children: [
                   TileLayer(
@@ -179,28 +176,42 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: lands.length,
-                itemBuilder: (context, index) {
-                  final land = lands[index];
-                  return ListTile(
-                    title: Text(land.location),
-                    subtitle: Text(
-                      hasLocationPermission
-                          ? 'Tamaño: ${land.size}, Proximidad: ${_calculateDistance(land).toStringAsFixed(2)} metros'
-                          : 'Tamaño: ${land.size}, Proximidad: No disponible',
+              flex: 1,
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    child: ListView.builder(
+                      itemCount: lands.length,
+                      itemBuilder: (context, index) {
+                        final land = lands[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: ListTile(
+                            title: Text(land.location),
+                            subtitle: Text(
+                              hasLocationPermission
+                                  ? 'Tamaño: ${land.size}, Proximidad: ${_calculateDistance(land).toStringAsFixed(2)} metros'
+                                  : 'Tamaño: ${land.size}, Proximidad: No disponible',
+                            ),
+                            onTap: () {
+                              setState(() {
+                                indexLand = index;
+                                mapController.move(
+                                    LatLng(lands[index].latitude,
+                                        lands[index].longitude),
+                                    18);
+                              });
+                            },
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                      setState(() {
-                        indexLand = index;
-                        mapController.move(
-                            LatLng(lands[indexLand].latitude,
-                                lands[indexLand].longitude),
-                            18);
-                      });
-                    },
-                  );
-                },
+                  ),
+                ),
               ),
             ),
           ],
