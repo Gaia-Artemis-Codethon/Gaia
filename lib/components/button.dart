@@ -14,7 +14,7 @@ class Button extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed != null ? () => onPressed!() : null,
       style: style ??
-          ElevatedButton.styleFrom(backgroundColor: OurColors().continueButton),
+          ElevatedButton.styleFrom(backgroundColor: OurColors().accent),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,

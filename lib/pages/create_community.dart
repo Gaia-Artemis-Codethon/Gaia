@@ -151,7 +151,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
                 color: Colors.white,
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: OurColors().continueButton,
+                backgroundColor: OurColors().accent,
                 alignment: Alignment.center,
               ),
             ),
