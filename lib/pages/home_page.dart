@@ -22,9 +22,9 @@ class HomePage extends StatelessWidget {
  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
- automaticallyImplyLeading: false,
- backgroundColor: Colors.white,
- elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        elevation: 0,
  title: FutureBuilder<String>(
     future: _readCommunityName(),
     builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -65,50 +65,53 @@ class HomePage extends StatelessWidget {
     },
  ),
 ),
-      body: Column(
-        children: [
-          const Text(
-            "El tiempo",
-            style: TextStyle(color: Colors.black, fontSize: 24),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            "Mi parcela",
-            style: TextStyle(color: Colors.black, fontSize: 24),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            "ToDo",
-            style: TextStyle(color: Colors.black, fontSize: 24),
-          ),
-          Button(
-            text: const Text("ToDo"),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                 builder: (context) => ToDo(userId),
-                ),
-              );
-            },
-          ),
-          const Text(
-            "Map",
-            style: TextStyle(color: Colors.black, fontSize: 24),
-          ),
-          Button(
-            text: const Text("Map"),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                 builder: (context) => MapPage(userId)
-                ),
-              );
-            },
-          )
-        ],
-      ),
+      body: Padding(
+        padding: EdgeInsets.only(left: 10.0),
+        child: Column(
+          children: [
+            const Text(
+              "El tiempo",
+              style: TextStyle(color: Colors.black, fontSize: 24),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              "Mi parcela",
+              style: TextStyle(color: Colors.black, fontSize: 24),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              "ToDo",
+              style: TextStyle(color: Colors.black, fontSize: 24),
+            ),
+            Button(
+              text: const Text("ToDo", style: TextStyle(color: Colors.white),),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ToDo(userId),
+                  ),
+                );
+              },
+            ),
+            const Text(
+              "Map",
+              style: TextStyle(color: Colors.black, fontSize: 24),
+            ),
+            Button(
+              text: const Text("Mapa", style: TextStyle(color: Colors.white),),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MapPage(userId)
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+      )
     );
  }
 

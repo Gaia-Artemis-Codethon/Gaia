@@ -17,10 +17,10 @@ class Button extends StatelessWidget {
           ElevatedButton.styleFrom(backgroundColor: OurColors().continueButton),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           text ?? const Text(''),
-          const SizedBox(width: 10),
-          icon ?? const Icon(Icons.add),
+          //const SizedBox(width: 10),
         ],
       ),
     );
