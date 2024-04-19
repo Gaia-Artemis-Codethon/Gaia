@@ -146,9 +146,22 @@ class _MapPageState extends State<MapPage> {
         child: CircularProgressIndicator(),
       );
     }
-
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
+      extendBodyBehindAppBar:
+          true, // Esto permite que el cuerpo se extienda detrás del AppBar
+      appBar: AppBar(
+        backgroundColor:
+            Colors.transparent, // Hace que el AppBar sea transparente
+        elevation: 0, // Elimina la sombra del AppBar
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.black, // Color del ícono
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: StatefulBuilder(
         builder: (context, setState) => Column(
           children: [

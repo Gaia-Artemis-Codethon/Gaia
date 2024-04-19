@@ -31,6 +31,18 @@ class _ToDoState extends State<ToDo> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
+      appBar: AppBar(
+        backgroundColor:
+            Colors.transparent, // Hace que el AppBar sea transparente
+        elevation: 0, // Elimina la sombra del AppBar
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.black, // Color del ícono
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       floatingActionButton: Visibility(
         visible: show,
         child: FloatingActionButton(
