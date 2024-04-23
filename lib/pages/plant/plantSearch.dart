@@ -15,7 +15,7 @@ class SearchMenu extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Busca plantas para añadir a tus cultivos'),
+          title: Text('Busca plantas para añadir'),
         ),
         body: PlantSearch(),
       ),
@@ -41,9 +41,7 @@ class _PlantSearchState extends State<PlantSearch> {
     );
   }
 
-
-  static const String TREFLE_TOKEN = '70FT47uZLLK6BjzbzKHlTo4rEHqsx8Mhcm_4kSY6i2w';
-  // The reference is in https://docs.trefle.io/reference
+  static const String PERENUAL_TOKEN = 'sk-CgNd6623dc0d606905197';
 
   @override
   Widget build(BuildContext context) {
@@ -79,66 +77,78 @@ class _PlantSearchState extends State<PlantSearch> {
                   child: Column(
                     children: [
                       ListTile(
-                        leading: _plants[index]['image_url'] != null
+                        leading: _plants[index]['default_image'] != null && _plants[index]['default_image']['thumbnail'] != null
                             ? ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
                           child: Image.network(
-                            _plants[index]['image_url'],
+                            _plants[index]['default_image']['thumbnail'],
                             width: 50,
                             height: 50,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: OurColors().backgroundColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Icon(
+                                  Icons.local_florist,
+                                  size: 30,
+                                  color: OurColors().primary,
+                                ),
+                              );
+                            },
                           ),
                         )
                             : Container(
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: OurColors().backgroundColor, // Background color
-                            borderRadius: BorderRadius.circular(15), // Rounded corners
+                            color: OurColors().backgroundColor,
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           child: Icon(
-                            Icons.local_florist, // Plant icon
+                            Icons.local_florist,
                             size: 30,
-                            color: OurColors().primary, // Icon color
+                            color: OurColors().primary,
                           ),
                         ),
                         title: Text(
-                          _plants[index]['scientific_name'],
+                          _plants[index]['scientific_name'][0] ?? 'Scientific Name not available',
                           style: TextStyle(color: OurColors().backgroundText),
                         ),
                         subtitle: Text(_plants[index]['common_name'] ?? ''),
                       ),
-                      Divider(height: 1, color: Colors.grey), // Divider between tiles
+                      Divider(height: 1, color: Colors.grey),
                     ],
                   ),
                 );
               },
             ),
-
           )
-
         ),
-
       ],
     );
   }
 
   void _searchPlants(String query) async {
-    final String url = 'https://trefle.io/api/v1/plants/search?token=' + TREFLE_TOKEN + '&q=$query';
-
     try {
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(Uri.parse(
+          'https://perenual.com/api/species-list?key=' + PERENUAL_TOKEN + '&q=' + query));
 
       if (response.statusCode == 200) {
-        final json = jsonDecode(response.body);
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic> data = responseData['data'];
         setState(() {
-          _plants = json['data'];
+          _plants = data;
         });
       } else {
-        throw Exception('Failed to search plants: ${response.statusCode}');
+        print('Failed to fetch data: ${response.reasonPhrase}');
       }
     } catch (e) {
-      throw Exception('Error searching plants: $e');
+      print('Error fetching data: $e');
     }
   }
 }
