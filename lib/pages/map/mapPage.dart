@@ -7,7 +7,7 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../models/land.dart';
 import '../../service/land_supabase.dart';
-import 'landDetail.dart';
+
 
 const MAP_KEY = '9b116f76-e8c1-4133-b90d-c7bd4b68c8c7';
 const styleUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -35,7 +35,6 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
     _requestLocationPermission();
-    indexLand = -1;
   }
 
   void _requestLocationPermission() async {
