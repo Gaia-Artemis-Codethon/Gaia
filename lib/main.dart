@@ -5,7 +5,6 @@ import 'package:flutter_application_huerto/service/user_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_application_huerto/pages/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'models/userLoged.dart';
 
 UserLoged? user;
