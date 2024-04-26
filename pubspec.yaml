@@ -40,6 +40,13 @@ dependencies:
   latlong2: ^0.9.1
   url_launcher: ^6.1.6
   geolocator: ^11.0.0
+  geocode:
+  flutter_animate:
+  flutter_svg:
+  flutter_screenutil:
+  flutter_spinkit:
+  cached_network_image:
+
 
 dev_dependencies:
   flutter_test:
