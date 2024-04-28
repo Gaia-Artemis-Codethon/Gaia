@@ -11,11 +11,7 @@ class PlantedItem extends StatefulWidget {
   final Planted plant;
   final Guid userId;
 
-  const PlantedItem({
-    super.key,
-    required this.plant,
-    required this.userId
-  });
+  const PlantedItem({super.key, required this.plant, required this.userId});
 
   @override
   State<PlantedItem> createState() => _PlantedItemState();
@@ -44,28 +40,37 @@ class _PlantedItemState extends State<PlantedItem> {
             TextButton(
                 onPressed: () {
                   PlantedSupabase().deletePlantedById(widget.plant.id);
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserPlants(widget.userId))); // Close the dialog
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              UserPlants(widget.userId))); // Close the dialog
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(color: OurColors().primary,
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))
+                  decoration: BoxDecoration(
+                      color: OurColors().primary,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  child: Text(
+                    "Yes",
+                    style: TextStyle(color: OurColors().primaryTextColor),
                   ),
-                  child: Text("Yes", style: TextStyle(color: OurColors().primaryTextColor),),
-                )
-            ),
+                )),
             TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(color: OurColors().deleteButton,
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: OurColors().deleteButton,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  child: Text(
+                    "No",
+                    style: TextStyle(color: OurColors().primaryTextColor),
                   ),
-                  child: Text("No", style: TextStyle(color: OurColors().primaryTextColor),),
-                )
-            ),
+                )),
           ],
         );
       },
@@ -74,82 +79,82 @@ class _PlantedItemState extends State<PlantedItem> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: fetchCrop(widget.plant.crop_id), builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      } else {
-        return SizedBox(
-          height: 140,
-          width: 300,
-          child: Card(
-              elevation: 0,
-              color: OurColors().primaryTextColor,
-              margin: EdgeInsets.fromLTRB(16.0, 0, 16.0, 10),
-              child: Center(
-                child: ListTile(
-                  leading: imgURL != null || imgURL != '' ? ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Image.network(
-                      imgURL,
-                      width: 60,
-                      height: 80,
-                      fit: BoxFit.fill,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          width: 60,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: OurColors().backgroundColor,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Icon(
-                            Icons.local_florist,
-                            size: 40,
-                            color: OurColors().primary,
-                          ),
-                        );
-                      },
+    return FutureBuilder(
+        future: fetchCrop(widget.plant.crop_id),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Container(
+              height: 140,
+              width: 300,
+              child: Card(
+                  elevation: 0,
+                  color: OurColors().primaryTextColor,
+                  margin: EdgeInsets.fromLTRB(16.0, 0, 16.0, 10),
+                  child: Center(
+                    child: ListTile(
+                      leading: imgURL != null || imgURL != ''
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.network(
+                                imgURL,
+                                width: 60,
+                                height: 80,
+                                fit: BoxFit.fill,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    width: 60,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      color: OurColors().backgroundColor,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Icon(
+                                      Icons.local_florist,
+                                      size: 40,
+                                      color: OurColors().primary,
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          : Container(
+                              width: 60,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                color: OurColors().backgroundColor,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Icon(
+                                Icons.local_florist,
+                                size: 40,
+                                color: OurColors().primary,
+                              ),
+                            ),
+                      title: Text(cropName),
+                      subtitle: Text(
+                          'Planted on: ${widget.plant.planted_time.toString().split(' ')[0] ?? 'Unknown Date'}\n' +
+                              'Status: ${Planted.parseStatus(widget.plant.status)}'),
+                      trailing: IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () {
+                          showConfirmationDialog(context);
+                        },
+                      ),
                     ),
-                  )
-                      : Container(
-                    width: 60,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: OurColors().backgroundColor,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Icon(
-                      Icons.local_florist,
-                      size: 40,
-                      color: OurColors().primary,
-                    ),
-                  ),
-                  title: Text(cropName),
-                  subtitle: Text('Planted on: ${widget.plant.planted_time.toString().split(' ')[0] ?? 'Unknown Date'}\n' +
-                      'Status: ${Planted.parseStatus(widget.plant.status)}'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      showConfirmationDialog(context);
-                    },
-                  ),
-                ),
-              )
-          ),
-        );
-      }
-    }
-
-    );
-
+                  )),
+            );
+          }
+        });
   }
 
   Future<void> fetchCrop(Guid crop_id) async {
     print('Fetching crop');
     Crop? crop = await CropSupabase().getCropById(crop_id);
-    if(crop == null) {
+    if (crop == null) {
       cropName = 'Unknown';
       imgURL = '';
     } else {
@@ -157,5 +162,4 @@ class _PlantedItemState extends State<PlantedItem> {
       imgURL = crop.thumbnail;
     }
   }
-
 }

@@ -67,7 +67,9 @@ class _EditToDoState extends State<EditToDo> {
                       widget.onTaskStatusChanged();
                       Navigator.pop(context);
                     },
-              child: const Text('Añadir tarea'),
+              child: Text('Añadir tarea',
+                style: TextStyle(color: OurColors().primaryTextColor),
+              ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -77,7 +79,9 @@ class _EditToDoState extends State<EditToDo> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Cancelar'),
+              child: Text('Cancelar',
+                style: TextStyle(color: OurColors().primaryTextColor),
+              ),
             ),
           ],
         );

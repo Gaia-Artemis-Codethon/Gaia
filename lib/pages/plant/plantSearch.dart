@@ -7,12 +7,12 @@ import 'plantDetail.dart';
 
 class SearchPage extends StatefulWidget {
   final Guid userId;
+
   const SearchPage(this.userId, {super.key});
 
   @override
   _PlantSearchState createState() => _PlantSearchState();
 }
-
 
 class _PlantSearchState extends State<SearchPage> {
   TextEditingController _controller = TextEditingController();
@@ -34,8 +34,7 @@ class _PlantSearchState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text('Search for plants to add'),
           leading: IconButton(
@@ -57,8 +56,11 @@ class _PlantSearchState extends State<SearchPage> {
                   decoration: InputDecoration(
                     labelText: 'Write the plant\'s name',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0), // Border radius
-                      borderSide: BorderSide(color: OurColors().primaryBorderColor), // Border color
+                      borderRadius: BorderRadius.circular(10.0),
+                      // Border radius
+                      borderSide: BorderSide(
+                          color:
+                              OurColors().primaryBorderColor), // Border color
                     ),
                     filled: true,
                     fillColor: OurColors().primaryTextColor, // Background color
@@ -68,73 +70,79 @@ class _PlantSearchState extends State<SearchPage> {
               ),
               Expanded(
                   child: Container(
-                    child: ListView.builder(
-                      itemCount: _plants.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            int id = _plants[index]['id'];
-                            _showPlantDetails(id);
-                          },
-                          child: Column(
-                            children: [
-                              ListTile(
-                                leading: _plants[index]['default_image'] != null && _plants[index]['default_image']['thumbnail'] != null
-                                    ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(
-                                    _plants[index]['default_image']['thumbnail'],
+                child: ListView.builder(
+                  itemCount: _plants.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        int id = _plants[index]['id'];
+                        _showPlantDetails(id);
+                      },
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: _plants[index]['default_image'] != null &&
+                                    _plants[index]['default_image']
+                                            ['thumbnail'] !=
+                                        null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Image.network(
+                                      _plants[index]['default_image']
+                                          ['thumbnail'],
+                                      width: 50,
+                                      height: 50,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Container(
+                                          width: 50,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            color: OurColors().backgroundColor,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          child: Icon(
+                                            Icons.local_florist,
+                                            size: 30,
+                                            color: OurColors().primary,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  )
+                                : Container(
                                     width: 50,
                                     height: 50,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        width: 50,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          color: OurColors().backgroundColor,
-                                          borderRadius: BorderRadius.circular(15),
-                                        ),
-                                        child: Icon(
-                                          Icons.local_florist,
-                                          size: 30,
-                                          color: OurColors().primary,
-                                        ),
-                                      );
-                                    },
+                                    decoration: BoxDecoration(
+                                      color: OurColors().backgroundColor,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Icon(
+                                      Icons.local_florist,
+                                      size: 30,
+                                      color: OurColors().primary,
+                                    ),
                                   ),
-                                )
-                                    : Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    color: OurColors().backgroundColor,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Icon(
-                                    Icons.local_florist,
-                                    size: 30,
-                                    color: OurColors().primary,
-                                  ),
-                                ),
-                                title: Text(
-                                  _plants[index]['scientific_name'][0] ?? 'Scientific Name not available',
-                                  style: TextStyle(color: OurColors().backgroundText),
-                                ),
-                                subtitle: Text(_plants[index]['common_name'] ?? ''),
-                              ),
-                              Divider(height: 1, color: Colors.grey),
-                            ],
+                            title: Text(
+                              _plants[index]['scientific_name'][0] ??
+                                  'Scientific Name not available',
+                              style:
+                                  TextStyle(color: OurColors().backgroundText),
+                            ),
+                            subtitle: Text(_plants[index]['common_name'] ?? ''),
                           ),
-                        );
-                      },
-                    ),
-                  )
-              ),
+                          Divider(height: 1, color: Colors.grey),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              )),
             ],
           ),
-        )
-      );
+        ));
   }
 
   void _searchPlants(String query) async {

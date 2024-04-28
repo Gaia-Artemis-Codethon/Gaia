@@ -12,6 +12,7 @@ import '../service/planted_supabase.dart';
 
 class ListPlanted extends StatefulWidget {
   final Guid userId;
+
   ListPlanted(this.userId, {super.key});
 
   @override
@@ -50,15 +51,25 @@ class _ListPlantedState extends State<ListPlanted> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('No plants were found, do you want to add any plant?',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        const SizedBox(height: 10,),
+                        Text(
+                          'No plants were found, do you want to add any plant?',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Button(
-                          text: Text('Yes!', style: TextStyle(color: OurColors().primaryTextColor),),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(OurColors().primary),
-                              elevation: MaterialStateProperty.all<double>(2.0)
+                          text: Text(
+                            'Yes!',
+                            style:
+                                TextStyle(color: OurColors().primaryTextColor),
                           ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  OurColors().primary),
+                              elevation:
+                                  MaterialStateProperty.all<double>(2.0)),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -69,27 +80,30 @@ class _ListPlantedState extends State<ListPlanted> {
                           },
                         )
                       ],
-                    )
-                ),
+                    )),
               ),
             );
           } else {
             showFAB = true;
             return Container(
               padding: EdgeInsets.only(top: 10.0),
-              color: OurColors().backgroundColor,
+              decoration: BoxDecoration(
+                color: OurColors().backgroundColor,
+              ),
               child: ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final planted = snapshot.data![index];
-                  return PlantedItem(plant: Planted(
-                      id: Guid(planted['id']),
-                      user_id: Guid(planted['user_id']),
-                      crop_id: Guid(planted['crop_id']),
-                      land_id: Guid(planted['land_id']),
-                      planted_time: DateTime.parse(planted['planted_time']),
-                      status: planted['status']
-                  ), userId: widget.userId,);
+                  return PlantedItem(
+                    plant: Planted(
+                        id: Guid(planted['id']),
+                        user_id: Guid(planted['user_id']),
+                        crop_id: Guid(planted['crop_id']),
+                        land_id: Guid(planted['land_id']),
+                        planted_time: DateTime.parse(planted['planted_time']),
+                        status: planted['status']),
+                    userId: widget.userId,
+                  );
                 },
               ),
             );
@@ -126,7 +140,7 @@ class _ListPlantedState extends State<ListPlanted> {
 
   Future<List<Map<String, dynamic>>?> fetchPlanted(Guid userId) async {
     final response = await PlantedSupabase().getPlantedByUserId(userId);
-    if(response.isEmpty) showFAB = false;
+    if (response.isEmpty) showFAB = false;
     return response;
   }
 }

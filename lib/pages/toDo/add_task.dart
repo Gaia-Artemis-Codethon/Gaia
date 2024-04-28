@@ -7,24 +7,25 @@ import '../../service/supabaseService.dart';
 import '../../service/task_supabase.dart';
 
 class Add_Task extends StatefulWidget {
- final Guid userId;
- final VoidCallback onTaskStatusChanged;
- const Add_Task(this.userId, this.onTaskStatusChanged, {super.key});
+  final Guid userId;
+  final VoidCallback onTaskStatusChanged;
 
- @override
- State<Add_Task> createState() => _Add_TaskState();
+  const Add_Task(this.userId, this.onTaskStatusChanged, {super.key});
+
+  @override
+  State<Add_Task> createState() => _Add_TaskState();
 }
 
 class _Add_TaskState extends State<Add_Task> {
- final title = TextEditingController();
- final subtitle = TextEditingController();
+  final title = TextEditingController();
+  final subtitle = TextEditingController();
 
- FocusNode _focusNode1 = FocusNode();
- FocusNode _focusNode2 = FocusNode();
- int indexx = 0;
+  FocusNode _focusNode1 = FocusNode();
+  FocusNode _focusNode2 = FocusNode();
+  int indexx = 0;
 
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       body: SafeArea(
@@ -43,9 +44,9 @@ class _Add_TaskState extends State<Add_Task> {
         ),
       ),
     );
- }
+  }
 
- Widget button(bool isEnabled) {
+  Widget button(bool isEnabled) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -54,13 +55,21 @@ class _Add_TaskState extends State<Add_Task> {
             backgroundColor: Colors.green.shade200,
             minimumSize: const Size(170, 48),
           ),
-          onPressed: isEnabled ? () async {
-            await TaskSupabase().addTask(
-              Task(id: Guid.newGuid, name: title.text, status: false, user_id: widget.userId));
-            widget.onTaskStatusChanged();
-            Navigator.pop(context);
-          } : null,
-          child: const Text('add task'),
+          onPressed: isEnabled
+              ? () async {
+                  await TaskSupabase().addTask(Task(
+                      id: Guid.newGuid,
+                      name: title.text,
+                      status: false,
+                      user_id: widget.userId));
+                  widget.onTaskStatusChanged();
+                  Navigator.pop(context);
+                }
+              : null,
+          child: Text(
+            'Add task',
+            style: TextStyle(color: OurColors().primaryTextColor, fontSize: 16),
+          ),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -70,11 +79,14 @@ class _Add_TaskState extends State<Add_Task> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('Cancel'),
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: OurColors().primaryTextColor, fontSize: 16),
+          ),
         ),
       ],
     );
- }
+  }
 
   Container imagess() {
     return Container(
@@ -96,7 +108,8 @@ class _Add_TaskState extends State<Add_Task> {
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     width: 2,
-                    color: indexx == index ? Colors.green.shade200 : Colors.grey,
+                    color:
+                        indexx == index ? Colors.green.shade200 : Colors.grey,
                   ),
                 ),
                 width: 140,
@@ -163,7 +176,8 @@ class _Add_TaskState extends State<Add_Task> {
           focusNode: _focusNode2,
           style: const TextStyle(fontSize: 18, color: Colors.black),
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             hintText: 'subtitle',
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),

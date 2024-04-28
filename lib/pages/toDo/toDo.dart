@@ -52,7 +52,7 @@ class _ToDoState extends State<ToDo> {
             ));
           },
           backgroundColor: Colors.green.shade200,
-          child: const Icon(Icons.add, size: 30),
+          child: const Icon(Icons.add, size: 30, color: Colors.white,),
         ),
       ),
       body: SafeArea(
@@ -77,14 +77,15 @@ class _ToDoState extends State<ToDo> {
               // Encabezado "Is not done" con forma circular y color sugerido
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0), // Ajustar el padding aquí
+                    horizontal: 16.0,
+                ), // Ajustar el padding aquí
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.blue.withOpacity(0.3), // Color sugerido
                     borderRadius: BorderRadius.circular(20.0), // Forma circular
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Text(
                     'Por hacer',
                     textAlign: TextAlign.center,
@@ -117,7 +118,7 @@ class _ToDoState extends State<ToDo> {
                     color: Colors.blue.withOpacity(0.3), // Color sugerido
                     borderRadius: BorderRadius.circular(20.0), // Forma circular
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Text(
                     'Hecho',
                     textAlign: TextAlign.center,

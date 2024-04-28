@@ -115,7 +115,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                         color: OurColors().deleteButton,
                         borderRadius: BorderRadius.circular(18),
                       ),
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 0,
@@ -126,6 +126,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
+                              color: OurColors().primaryTextColor
                             ),
                           ),
                         ),
@@ -155,7 +156,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                         color: Colors.green.shade200,
                         borderRadius: BorderRadius.circular(18),
                       ),
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 0,
@@ -166,6 +167,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
+                              color: OurColors().primaryTextColor
                             ),
                           ),
                         ),
