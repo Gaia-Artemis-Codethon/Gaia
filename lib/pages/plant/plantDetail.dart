@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
+import 'package:flutter_application_huerto/service/crop_supabase.dart';
+import 'package:flutter_application_huerto/service/land_supabase.dart';
+import 'package:flutter_application_huerto/service/planted_supabase.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_application_huerto/const/colors.dart';
+import '../../models/crop.dart';
+import '../../models/land.dart';
+import '../../models/planted.dart';
+import '../../models/planted_log.dart';
+import '../../service/planted_log_supabase.dart';
+import '../../service/supabaseService.dart';
+import '../../service/task_supabase.dart';
+import 'package:uuid/uuid.dart';
 
 class PlantDetail extends StatefulWidget {
   final int plantId;
+  final Guid user_id;
 
-  PlantDetail({required this.plantId});
+  PlantDetail({super.key, required this.plantId, required this.user_id});
 
   @override
   _PlantDetailsPageState createState() => _PlantDetailsPageState();
@@ -16,19 +31,144 @@ class _PlantDetailsPageState extends State<PlantDetail> {
 
   static const String PERENUAL_TOKEN = 'sk-CgNd6623dc0d606905197';
 
+  static const String PERENUAL_TOKEN_AUX = 'sk-FM4q66298823e4ac15244';
+
   @override
   void initState() {
     super.initState();
     _plantDetails = {};
     _fetchPlantDetails().then((_) {
-      print(_plantDetails);
       build(context);
     });
   }
 
+
+
+  Widget growthCard(String title, String body, IconData iconData) {
+    return Container(
+      width: 280,
+      height: 100,
+      padding: EdgeInsets.all(15),
+      decoration: BoxDecoration(color: OurColors().primary, borderRadius: BorderRadius.all(Radius.circular(8))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: OurColors().primary,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Icon(
+              iconData,
+              color: OurColors().sectionBackground,
+              size: 50,
+            ),
+          ),
+          SizedBox(width: 20),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                textAlign: TextAlign.left,
+                style: TextStyle(fontWeight: FontWeight.bold, color: OurColors().sectionBackground),
+              ),
+              SizedBox(height: 10,),
+              Container(
+                width: 150,
+                child: Text(
+                    body,
+                    overflow: TextOverflow.clip,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(color: OurColors().sectionBackground)
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  void showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Add plant"),
+          content: Text("Are you sure you want to add this plant?"),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () async {
+                  Guid newPlantedId = Guid.newGuid;
+                  Guid newCropId = Guid(Uuid().v5(Uuid.NAMESPACE_URL, widget.plantId.toString()));
+                  final crop = await CropSupabase().getCropById(Guid(Uuid().v5(Uuid.NAMESPACE_URL, widget.plantId.toString())));
+                  if(crop == null) {
+                    print('Crop does not exist');
+                    try {
+                      await CropSupabase().addCrop(Crop(
+                        id: newCropId,
+                        name: _plantDetails['scientific_name'][0] ?? 'No name',
+                        descript: _plantDetails['description'] ?? 'No information available',
+                        difficulty: Crop.parseDifficulty(_plantDetails['care_level']),
+                        thumbnail: _plantDetails['default_image']['thumbnail'],
+                        season: _plantDetails['flowering_season'] ?? 'No information',
+                      ));
+                    } catch (e) {
+                      print('Error $e');
+                    }
+                  }
+
+                  await PlantedSupabase().addPlant(Planted(
+                    id: newPlantedId,
+                    crop_id: newCropId,
+                    land_id: Guid('144c7818-8bb7-4c37-87dd-638c72d8341d'),
+                    planted_time: DateTime.now(),
+                    status: 0,
+                    user_id: widget.user_id
+                  ));
+
+                  await PlantedLogSupabase().addPlantLog(PlantedLog(
+                      id: newPlantedId,
+                      user_id: widget.user_id,
+                      planted_id: newPlantedId,
+                      name: _plantDetails['scientific name'] ?? 'No name',
+                      description: _plantDetails['description'] ?? 'No information available',
+                      date: DateTime.now()
+                  ));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserPlants(widget.user_id)));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  decoration: BoxDecoration(color: OurColors().primary,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))
+                  ),
+                  child: Text("Yes", style: TextStyle(color: OurColors().primaryTextColor),),
+                )
+            ),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  decoration: BoxDecoration(color: OurColors().deleteButton,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))
+                  ),
+                  child: Text("No", style: TextStyle(color: OurColors().primaryTextColor),),
+                )
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _fetchPlantDetails() async {
     final String apiUrl =
-        'https://perenual.com/api/species/details/${widget.plantId}?key=' + PERENUAL_TOKEN;
+        'https://perenual.com/api/species/details/${widget.plantId}?key=$PERENUAL_TOKEN_AUX';
 
     debugPrint(apiUrl);
 
@@ -52,36 +192,135 @@ class _PlantDetailsPageState extends State<PlantDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Plant Details'),
-      ),
-      body: _plantDetails.isEmpty // Check if plant details are empty
-          ? Center(child: CircularProgressIndicator()) // Show loading indicator
-          : Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _plantDetails['scientific_name'][0] ?? 'No name',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(
-              _plantDetails['common_name'] ?? 'No information available',
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            Text(
-              'How to Grow:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(
-              _plantDetails['description'] ?? 'No information available',
-              textAlign: TextAlign.center,
-            ),
-          ],
+        title: const Text('Plant Details'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
       ),
+      body: Stack(
+        children: [
+          // Background Icon
+          Positioned.fill(
+            child: Icon(
+              Icons.local_florist, // Replace with your desired icon
+              color: OurColors().sectionBackground, // Icon color
+              size: 400, // Icon size
+            ),
+          ),
+          // Existing content
+          _plantDetails.isEmpty // Check if plant details are empty
+              ? Center(child: CircularProgressIndicator()) // Show loading indicator
+              : SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(40.0),
+                  child: Image.network(
+                    _plantDetails['default_image']['thumbnail'],
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color: OurColors().backgroundColor,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Icon(
+                          Icons.local_florist,
+                          size: 90,
+                          color: OurColors().primary,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Text(
+                  _plantDetails['scientific_name'][0] ?? 'No name',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  _plantDetails['common_name'] ?? 'No information available',
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 10),
+                Container(
+                  color: OurColors().backgroundColor,
+                  padding: EdgeInsets.only(left: 30, right: 30, bottom: 20),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(top: 20, bottom: 10),
+                        child: const Text(
+                          'Description',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(
+                        _plantDetails['description'] ?? 'No information available',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 14, color: OurColors().backgroundText),
+                      ),
+                      SizedBox(height: 20),
+                      const Text(
+                        'How to Grow:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      growthCard('Placement',
+                          (_plantDetails['indoor'] == false) ? 'Outdoor plant' : 'Indoor plant',
+                          Icons.window_outlined),
+                      SizedBox(height: 10,),
+                      growthCard('Difficulty', (_plantDetails['care_level']), Icons.landscape),
+                      const SizedBox(height: 10),
+                      growthCard('Maximum height', '${_plantDetails['dimensions']['max_value']} feet', Icons.arrow_upward),
+                      const SizedBox(height: 10),
+                      growthCard('Watering frequency', '${_plantDetails['watering_general_benchmark']['value']} days', Icons.water_drop_outlined),
+                      const SizedBox(height: 10),
+                      growthCard('Light requirements', '${_plantDetails['sunlight'].toString()}', Icons.wb_sunny_outlined),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Other considerations:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      Text('Light requirements: ${_plantDetails['sunlight'].toString() ?? 'No data'}',
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  )
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        mini: false,
+        heroTag: null,
+        tooltip: 'Añade la planta a tus cultivos',
+        onPressed: () {
+          showConfirmationDialog(context);
+        },
+        backgroundColor: OurColors().accent,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: Icon(
+            Icons.add,
+            color: OurColors().sectionBackground,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

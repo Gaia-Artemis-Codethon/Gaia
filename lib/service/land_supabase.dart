@@ -23,4 +23,49 @@ class LandSupabase {
       return [];
     }
  }
+
+ Future<Land?> getLandsByUserId(Guid userId) async {
+   try {
+     final data = await client.from("Land")
+         .select()
+         .eq('user_id', userId.value);
+
+     if(data.isEmpty) {
+       return null;
+     } else {
+       final land = Land(
+         id: Guid(data[0]['id']),
+         size: data[0]['size'],
+         location: data[0]['location'],
+         planted_id: data[0]['planted_id'],
+         owner_id: data[0]['owner_id'],
+         longitude: data[0]['longitude'],
+         latitude: data[0]['latitude']
+       );
+
+       return land;
+     }
+   } catch (e) {
+     print('Error en clase land_supabase al leer datos: $e');
+     return null;
+   }
+ }
+
+ Future<void> addLand(Land land) async {
+   try {
+     Map<String, dynamic> landMap = {
+       "id": land.id.value,
+       "size": land.size,
+       "location": land.location,
+       "planted_id": land.planted_id,
+       "owner_id": land.owner_id,
+       "longitude": land.longitude,
+       "latitude": land.latitude
+     };
+
+     await SupabaseService().addData("Land", landMap);
+   } catch (e) {
+     print('Error al insertar datos: $e');
+   }
+ }
 }
