@@ -1,3 +1,5 @@
+import '../models/forecast_model.dart';
+
 class Constants {
   // api key
   static const apiKey = '6164cf989b99407a9bb45846242604';
@@ -14,4 +16,7 @@ class Constants {
   static const days = 'days';
   static const lang = 'lang';
 
+  // api default values
+  static const defaultLang = 'es';
+  static const defaultDays = '3';
 }

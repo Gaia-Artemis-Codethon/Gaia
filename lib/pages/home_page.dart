@@ -7,6 +7,7 @@ import 'package:flutter_application_huerto/pages/toDo/toDo.dart';
 import 'package:flutter_application_huerto/service/community_supabase.dart';
 import 'package:flutter_application_huerto/service/supabaseService.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocode/geocode.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -33,7 +34,7 @@ class HomePage extends StatelessWidget {
    return position;
  }
 
- Future<String> getCurrentLocation() async {
+ Future<String?> getCurrentLocation() async {
    var currentCity = 'Valencia';
    try {
      Position position = await determinePosition();
@@ -42,8 +43,12 @@ class HomePage extends StatelessWidget {
      double? currentLong = myPosition?.longitude;
      if(currentLat != null && currentLong != null){
        var address = await GeoCode().reverseGeocoding(latitude: currentLat, longitude:currentLong);
-       print(address.city);
-       return 'Valencia';
+       if(address==null){
+         return "Valencia";
+       }else{
+         return address.city;
+       }
+
      }
    } catch (e) {
      debugPrint("Error getting city: $e");
@@ -52,7 +57,8 @@ class HomePage extends StatelessWidget {
  }
 
  Future<CurrentWeatherModel?>? _getCurrentWeather() async {
-   String city = await getCurrentLocation();
+   String? city = await getCurrentLocation();
+   if(city==null){city="Valencia";}
    if(city == "Valencia"){city = city+",ES";} //ToDo: Do not hardcode in case of conflict
 
    final Uri uri = Uri.parse(
@@ -65,13 +71,11 @@ class HomePage extends StatelessWidget {
      final response = await http.get(uri);
      var data = json.decode(response.body.toString());
      if (response.statusCode == 200) {
-       print("Req ok");
        currentWeather = CurrentWeatherModel.fromJson(data);
-       print("Here now ${currentWeather.current.humidity}");
        return currentWeather;
      } else {
-       return null;
        print('Error: ${response.statusCode}');
+       return null;
      }
 
    }catch (e) {
@@ -88,6 +92,7 @@ class HomePage extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
+        toolbarHeight: 70,
  title: FutureBuilder<String>(
     future: _readCommunityName(),
     builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -101,18 +106,22 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const CircleAvatar(
-                backgroundImage: AssetImage(
-                    "images/granjero.png"), // Cambiado a la imagen local
+                radius: 27,
+                backgroundColor: Color.fromARGB(108, 155, 79, 1),
+                child: CircleAvatar(
+                  radius: 25,
+                  backgroundImage: AssetImage('images/granjero.png'),
+                ),
+
               ),
-              const SizedBox(width: 10),
+
               Align(
                 alignment: Alignment.centerRight,
                 child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
                     const Text(
-                      'MI COMUNIDAD',
-                      style: TextStyle(color: Colors.black),
+                      'MI COMUNIDAD:',
+                      style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
                     ),
                     Text(
                       snapshot.data ??
@@ -129,20 +138,37 @@ class HomePage extends StatelessWidget {
  ),
 ),
       body: Padding(
-        padding: EdgeInsets.only(left: 10.0,right: 10.0),
+        padding: EdgeInsets.only(top: 10.0,left: 10,right: 10),
         child: Column(
           children: [
-            const Text(
-              "El tiempo",
-              style: TextStyle(color: Colors.black, fontSize: 24),
-            ),
-
             FutureBuilder<CurrentWeatherModel?>(
               future: _getCurrentWeather(),
               builder: (BuildContext context, AsyncSnapshot<CurrentWeatherModel?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Loading state
-                  return Center(child: CircularProgressIndicator());
+                  return
+                    Container(
+                      width: double.infinity,
+                      height: 250,
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFF7CB9FF), // Start color
+                            Color(0xFF5162FF), // End color
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(valueColor : AlwaysStoppedAnimation(Colors.white))
+                        ],
+                      ),
+                    );
                 } else if (snapshot.hasError) {
                   // Error state
                   return Center(child: Text('An error occurred: ${snapshot.error}'));
@@ -153,7 +179,8 @@ class HomePage extends StatelessWidget {
                     return Center(child: Text('No weather data available'));
                   } else {
                     // Display the weather data in a list using WeatherCard
-                    return WeatherCard(weather: weatherData);
+                    return WeatherCard(weather: weatherData
+                    );
                   }
                 }
               },
@@ -162,39 +189,80 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 10),
             const Text(
               "Mi parcela",
-              style: TextStyle(color: Colors.black, fontSize: 24),
+              style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            const Text(
-              "ToDo",
-              style: TextStyle(color: Colors.black, fontSize: 24),
-            ),
-            Button(
-              text: const Text("ToDo", style: TextStyle(color: Colors.white),),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ToDo(userId),
+            Container(
+              height: 180.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(221, 227, 217, 1.0),
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child:
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Lista de tareas",
+                        style: TextStyle(color: Colors.black, fontSize: 24,fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
-            const Text(
-              "Map",
-              style: TextStyle(color: Colors.black, fontSize: 24),
-            ),
-            Button(
-              text: const Text("Mapa", style: TextStyle(color: Colors.white),),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MapPage(userId)
+                  IconButton(
+                    icon: SvgPicture.asset(
+                        "images/todo.svg",width: 100,height: 100
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ToDo(userId),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            )
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              height: 180.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(221, 227, 217, 1.0),
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child:
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Mapa",
+                        style: TextStyle(color: Colors.black, fontSize: 24,fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                    icon: SvgPicture.asset(
+                        "images/mapa.svg",width: 100,height: 100
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MapPage(userId)
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       )

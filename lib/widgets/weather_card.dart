@@ -15,6 +15,8 @@ import 'package:http/http.dart' as http;
 import '../components/custom_image.dart';
 import '../const/weather_constants.dart';
 import '../models/current_weather_model.dart';
+import '../models/forecast_model.dart';
+import '../pages/forecast/forecast_page.dart';
 
 
 class WeatherCard extends StatelessWidget {
@@ -26,6 +28,14 @@ const WeatherCard({required this.weather});
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ForecastPage(),
+          ),
+        );
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
@@ -33,8 +43,8 @@ const WeatherCard({required this.weather});
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF7CB9FF), // Start color
-              Color(0xFF5162FF), // End color
+              Color(0xFF7CB9FF),
+              Color(0xFF5162FF),
             ],
           ),
           borderRadius: BorderRadius.circular(30),
