@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_huerto/widgets/forecast_item.dart';
 import 'package:geocode/geocode.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -189,6 +190,7 @@ class _ForecastState extends State<ForecastPage> {
                           ],
                         ),
                         SingleChildScrollView(
+                          padding: EdgeInsets.only(top: 10.0,left: 20,right: 20),
                           child:
                           Column(
                             mainAxisSize: MainAxisSize.min,
@@ -198,8 +200,8 @@ class _ForecastState extends State<ForecastPage> {
                                 shrinkWrap: true,
                                 itemCount: _list.length,
                                 itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text(_list[index].date),
+                                  return ForecastItem(
+                                    weather: _list[index]
                                   );
                                 },
                               ),
