@@ -129,7 +129,7 @@ class HomePage extends StatelessWidget {
  ),
 ),
       body: Padding(
-        padding: EdgeInsets.only(left: 10.0),
+        padding: EdgeInsets.only(left: 10.0,right: 10.0),
         child: Column(
           children: [
             const Text(

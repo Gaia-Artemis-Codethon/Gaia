@@ -27,7 +27,7 @@ const WeatherCard({required this.weather});
     final theme = Theme.of(context);
     return GestureDetector(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -40,26 +40,33 @@ const WeatherCard({required this.weather});
           borderRadius: BorderRadius.circular(30),
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CustomCachedImage(
                     imageUrl: 'https:${weather.current.condition.icon}',
                     fit: BoxFit.cover,
-                    width: 150,
-                    height: 150,
+                    width: 125,
+                    height: 125,
                     color: Colors.white,
                   ),
                   Text(
-                    '${weather.current.temp} Celsius',
+                    '${weather.location.name}',
                     style: theme.textTheme.displayMedium?.copyWith(
                         color: Colors.white,
-                        fontSize: 18
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                    ),
+                  ),
+                  Text(
+                    '${weather.current.temp.ceil()}° Celsius',
+                    style: theme.textTheme.displayMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22
                     ),
                   ),
                 ],
@@ -68,38 +75,49 @@ const WeatherCard({required this.weather});
               ),
             ),
             Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  "Viento",
-                  style: theme.textTheme.displayMedium?.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-                Row( // Adding a Row widget
+                SizedBox(height: 25),
+                Row(
                   children: [
-                    SvgPicture.asset('images/vectors/wind.svg'), // Replace 'assets/your_image.png' with your image path
                     Text(
-                      '${weather.current.wind}'+" Km/h",
-                      style: theme.textTheme.displaySmall?.copyWith(
+                      "Viento",
+                      style: theme.textTheme.displayMedium?.copyWith(
                         color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
+                Row( // Adding a Row widget
+                  children: [
+                    SvgPicture.asset('images/wind.svg'),
+                    Text(
+                      '${weather.current.wind}'+" Km/h",
+                      style: theme.textTheme.displaySmall?.copyWith(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 13),
                 Text(
                   "Humedad",
                   style: theme.textTheme.displayMedium?.copyWith(
                     color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Row( // Adding a Row widget
                   children: [
-                    SvgPicture.asset('images/vectors/humidity.svg'), // Replace 'assets/your_image.png' with your image path
+                    SvgPicture.asset('images/humidity.svg'),
                     Text(
                       '${weather.current.humidity} %',
                       style: theme.textTheme.displaySmall?.copyWith(
                         color: Colors.white,
+                        fontSize: 24,
                       ),
                     ),
                   ],
