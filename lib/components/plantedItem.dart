@@ -34,8 +34,8 @@ class _PlantedItemState extends State<PlantedItem> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Delete plant"),
-          content: Text("Are you sure you want to delete this plant?"),
+          title: Text("Eliminar planta"),
+          content: Text("¿Estás seguro de querer borrar esta planta?"),
           actions: <Widget>[
             TextButton(
                 onPressed: () {
@@ -52,7 +52,7 @@ class _PlantedItemState extends State<PlantedItem> {
                       color: OurColors().primary,
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),
                   child: Text(
-                    "Yes",
+                    "Si",
                     style: TextStyle(color: OurColors().primaryTextColor),
                   ),
                 )),

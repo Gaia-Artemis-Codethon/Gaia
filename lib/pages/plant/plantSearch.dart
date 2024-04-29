@@ -37,7 +37,7 @@ class _PlantSearchState extends State<SearchPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: OurColors().backgroundColor,
-          title: Text('Search for plants to add'),
+          title: Text('Busca tus plantas favoritas '),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             color: Colors.black,
@@ -55,7 +55,7 @@ class _PlantSearchState extends State<SearchPage> {
                 child: TextField(
                   controller: _controller,
                   decoration: InputDecoration(
-                    labelText: 'Write the plant\'s name',
+                    labelText: 'Nombre científico/ingles de la planta',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       // Border radius
@@ -64,7 +64,8 @@ class _PlantSearchState extends State<SearchPage> {
                               OurColors().primaryBorderColor), // Border color
                     ),
                     filled: true,
-                    fillColor: Colors.white.withOpacity(0.8), // Background color
+                    fillColor:
+                        Colors.white.withOpacity(0.8), // Background color
                   ),
                   onChanged: _searchPlants,
                 ),

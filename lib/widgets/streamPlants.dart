@@ -50,7 +50,7 @@ class _ListPlantedState extends State<ListPlanted> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'No plants were found, do you want to add any plant?',
+                          'No se ha encontrado ninguna planta ¿Quieres añadir alguna?',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
@@ -59,7 +59,7 @@ class _ListPlantedState extends State<ListPlanted> {
                         ),
                         Button(
                           text: Text(
-                            'Yes!',
+                            'Si!',
                             style:
                                 TextStyle(color: OurColors().primaryTextColor),
                           ),

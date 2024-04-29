@@ -22,7 +22,7 @@ class _UserPlantsState extends State<UserPlants> {
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
         elevation: 0,
-        title: Text('Your Land'),
+        title: Text('Tus Plantas'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
