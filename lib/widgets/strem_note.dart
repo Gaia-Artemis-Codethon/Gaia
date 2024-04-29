@@ -23,7 +23,13 @@ class _StreamNoteState extends State<StreamNote> {
       stream: TaskSupabase().stream(widget.userId, widget.done),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == null) {
-          return CircularProgressIndicator();
+          return Center(
+            child: Container(
+              height: 100,
+              width: 100,
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
         final tasksList = snapshot.data!;
         return ListView.builder(

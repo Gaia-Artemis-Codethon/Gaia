@@ -36,6 +36,7 @@ class _PlantSearchState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: OurColors().backgroundColor,
           title: Text('Search for plants to add'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
@@ -63,7 +64,7 @@ class _PlantSearchState extends State<SearchPage> {
                               OurColors().primaryBorderColor), // Border color
                     ),
                     filled: true,
-                    fillColor: OurColors().primaryTextColor, // Background color
+                    fillColor: Colors.white.withOpacity(0.8), // Background color
                   ),
                   onChanged: _searchPlants,
                 ),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/components/button.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
-import 'package:flutter_application_huerto/main.dart';
-import 'package:flutter_application_huerto/models/task.dart';
 import 'package:flutter_application_huerto/pages/plant/plantSearch.dart';
-import 'package:flutter_application_huerto/service/task_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+
 import '../components/plantedItem.dart';
 import '../models/planted.dart';
 import '../service/planted_supabase.dart';

@@ -42,14 +42,14 @@ class _PlantDetailsPageState extends State<PlantDetail> {
     });
   }
 
-
-
   Widget growthCard(String title, String body, IconData iconData) {
     return Container(
       width: 280,
       height: 100,
       padding: EdgeInsets.all(15),
-      decoration: BoxDecoration(color: OurColors().primary, borderRadius: BorderRadius.all(Radius.circular(8))),
+      decoration: BoxDecoration(
+          color: OurColors().primary,
+          borderRadius: BorderRadius.all(Radius.circular(8))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,17 +73,19 @@ class _PlantDetailsPageState extends State<PlantDetail> {
               Text(
                 title,
                 textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.bold, color: OurColors().sectionBackground),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: OurColors().sectionBackground),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Container(
                 width: 150,
-                child: Text(
-                    body,
+                child: Text(body,
                     overflow: TextOverflow.clip,
                     textAlign: TextAlign.left,
-                    style: TextStyle(color: OurColors().sectionBackground)
-                ),
+                    style: TextStyle(color: OurColors().sectionBackground)),
               )
             ],
           )
@@ -103,18 +105,23 @@ class _PlantDetailsPageState extends State<PlantDetail> {
             TextButton(
                 onPressed: () async {
                   Guid newPlantedId = Guid.newGuid;
-                  Guid newCropId = Guid(Uuid().v5(Uuid.NAMESPACE_URL, widget.plantId.toString()));
-                  final crop = await CropSupabase().getCropById(Guid(Uuid().v5(Uuid.NAMESPACE_URL, widget.plantId.toString())));
-                  if(crop == null) {
+                  Guid newCropId = Guid(
+                      Uuid().v5(Uuid.NAMESPACE_URL, widget.plantId.toString()));
+                  final crop = await CropSupabase().getCropById(Guid(Uuid()
+                      .v5(Uuid.NAMESPACE_URL, widget.plantId.toString())));
+                  if (crop == null) {
                     print('Crop does not exist');
                     try {
                       await CropSupabase().addCrop(Crop(
                         id: newCropId,
                         name: _plantDetails['scientific_name'][0] ?? 'No name',
-                        descript: _plantDetails['description'] ?? 'No information available',
-                        difficulty: Crop.parseDifficulty(_plantDetails['care_level']),
+                        descript: _plantDetails['description'] ??
+                            'No information available',
+                        difficulty:
+                            Crop.parseDifficulty(_plantDetails['care_level']),
                         thumbnail: _plantDetails['default_image']['thumbnail'],
-                        season: _plantDetails['flowering_season'] ?? 'No information',
+                        season: _plantDetails['flowering_season'] ??
+                            'No information',
                       ));
                     } catch (e) {
                       print('Error $e');
@@ -122,44 +129,50 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                   }
 
                   await PlantedSupabase().addPlant(Planted(
-                    id: newPlantedId,
-                    crop_id: newCropId,
-                    land_id: Guid('144c7818-8bb7-4c37-87dd-638c72d8341d'),
-                    planted_time: DateTime.now(),
-                    status: 0,
-                    user_id: widget.user_id
-                  ));
+                      id: newPlantedId,
+                      crop_id: newCropId,
+                      land_id: Guid('144c7818-8bb7-4c37-87dd-638c72d8341d'),
+                      planted_time: DateTime.now(),
+                      status: 0,
+                      user_id: widget.user_id));
 
                   await PlantedLogSupabase().addPlantLog(PlantedLog(
                       id: newPlantedId,
                       user_id: widget.user_id,
                       planted_id: newPlantedId,
                       name: _plantDetails['scientific name'] ?? 'No name',
-                      description: _plantDetails['description'] ?? 'No information available',
-                      date: DateTime.now()
-                  ));
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserPlants(widget.user_id)));
+                      description: _plantDetails['description'] ??
+                          'No information available',
+                      date: DateTime.now()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UserPlants(widget.user_id)));
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(color: OurColors().primary,
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))
+                  decoration: BoxDecoration(
+                      color: OurColors().primary,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  child: Text(
+                    "Yes",
+                    style: TextStyle(color: OurColors().primaryTextColor),
                   ),
-                  child: Text("Yes", style: TextStyle(color: OurColors().primaryTextColor),),
-                )
-            ),
+                )),
             TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(color: OurColors().deleteButton,
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))
+                  decoration: BoxDecoration(
+                      color: OurColors().deleteButton,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  child: Text(
+                    "No",
+                    style: TextStyle(color: OurColors().primaryTextColor),
                   ),
-                  child: Text("No", style: TextStyle(color: OurColors().primaryTextColor),),
-                )
-            ),
+                )),
           ],
         );
       },
@@ -191,7 +204,9 @@ class _PlantDetailsPageState extends State<PlantDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
+        backgroundColor: OurColors().backgroundColor,
         title: const Text('Plant Details'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -213,95 +228,120 @@ class _PlantDetailsPageState extends State<PlantDetail> {
           ),
           // Existing content
           _plantDetails.isEmpty // Check if plant details are empty
-              ? Center(child: CircularProgressIndicator()) // Show loading indicator
+              ? Center(
+                  child: CircularProgressIndicator()) // Show loading indicator
               : SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(40.0),
-                  child: Image.network(
-                    _plantDetails['default_image']['thumbnail'],
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: OurColors().backgroundColor,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Icon(
-                          Icons.local_florist,
-                          size: 90,
-                          color: OurColors().primary,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Text(
-                  _plantDetails['scientific_name'][0] ?? 'No name',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  _plantDetails['common_name'] ?? 'No information available',
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 10),
-                Container(
-                  color: OurColors().backgroundColor,
-                  padding: EdgeInsets.only(left: 30, right: 30, bottom: 20),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        padding: EdgeInsets.only(top: 20, bottom: 10),
-                        child: const Text(
-                          'Description',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                      const SizedBox(height: 20,),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(40.0),
+                        child: Image.network(
+                          _plantDetails['default_image']['thumbnail'],
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 200,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                color: OurColors().backgroundColor,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Icon(
+                                Icons.local_florist,
+                                size: 90,
+                                color: OurColors().primary,
+                              ),
+                            );
+                          },
                         ),
                       ),
                       Text(
-                        _plantDetails['description'] ?? 'No information available',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 14, color: OurColors().backgroundText),
+                        _plantDetails['scientific_name'][0] ?? 'No name',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 20),
-                      const Text(
-                        'How to Grow:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      SizedBox(height: 10),
+                      Text(
+                        _plantDetails['common_name'] ??
+                            'No information available',
+                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 10),
-                      growthCard('Placement',
-                          (_plantDetails['indoor'] == false) ? 'Outdoor plant' : 'Indoor plant',
-                          Icons.window_outlined),
-                      SizedBox(height: 10,),
-                      growthCard('Difficulty', (_plantDetails['care_level']), Icons.landscape),
-                      const SizedBox(height: 10),
-                      growthCard('Maximum height', '${_plantDetails['dimensions']['max_value']} feet', Icons.height),
-                      const SizedBox(height: 10),
-                      growthCard('Watering frequency', '${_plantDetails['watering_general_benchmark']['value']} days', Icons.water_drop_outlined),
-                      const SizedBox(height: 10),
-                      growthCard('Light requirements', '${_plantDetails['sunlight'].toString()}', Icons.wb_sunny_outlined),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Other considerations:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Text('Light requirements: ${_plantDetails['sunlight'].toString() ?? 'No data'}',
-                        textAlign: TextAlign.left,
-                      ),
+                      SizedBox(height: 10),
+                      Container(
+                          color: OurColors().backgroundColor,
+                          padding:
+                              EdgeInsets.only(left: 30, right: 30, bottom: 20),
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(top: 20, bottom: 10),
+                                child: const Text(
+                                  'Description',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text(
+                                _plantDetails['description'] ??
+                                    'No information available',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: OurColors().backgroundText),
+                              ),
+                              SizedBox(height: 20),
+                              const Text(
+                                'How to Grow:',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 10),
+                              growthCard(
+                                  'Placement',
+                                  (_plantDetails['indoor'] == false)
+                                      ? 'Outdoor plant'
+                                      : 'Indoor plant',
+                                  Icons.window_outlined),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              growthCard(
+                                  'Difficulty',
+                                  (_plantDetails['care_level']),
+                                  Icons.landscape),
+                              const SizedBox(height: 10),
+                              growthCard(
+                                  'Maximum height',
+                                  '${_plantDetails['dimensions']['max_value']} feet',
+                                  Icons.height),
+                              const SizedBox(height: 10),
+                              growthCard(
+                                  'Watering frequency',
+                                  '${_plantDetails['watering_general_benchmark']['value']} days',
+                                  Icons.water_drop_outlined),
+                              const SizedBox(height: 10),
+                              growthCard(
+                                  'Light requirements',
+                                  '${_plantDetails['sunlight'].toString()}',
+                                  Icons.wb_sunny_outlined),
+                              const SizedBox(height: 20),
+                              const Text(
+                                'Other considerations:',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                'Light requirements: ${_plantDetails['sunlight'].toString() ?? 'No data'}',
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          )),
                     ],
-                  )
+                  ),
                 ),
-              ],
-            ),
-          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

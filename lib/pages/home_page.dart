@@ -207,115 +207,144 @@ class HomePage extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      height: 180.0,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: OurColors().sectionBackground,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Lista de tareas",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ToDo(userId),
                           ),
-                          IconButton(
-                            icon: SvgPicture.asset("images/todo.svg",
-                                width: 100, height: 100),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ToDo(userId),
+                        );
+                      },
+                      child: Container(
+                        height: 180.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: OurColors().sectionBackground,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Lista de tareas",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              );
-                            },
-                          ),
-                        ],
+                              ],
+                            ),
+                            IconButton(
+                              icon: SvgPicture.asset("images/todo.svg",
+                                  width: 100, height: 100),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ToDo(userId),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      height: 180.0,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: OurColors().sectionBackground,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Cultivos",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserPlants(userId),
                           ),
-                          IconButton(
-                            icon: SvgPicture.asset("images/planta.svg",
-                                width: 100, height: 100),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UserPlants(userId),
+                        );
+                      },
+                      child: Container(
+                        height: 180.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: OurColors().sectionBackground,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Cultivos",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              );
-                            },
-                          ),
-                        ],
+                              ],
+                            ),
+                            IconButton(
+                              icon: SvgPicture.asset("images/planta.svg",
+                                  width: 100, height: 100),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserPlants(userId),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      height: 180.0,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: OurColors().sectionBackground,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Mapa",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                            icon: SvgPicture.asset("images/mapa.svg",
-                                width: 100, height: 100),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MapPage(userId)),
-                              );
-                            },
-                          ),
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MapPage(userId)),
+                        );
+                      },
+                      child: Container(
+                        height: 180.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: OurColors().sectionBackground,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Mapa",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            IconButton(
+                              icon: SvgPicture.asset("images/mapa.svg",
+                                  width: 100, height: 100),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MapPage(userId)),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

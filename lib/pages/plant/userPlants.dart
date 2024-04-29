@@ -8,6 +8,7 @@ import '/const/colors.dart';
 
 class UserPlants extends StatefulWidget {
   final Guid userId;
+
   const UserPlants(this.userId, {super.key});
 
   @override
@@ -15,7 +16,6 @@ class UserPlants extends StatefulWidget {
 }
 
 class _UserPlantsState extends State<UserPlants> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +26,11 @@ class _UserPlantsState extends State<UserPlants> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(widget.userId)));;
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomePage(widget.userId)));
+            ;
           },
         ),
       ),
