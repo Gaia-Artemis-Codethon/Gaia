@@ -19,6 +19,7 @@ import '../components/button.dart';
 import '../const/weather_constants.dart';
 import '../models/current_weather_model.dart';
 import '../widgets/weather_card.dart';
+import 'drawing/drawing_page.dart';
 
 class HomePage extends StatelessWidget {
   final Guid userId;
@@ -343,6 +344,19 @@ class HomePage extends StatelessWidget {
                                 );
                               },
                             ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Button(
+                              text: Text("Pinturillo"),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>const DrawingPage()),
+                                );
+                              },
+                            )
                           ],
                         ),
                       ),
