@@ -47,7 +47,9 @@ class MyApp extends StatelessWidget {
                 ? const FirstHomePage()
                 : HomePage(userId!); // Aquí se utiliza HomePage.withUserId()
           } else {
-            return const Center(child:CircularProgressIndicator()); // Muestra un indicador de carga mientras se espera
+            return const Center(
+                child:
+                    CircularProgressIndicator()); // Muestra un indicador de carga mientras se espera
           }
         },
       ),
