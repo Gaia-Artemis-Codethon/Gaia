@@ -10,12 +10,7 @@ class TaskSupabase {
   final client = SupabaseService().client;
 
   Future<void> updateTask(Task task) async {
-    Map<String, dynamic> newValues = {
-      "id": task.id.value,
-      "name": task.name,
-      "status": task.status,
-      "user_id": task.user_id == null ? null : task.user_id!.value,
-    };
+    Map<String, dynamic> newValues = Task.toJson(task);
     await SupabaseService().updateData("Task", task.id.value, newValues);
   }
 
@@ -23,11 +18,7 @@ class TaskSupabase {
     try {
       final notesList = snapshot.data!.map((doc) {
         final data = doc as Map<String, dynamic>;
-        return Task(
-            id: Guid(data['id']),
-            name: data['name'],
-            status: data['status'],
-            user_id: data['user_id'] == null ? null : Guid(data['user_id']));
+        return Task.fromJson(data);
       }).toList();
       return notesList;
     } catch (e) {
@@ -40,12 +31,7 @@ class TaskSupabase {
     try {
       // Crear un objeto Community con el nombre obtenido
       // Convertir el objeto Community a un Map para pasarlo a addData
-      Map<String, dynamic> taskMap = {
-        "id": task.id.value,
-        "name": task.name,
-        "status": task.status,
-        "user_id": task.user_id == null ? null : task.user_id!.value,
-      };
+      Map<String, dynamic> taskMap = Task.toJson(task);
       // Llamar a Supabase().addData con el Map de la comunidad
       await SupabaseService().addData("Task", taskMap);
     } catch (e) {
@@ -58,12 +44,7 @@ class TaskSupabase {
   }
 
   Future<bool> taskIsDone(Task task) async {
-    Map<String, dynamic> newValues = {
-      "id": task.id.value,
-      "name": task.name,
-      "status": task.status,
-      "user_id": task.user_id == null ? null : task.user_id!.value,
-    };
+    Map<String, dynamic> newValues = Task.toJson(task);
     await SupabaseService().updateData("Task", task.id.value, newValues);
     return task.status;
   }

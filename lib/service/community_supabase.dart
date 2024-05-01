@@ -14,11 +14,7 @@ class CommunitySupabase {
       if (data.isEmpty) {
         return null;
       } else {
-        final community = Community(
-            id: Guid(data[0]
-                ['id']), // Asegúrate de convertir el ID a Guid si es necesario
-            name: data[0][
-                'name']); // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
+        final community = Community.fromJson(data as Map<String, dynamic>); // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
 
         return community;
       }

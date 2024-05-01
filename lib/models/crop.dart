@@ -26,4 +26,26 @@ class Crop{
         return 0;
     }
   }
+
+  static Map<String, dynamic> toJson(Crop crop){
+    return {
+        "id": crop.id.value,
+        "name": crop.name,
+        "season": crop.season,
+        "difficulty": crop.difficulty,
+        "descript": crop.descript,
+        "thumbnail": crop.thumbnail
+      };
+  }
+
+  static Crop fromJson(data){
+    return Crop(
+        id: Guid(data[0]['id']),
+        name: data[0]['name'],
+        season: data[0]['season'],
+        difficulty: data[0]['difficulty'],
+        descript: data[0]['descript'],
+        thumbnail: data[0]['thumbnail']
+      );
+  }
 }

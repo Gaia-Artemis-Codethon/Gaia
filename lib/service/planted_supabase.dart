@@ -8,19 +8,12 @@ import '../models/planted_log.dart';
 import '../models/crop.dart';
 import 'supabaseService.dart';
 
-class PlantedSupabase{
+class PlantedSupabase {
   final client = SupabaseService().client;
 
   Future<void> addPlant(Planted plant) async {
     try {
-      Map<String, dynamic> plantMap = {
-        "id": plant.id.value,
-        "user_id": plant.user_id.value,
-        "crop_id": plant.crop_id.value,
-        "land_id": plant.land_id.value,
-        "planted_time": plant.planted_time.toIso8601String(),
-        "status": plant.status
-      };
+      Map<String, dynamic> plantMap = Planted.toJson(plant);
       // Llamar a Supabase().addData con el Map del cultivo
       await SupabaseService().addData("Planted", plantMap);
     } catch (e) {
@@ -33,14 +26,7 @@ class PlantedSupabase{
     if (data.length == 0) {
       return null;
     } else {
-      final plant = Planted(
-          id: Guid(data[0]['id']),
-          user_id: Guid(data[0]['user_id']),
-          crop_id: data[0]['crop_id'],
-          land_id: data[0]['land_id'],
-          planted_time: data[0]['planted_time'],
-          status: data[0]['difficulty'],
-      );
+      final plant = Planted.fromJson(data);
       return plant;
     }
   }
@@ -52,16 +38,15 @@ class PlantedSupabase{
         .eq('land_id', land_id.value)
         .asStream()
         .map((event) => event as List<Map<String, dynamic>>)
-        .map((list) => list.map((item) => Planted.fromJson(item) as Planted).toList());
+        .map((list) =>
+            list.map((item) => Planted.fromJson(item) as Planted).toList());
   }
 
   Future<List<Map<String, dynamic>>> getPlantedByUserId(Guid user_id) async {
     print('Receiving');
 
-    final response = await client
-        .from('Planted')
-        .select()
-        .eq('user_id', user_id.value);
+    final response =
+        await client.from('Planted').select().eq('user_id', user_id.value);
 
     print(response.toString());
 

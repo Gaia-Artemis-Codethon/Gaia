@@ -10,16 +10,27 @@ class Planted{
 
   Planted({required this.id, required this.user_id, required this.crop_id, required this.land_id, required this.planted_time, required this.status});
 
-  static fromJson(Map<String, dynamic> json) {
+  static Planted fromJson(Map<String, dynamic> data) {
     print('mapping one');
     return Planted(
-      id: Guid(json['id']),
-      user_id: Guid(json['user_id']),
-      crop_id: Guid(json['crop_id']),
-      land_id: Guid(json['land_id']),
-      planted_time: json['planted_time'],
-      status: json['status']
-    );
+        id: Guid(data[0]['id']),
+        user_id: Guid(data[0]['user_id']),
+        crop_id: data[0]['crop_id'],
+        land_id: data[0]['land_id'],
+        planted_time: data[0]['planted_time'],
+        status: data[0]['difficulty'],
+      );
+  }
+
+  static Map<String, dynamic> toJson(Planted plant){
+    return {
+        "id": plant.id.value,
+        "user_id": plant.user_id.value,
+        "crop_id": plant.crop_id.value,
+        "land_id": plant.land_id.value,
+        "planted_time": plant.planted_time.toIso8601String(),
+        "status": plant.status
+      };
   }
 
   static String parseStatus(int status) {

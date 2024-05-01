@@ -6,14 +6,26 @@ class Task {
   final bool status;
   final Guid? user_id;
 
-  Task({required this.id, required this.name, required this.status, this.user_id});
+  Task(
+      {required this.id,
+      required this.name,
+      required this.status,
+      this.user_id});
 
-  static fromJson(Map<String, dynamic> json){
+  static Task fromJson(Map<String, dynamic> data) {
     return Task(
-      id: Guid(json['id']),
-      name: json['name'],
-      status: json['status'],
-      user_id: json['user_id'] == null? null : Guid(json['user_id']),
-    );
+        id: Guid(data['id']),
+        name: data['name'],
+        status: data['status'],
+        user_id: data['user_id'] == null ? null : Guid(data['user_id']));
+  }
+
+  static Map<String, dynamic> toJson(Task task) {
+    return {
+      "id": task.id.value,
+      "name": task.name,
+      "status": task.status,
+      "user_id": task.user_id == null ? null : task.user_id!.value,
+    };
   }
 }

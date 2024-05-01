@@ -9,15 +9,7 @@ class LandSupabase {
     try {
       final response = await client.from("Land").select();
       final data = response as List;
-      return data.map((item) => Land(
-        id: Guid(item['id']),
-        size: item['size'],
-        location: item['location'],
-        planted_id: item['planted_id'] != null ? Guid(item['planted_id']) : null,
-        owner_id: item['owner_id'] != null ? Guid(item['owner_id']) : null,
-        longitude: item['longitude'],
-        latitude: item['latitude'],
-      )).toList();
+      return data.map((item) => Land.fromJson(item)).toList();
     } catch (e) {
       print('Error al leer datos: $e');
       return [];
@@ -33,15 +25,7 @@ class LandSupabase {
      if(data.isEmpty) {
        return null;
      } else {
-       final land = Land(
-         id: Guid(data[0]['id']),
-         size: data[0]['size'],
-         location: data[0]['location'],
-         planted_id: data[0]['planted_id'],
-         owner_id: data[0]['owner_id'],
-         longitude: data[0]['longitude'],
-         latitude: data[0]['latitude']
-       );
+       final land = Land.fromJson(data);
 
        return land;
      }
@@ -53,15 +37,7 @@ class LandSupabase {
 
  Future<void> addLand(Land land) async {
    try {
-     Map<String, dynamic> landMap = {
-       "id": land.id.value,
-       "size": land.size,
-       "location": land.location,
-       "planted_id": land.planted_id,
-       "owner_id": land.owner_id,
-       "longitude": land.longitude,
-       "latitude": land.latitude
-     };
+     Map<String, dynamic> landMap = Land.toJson(land);
 
      await SupabaseService().addData("Land", landMap);
    } catch (e) {

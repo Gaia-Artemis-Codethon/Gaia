@@ -8,19 +8,12 @@ import '../models/planted_log.dart';
 import '../models/crop.dart';
 import 'supabaseService.dart';
 
-class PlantedLogSupabase{
+class PlantedLogSupabase {
   final client = SupabaseService().client;
 
   Future<void> addPlantLog(PlantedLog plantLog) async {
     try {
-      Map<String, dynamic> plantLogMap = {
-        "id": plantLog.id.value,
-        "user_id": plantLog.user_id.value,
-        "planted_id": plantLog.planted_id.value,
-        "name": plantLog.name,
-        "description": plantLog.description,
-        "date": plantLog.date.toIso8601String()
-      };
+      Map<String, dynamic> plantLogMap = PlantedLog.toJson(plantLog);
       // Llamar a Supabase().addData con el Map del cultivo
       await SupabaseService().addData("Planted_log", plantLogMap);
       print('Añadido');
@@ -34,14 +27,7 @@ class PlantedLogSupabase{
     if (data.length == 0) {
       return null;
     } else {
-      final plant = PlantedLog(
-        id: Guid(data[0]['id']),
-        user_id: data[0]['user_id'],
-        planted_id: data[0]['planted_id'],
-        name: data[0]['name'],
-        description: data[0]['desription'],
-        date: data[0]['date']
-      );
+      final plant = PlantedLog.fromJson(data);
       return plant;
     }
   }
@@ -53,6 +39,8 @@ class PlantedLogSupabase{
         .eq('user_id', user_id.value)
         .asStream()
         .map((event) => event as List<Map<String, dynamic>>)
-        .map((list) => list.map((item) => PlantedLog.fromJson(item) as PlantedLog).toList());
+        .map((list) => list
+            .map((item) => PlantedLog.fromJson(item) as PlantedLog)
+            .toList());
   }
 }
