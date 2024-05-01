@@ -361,20 +361,20 @@ class HomePage extends StatelessWidget {
                             const SizedBox(
                               height: 10,
                             ),
-                            Button(
-                              text: Text("Pinturillo"),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>const DrawingPage()),
-                                );
-                              },
-                            )
                           ],
                         ),
                       ),
                     ),
+                    Button(
+                      text: Text("Pinturillo"),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>const DrawingPage()),
+                        );
+                      },
+                    )
                   ],
                 ),
               )
