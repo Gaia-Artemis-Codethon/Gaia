@@ -27,7 +27,12 @@ class _TaskWidgetState extends State<TaskWidget> {
         height: 130,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
+          // ignore: prefer_const_constructors
+          image: DecorationImage(
+            image:
+                AssetImage('images/madera.jpg'), // Imagen de textura de madera
+            fit: BoxFit.cover,
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),
@@ -103,36 +108,31 @@ class _TaskWidgetState extends State<TaskWidget> {
                   await TaskSupabase().deleteTask(widget.note.id);
                   widget.onTaskStatusChanged();
                 },
-                child: Column(
-                  // Wrap each button and text in a Column
-                  mainAxisAlignment:
-                      MainAxisAlignment.center, // Align text in the center
+                child: Stack(
                   children: [
-                    Container(
-                      width: 90,
-                      height: 28,
-                      decoration: BoxDecoration(
-                        color: OurColors().deleteButton,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 0,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Eliminar',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: OurColors().primaryTextColor
-                            ),
+                    Image.asset(
+                      'images/bot.png',
+                      width: 130,
+                      height: 45,
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top:
+                          5, // Ajusta esta línea para mover el texto hacia abajo
+                      bottom: 0,
+                      child: Center(
+                        child: Text(
+                          'Eliminar',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors
+                                .white, // Asegúrate de que el color del texto sea visible sobre el fondo
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 4), // Add SizedBox for spacing
                   ],
                 ),
               ),
@@ -144,36 +144,31 @@ class _TaskWidgetState extends State<TaskWidget> {
                         widget.note, userId!, widget.onTaskStatusChanged),
                   ));
                 },
-                child: Column(
-                  // Wrap each button and text in a Column
-                  mainAxisAlignment:
-                      MainAxisAlignment.center, // Align text in the center
+                child: Stack(
                   children: [
-                    Container(
-                      width: 90,
-                      height: 28,
-                      decoration: BoxDecoration(
-                        color: Colors.green.shade200,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 0,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Editar',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: OurColors().primaryTextColor
-                            ),
+                    Image.asset(
+                      'images/bot.png',
+                      width: 130,
+                      height: 45,
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top:
+                          5, // Ajusta esta línea para mover el texto hacia abajo
+                      bottom: 0,
+                      child: Center(
+                        child: Text(
+                          'Editar',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors
+                                .white, // Asegúrate de que el color del texto sea visible sobre el fondo
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 4), // Add SizedBox for spacing
                   ],
                 ),
               ),
