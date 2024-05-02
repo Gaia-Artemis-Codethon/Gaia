@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_huerto/widgets/HourlyForecastItem.dart';
 import 'package:flutter_application_huerto/widgets/forecast_item.dart';
 import 'package:geocode/geocode.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+
 class ForecastPage extends StatefulWidget {
   ForecastPage();
 
@@ -22,6 +24,24 @@ class ForecastPage extends StatefulWidget {
 }
 
 class _ForecastState extends State<ForecastPage> {
+  // HourModel _hourlyForecast = HourModel(
+  //   forecast: ForecastHour(
+  //     forecastday: [
+  //       ForecastDayHour(
+  //         hour: [
+  //           Hour(
+  //             time: "10:00",
+  //             tempC: 20.0,
+  //             condition: Cond(
+  //               icon: '',
+  //             ),
+  //           ),
+  //         ]
+  //       ),
+  //     ],
+  //   ),
+  // );
+
   ForecastModel _forecast = ForecastModel(
     forecast: Forecast(
       forecastDay: [
@@ -36,11 +56,17 @@ class _ForecastState extends State<ForecastPage> {
               icon: '',
             ),
           ),
+          hour: [],
         ),
       ],
     ),
   );
+
   List<ForecastDay> _list = [];
+  List<Hour> _listHours = [];
+  static const int firstHour = 7;
+  static const int secondHour = 15;
+  static const int thirdHour = 23;
 
   @override
   void initState() {
@@ -48,6 +74,9 @@ class _ForecastState extends State<ForecastPage> {
     super.initState();
     _fetchForecast().then((_) {
       _list = _forecast.forecast.forecastDay;
+      _listHours.add(_list[0].hour[firstHour]);
+      _listHours.add(_list[0].hour[secondHour]);
+      _listHours.add(_list[0].hour[thirdHour]);
       build(context);
     });
   }
@@ -58,6 +87,10 @@ class _ForecastState extends State<ForecastPage> {
     String dayOfMonth = DateFormat('d', 'es').format(now);
     String month = DateFormat('MMMM', 'es').format(now);
     return "Hoy $dayOfWeek $dayOfMonth de $month";
+  }
+
+  Future<void> _fetchHourlyForecast() async{
+
   }
 
   Future<void> _fetchForecast() async {
@@ -173,15 +206,24 @@ class _ForecastState extends State<ForecastPage> {
                                 fontWeight: FontWeight.bold))
                       ],
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("Jaja se me olvido, no tengo el model hecho",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold))
+                        SizedBox(
+                          height: 130,
+                          child:
+                          ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: _listHours.length,
+                            itemBuilder: (context, index) {
+                              return HourlyForecastItem(weather: _listHours[index]);
+                            },
+                          ),
+                        ),
                       ],
                     ),
                     SingleChildScrollView(
