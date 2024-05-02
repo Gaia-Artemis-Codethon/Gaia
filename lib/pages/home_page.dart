@@ -18,6 +18,7 @@ import '../components/button.dart';
 import '../const/weather_constants.dart';
 import '../models/current_weather_model.dart';
 import '../widgets/weather_card.dart';
+import 'drawing/create_grid.dart';
 import 'drawing/drawing_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -370,7 +371,8 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>const DrawingPage()),
+                              builder: (context) =>
+                              const GridPage()),
                         );
                       },
                     )
