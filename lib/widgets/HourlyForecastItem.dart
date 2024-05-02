@@ -30,10 +30,11 @@ class HourlyForecastItem extends StatelessWidget {
           ),
           child: Column(
               children:[
+                SizedBox(height:3),
                 Text(
                   getHour(weather.time),
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -41,14 +42,14 @@ class HourlyForecastItem extends StatelessWidget {
                 CustomCachedImage(
                   imageUrl: 'https:${weather.condition.icon}',
                   fit: BoxFit.cover,
-                  width: 75,
+                  width: 90,
                   height: 75,
                   color: Colors.white,
                 ),
                 Text(
-                  '${weather.tempC.ceil()}° Celsius',
+                  '${weather.tempC.ceil()}°C',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
