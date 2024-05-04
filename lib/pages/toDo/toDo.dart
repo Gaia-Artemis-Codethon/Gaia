@@ -17,90 +17,77 @@ class ToDo extends StatefulWidget {
 bool show = true;
 
 class _ToDoState extends State<ToDo> {
-  late ScrollController _scrollController;
+  void updateTasks() {
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        backgroundColor:
+            Colors.transparent, // Hace que el AppBar sea transparente
+        elevation: 0, // Elimina la sombra del AppBar
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Colors.black,
+          color: Colors.black, // Color del ícono
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Add_Task(widget.userId, updateTasks),
-          ));
-        },
-        backgroundColor: Colors.transparent,
-        child: Stack(
-          children: [
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('images/madera.jpg'),
-                  fit: BoxFit.cover,
-                ),
-                shape: BoxShape.circle,
-              ),
-            ),
-            Center(
-              child: Icon(
-                Icons.add,
-                size: 30,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/mclara.jpg'), // Textura de madera clara
-            fit: BoxFit.cover,
+      floatingActionButton: Visibility(
+        visible: show,
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Add_Task(widget.userId, updateTasks),
+            ));
+          },
+          backgroundColor: Colors.green.shade200,
+          child: const Icon(
+            Icons.add,
+            size: 30,
+            color: Colors.white,
           ),
         ),
-        child: SafeArea(
+      ),
+      body: SafeArea(
+        child: NotificationListener<UserScrollNotification>(
+          onNotification: (notification) {
+            if (notification.direction == ScrollDirection.forward) {
+              setState(() {
+                show = true;
+              });
+            }
+            if (notification.direction == ScrollDirection.reverse) {
+              setState(() {
+                show = false;
+              });
+            }
+            return true;
+          },
           child: Column(
             children: [
+              // Espacio entre el encabezado y la primera tarjeta
               const SizedBox(height: 20),
+              // Encabezado "Is not done" con forma circular y color sugerido
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                ), // Ajustar el padding aquí
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          AssetImage('images/madera.jpg'), // Textura de madera
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.blue.withOpacity(0.3), // Color sugerido
+                    borderRadius: BorderRadius.circular(20.0), // Forma circular
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Text(
@@ -108,12 +95,13 @@ class _ToDoState extends State<ToDo> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black,
+                      color: Colors.blue.shade500,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
+              // Espacio entre el encabezado y la lista
               const SizedBox(height: 10),
               Expanded(
                 child: Padding(
@@ -121,18 +109,18 @@ class _ToDoState extends State<ToDo> {
                   child: StreamNote(false, widget.userId, updateTasks),
                 ),
               ),
+              // Separador "isDone"
+              // Espacio entre el separador y la segunda lista
               const SizedBox(height: 10),
+              // Encabezado "isDone" con forma circular y color sugerido
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0), // Ajustar el padding aquí
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          AssetImage('images/madera.jpg'), // Textura de madera
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.blue.withOpacity(0.3), // Color sugerido
+                    borderRadius: BorderRadius.circular(20.0), // Forma circular
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Text(
@@ -140,12 +128,13 @@ class _ToDoState extends State<ToDo> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black,
+                      color: Colors.blue.shade500,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
+              // Espacio entre el encabezado y la segunda lista
               const SizedBox(height: 10),
               Expanded(
                 child: Padding(
@@ -158,9 +147,5 @@ class _ToDoState extends State<ToDo> {
         ),
       ),
     );
-  }
-
-  void updateTasks() {
-    setState(() {});
   }
 }

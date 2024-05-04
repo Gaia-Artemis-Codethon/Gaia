@@ -18,7 +18,6 @@ import '../components/button.dart';
 import '../const/weather_constants.dart';
 import '../models/current_weather_model.dart';
 import '../widgets/weather_card.dart';
-import 'drawing/drawing_page.dart';
 
 class HomePage extends StatelessWidget {
   final Guid userId;
@@ -92,74 +91,56 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image:
-                  AssetImage("images/mclara2.jpg"), // Agregar imagen de fondo
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const CircleAvatar(
-                  radius: 27,
-                  backgroundColor: Color.fromARGB(108, 155, 79, 1),
-                  child: CircleAvatar(
-                    radius: 25,
-                    backgroundImage: AssetImage('images/granjero.png'),
-                  ),
-                ),
-                FutureBuilder<String>(
-                  future: _readCommunityName(),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<String> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Text(
-                            'MI COMUNIDAD:',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          toolbarHeight: 70,
+          title: FutureBuilder<String>(
+            future: _readCommunityName(),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator(); // Muestra un indicador de carga mientras se espera la respuesta
+              } else if (snapshot.hasError) {
+                return Text(
+                    'Error: ${snapshot.error}'); // Muestra un mensaje de error si la future se completa con un error
+              } else {
+                return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CircleAvatar(
+                        radius: 27,
+                        backgroundColor: Color.fromARGB(108, 155, 79, 1),
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: AssetImage('images/granjero.png'),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Column(
+                          children: [
+                            const Text(
+                              'MI COMUNIDAD:',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          Text(
-                            snapshot.data ?? 'Default Community Name',
-                            style: const TextStyle(color: Colors.black),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      );
-                    }
-                  },
-                ),
-              ],
-            ),
+                            Text(
+                              snapshot.data ?? 'Default Community Name',
+                              // Usa los datos de la future, o un valor predeterminado si la future es null
+                              style: const TextStyle(color: Colors.black),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]);
+              }
+            },
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("images/mclara.jpg"), // Agregar imagen de fondo
-              fit: BoxFit.cover,
-            ),
-          ),
+        body: SingleChildScrollView(
           child: Column(
             children: [
               Padding(
@@ -172,6 +153,7 @@ class HomePage extends StatelessWidget {
                           AsyncSnapshot<CurrentWeatherModel?> snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
+                          // Loading state
                           return Container(
                             width: double.infinity,
                             height: 250,
@@ -198,15 +180,18 @@ class HomePage extends StatelessWidget {
                             ),
                           );
                         } else if (snapshot.hasError) {
+                          // Error state
                           return Center(
                               child:
                                   Text('An error occurred: ${snapshot.error}'));
                         } else {
+                          // Data state
                           final weatherData = snapshot.data;
                           if (weatherData == null) {
                             return Center(
                                 child: Text('No weather data available'));
                           } else {
+                            // Display the weather data in a list using WeatherCard
                             return WeatherCard(weather: weatherData);
                           }
                         }
@@ -357,9 +342,6 @@ class HomePage extends StatelessWidget {
                                 );
                               },
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
                           ],
                         ),
                       ),
@@ -369,8 +351,6 @@ class HomePage extends StatelessWidget {
               )
             ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
