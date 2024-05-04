@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -100,7 +102,7 @@ class HomePage extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image:
-                  AssetImage("images/mclara2.jpg"), // Agregar imagen de fondo
+                  AssetImage("images/verdep2.jpg"), // Agregar imagen de fondo
               fit: BoxFit.cover,
             ),
           ),
@@ -109,12 +111,15 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const CircleAvatar(
-                  radius: 27,
-                  backgroundColor: Color.fromARGB(108, 155, 79, 1),
-                  child: CircleAvatar(
-                    radius: 25,
-                    backgroundImage: AssetImage('images/granjero.png'),
+                Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: const CircleAvatar(
+                    radius: 27,
+                    backgroundColor: Color.fromARGB(108, 155, 79, 1),
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: AssetImage('images/granjero.png'),
+                    ),
                   ),
                 ),
                 FutureBuilder<String>(
@@ -130,17 +135,22 @@ class HomePage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const Text(
-                            'MI COMUNIDAD:',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: const Text(
+                              'MI COMUNIDAD:',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 21),
                             ),
                           ),
                           Text(
                             snapshot.data ?? 'Default Community Name',
-                            style: const TextStyle(color: Colors.black),
-                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22),
                           ),
                         ],
                       );
@@ -156,7 +166,8 @@ class HomePage extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("images/mclara.jpg"), // Agregar imagen de fondo
+              image:
+                  AssetImage('images/verdep2.jpg'), // Agregar imagen de fondo
               fit: BoxFit.cover,
             ),
           ),
@@ -364,16 +375,6 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Button(
-                      text: Text("Pinturillo"),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>const DrawingPage()),
-                        );
-                      },
-                    )
                   ],
                 ),
               )

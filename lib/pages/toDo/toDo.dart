@@ -57,79 +57,68 @@ class _ToDoState extends State<ToDo> {
         child: Stack(
           children: [
             Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
+              width: 80,
+              height: 80,
+              decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('images/madera.jpg'),
+                  image: AssetImage("images/añadir.png"),
                   fit: BoxFit.cover,
                 ),
                 shape: BoxShape.circle,
-              ),
-            ),
-            Center(
-              child: Icon(
-                Icons.add,
-                size: 30,
-                color: Colors.white,
               ),
             ),
           ],
         ),
       ),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/mclara.jpg'), // Textura de madera clara
+          image: const DecorationImage(
+            image: AssetImage('images/verdep2.jpg'), // Textura de madera clara
             fit: BoxFit.cover,
           ),
         ),
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 35.0),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          AssetImage('images/madera.jpg'), // Textura de madera
+                    image: const DecorationImage(
+                      image: AssetImage(
+                          'images/porhacer.png'), // Textura de madera
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Text(
+                  child: const Text(
                     'Por hacer',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black,
+                      color: Color(0xFF94B57C),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
                   child: StreamNote(false, widget.userId, updateTasks),
                 ),
               ),
-              const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 35.0),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image:
-                          AssetImage('images/madera.jpg'), // Textura de madera
+                      image: AssetImage(
+                          'images/porhacer.png'), // Textura de madera
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(20.0),
@@ -140,16 +129,16 @@ class _ToDoState extends State<ToDo> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black,
+                      color: Color(0xFF94B57C),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
                   child: StreamNote(true, widget.userId, updateTasks),
                 ),
               ),
