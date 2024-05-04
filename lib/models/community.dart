@@ -6,17 +6,17 @@ class Community {
 
   Community({required this.id, required this.name});
 
-  factory Community.fromJson(Map<String, dynamic> json) {
+  static Community fromJson(Map<String, dynamic> json) {
     return Community(
       id: json['id'],
       name: json['name'],
     );
   }
 
-  Map<String, dynamic> toJson() {
+  static Map<String, dynamic> toJson(Community data) {
     return {
-      'id': id,
-      'name': name,
+      'id': data.id,
+      'name': data.name,
     };
   }
 }
