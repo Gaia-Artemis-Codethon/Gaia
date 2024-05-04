@@ -14,7 +14,8 @@ class CommunitySupabase {
       if (data.isEmpty) {
         return null;
       } else {
-        final community = Community.fromJson(data as Map<String, dynamic>); // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
+        final community = Community.fromJson(
+            data); // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
 
         return community;
       }

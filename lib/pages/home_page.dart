@@ -375,16 +375,6 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Button(
-                      text: Text("Pinturillo"),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DrawingPage()),
-                        );
-                      },
-                    )
                   ],
                 ),
               )

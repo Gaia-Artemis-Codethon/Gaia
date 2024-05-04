@@ -6,16 +6,16 @@ class Community {
 
   Community({required this.id, required this.name});
 
-  static Community fromJson(Map<String, dynamic> json) {
+  static Community fromJson(json) {
     return Community(
-      id: json[0]['id'],
+      id: Guid(json[0]['id']),
       name: json[0]['name'],
     );
   }
 
   static Map<String, dynamic> toJson(Community data) {
     return {
-      'id': data.id,
+      'id': data.id.value,
       'name': data.name,
     };
   }
