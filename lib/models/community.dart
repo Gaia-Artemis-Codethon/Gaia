@@ -8,8 +8,8 @@ class Community {
 
   static Community fromJson(Map<String, dynamic> json) {
     return Community(
-      id: json['id'],
-      name: json['name'],
+      id: json[0]['id'],
+      name: json[0]['name'],
     );
   }
 
