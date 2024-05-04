@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/main.dart';
 import 'package:flutter_application_huerto/models/task.dart';
@@ -25,13 +24,13 @@ class _TaskWidgetState extends State<TaskWidget> {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
         width: double.infinity,
-        height: 120,
+        height: 130,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           // ignore: prefer_const_constructors
           image: DecorationImage(
-            image: const AssetImage(
-                'images/tarjeta.png'), // Imagen de textura de madera
+            image:
+                AssetImage('images/madera.jpg'), // Imagen de textura de madera
             fit: BoxFit.cover,
           ),
           boxShadow: [
@@ -51,12 +50,12 @@ class _TaskWidgetState extends State<TaskWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 17),
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             widget.note.name,
                             style: const TextStyle(
@@ -64,24 +63,21 @@ class _TaskWidgetState extends State<TaskWidget> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Checkbox(
-                            activeColor: Colors.green.shade200,
-                            value: isDone,
-                            onChanged: (value) async {
-                              setState(() {
-                                isDone = !isDone;
-                              });
-                              await TaskSupabase().taskIsDone(Task(
-                                  id: widget.note.id,
-                                  status: isDone,
-                                  name: widget.note.name,
-                                  user_id: widget.note.user_id));
-                              widget.onTaskStatusChanged();
-                            },
-                          ),
-                        ),
+                        Checkbox(
+                          activeColor: Colors.green.shade200,
+                          value: isDone,
+                          onChanged: (value) async {
+                            setState(() {
+                              isDone = !isDone;
+                            });
+                            await TaskSupabase().taskIsDone(Task(
+                                id: widget.note.id,
+                                status: isDone,
+                                name: widget.note.name,
+                                user_id: widget.note.user_id));
+                            widget.onTaskStatusChanged();
+                          },
+                        )
                       ],
                     ),
                     const Spacer(),
@@ -98,9 +94,7 @@ class _TaskWidgetState extends State<TaskWidget> {
 
   Widget editTime() {
     return Padding(
-      padding: const EdgeInsets.only(
-          bottom:
-              17), // Agregado para espacio entre los GestureDetectors y el borde inferior
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -114,31 +108,32 @@ class _TaskWidgetState extends State<TaskWidget> {
                   await TaskSupabase().deleteTask(widget.note.id);
                   widget.onTaskStatusChanged();
                 },
-                child: Container(
-                  width: 130,
-                  height: 45,
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        'images/boton.png',
-                        width: double.infinity,
-                        height: double.infinity,
-                        fit: BoxFit.fill,
-                      ),
-                      Positioned(
-                        left: 30, // Ajusta esta coordenada según tu necesidad
-                        top: 14, // Ajusta esta coordenada según tu necesidad
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      'images/bot.png',
+                      width: 130,
+                      height: 45,
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top:
+                          5, // Ajusta esta línea para mover el texto hacia abajo
+                      bottom: 0,
+                      child: Center(
                         child: Text(
                           'Eliminar',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF94B57C),
+                            color: Colors
+                                .white, // Asegúrate de que el color del texto sea visible sobre el fondo
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(width: 20),
@@ -146,37 +141,35 @@ class _TaskWidgetState extends State<TaskWidget> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => EditToDo(
-                      widget.note,
-                      userId!,
-                      widget.onTaskStatusChanged,
-                    ),
+                        widget.note, userId!, widget.onTaskStatusChanged),
                   ));
                 },
-                child: Container(
-                  width: 130,
-                  height: 45,
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        'images/boton.png',
-                        width: double.infinity,
-                        height: double.infinity,
-                        fit: BoxFit.fill,
-                      ),
-                      Positioned(
-                        left: 39, // Ajusta esta coordenada según tu necesidad
-                        top: 14, // Ajusta esta coordenada según tu necesidad
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      'images/bot.png',
+                      width: 130,
+                      height: 45,
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top:
+                          5, // Ajusta esta línea para mover el texto hacia abajo
+                      bottom: 0,
+                      child: Center(
                         child: Text(
                           'Editar',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF94B57C),
+                            color: Colors
+                                .white, // Asegúrate de que el color del texto sea visible sobre el fondo
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],

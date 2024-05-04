@@ -26,8 +26,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
   void initState() {
     super.initState();
     _communityIdController.addListener(_updateButtonState);
-    _communityIdController.text =
-        "f32b22dd-31d4-42b9-ad73-6a28c06ca83d"; //Debug purposes, do not upload to prod
+    _communityIdController.text = "a8bf60ca-9c16-4322-afe3-a1f2a8b443a4"; //Debug purposes, do not upload to prod
   }
 
   @override
@@ -115,125 +114,101 @@ class _JoinCommunityState extends State<JoinCommunity> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
         title: const Align(
           alignment: Alignment.centerRight,
           child: Text(
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-            'Únete a una Comunidad',
-          ),
-        ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("images/verdep2.jpg"),
-              fit: BoxFit.cover,
-            ),
+            'ÚNETE A UNA COMUNIDAD',
           ),
         ),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/verdep2.jpg'),
-            fit: BoxFit.cover,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Únete a una comunidad",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                "Juntate con tus vecinos!",
-                textAlign: TextAlign.left,
-              ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Únete ahora mismo a una comunidad y comienza a plantar un futuro sostenible junto a tus vecinos!",
+              textAlign: TextAlign.left,
             ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                style: TextStyle(fontSize: 18),
-                "Únete ahora mismo a una comunidad y comienza a plantar un futuro sostenible junto a tus vecinos",
-                textAlign: TextAlign.left,
-              ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "ID de la comunidad",
+              textAlign: TextAlign.left,
             ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                "ID de la comunidad",
-                textAlign: TextAlign.left,
-              ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "PREGUNTA ESTE CÓDIGO A ALGÚN VECINO",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 10),
             ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "PREGUNTA ESTE CÓDIGO A ALGÚN VECINO",
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: 40,
-                child: TextField(
-                  controller: _communityIdController,
-                  style: const TextStyle(fontSize: 18, color: Colors.black),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.green[100],
-                  ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 40,
+              child: TextField(
+                controller: _communityIdController,
+                style: const TextStyle(fontSize: 18, color: Colors.black),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.green[100],
                 ),
               ),
             ),
-            Center(
-              child: Container(
-                width: 140, // Ancho ajustado del botón
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        'images/boton.png'), // Imagen de fondo del botón
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: TextButton(
-                  onPressed: _isButtonEnabled
-                      ? () async {
-                          Community? community = await _readCommunityById();
-                          if (community != null) {
-                            // Aquí ya se ha navegado a HomePage con el userId en _readCommunityById
-                            // Asegúrate de que el userId se obtenga correctamente antes de la navegación
-                            Guid? userId =
-                                await _updateUserIdCommunity(community);
-                            if (userId != null) {
-                              // Navega a HomePage con el userId
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomePage(userId),
-                                ),
-                              );
-                            }
-                          }
+          ),
+          Center(
+            child: Button(
+              text: const Text(
+                "Continuar",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: _isButtonEnabled
+                  ? () async {
+                      Community? community = await _readCommunityById();
+                      if (community != null) {
+                        // Aquí ya se ha navegado a HomePage con el userId en _readCommunityById
+                        // Asegúrate de que el userId se obtenga correctamente antes de la navegación
+                        Guid? userId = await _updateUserIdCommunity(community);
+                        if (userId != null) {
+                          // Navega a HomePage con el userId
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomePage(userId),
+                            ),
+                          );
                         }
-                      : null,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 14, top: 5),
-                    child: const Text(
-                      "Continuar",
-                      style: TextStyle(color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+                      }
+                    }
+                  : null,
+              icon: const Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: OurColors().accent,
+                alignment: Alignment.center,
               ),
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

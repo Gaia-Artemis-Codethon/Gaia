@@ -37,17 +37,19 @@ class _UserPlantsState extends State<UserPlants> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
-        title: Text('Tus Plantas'),
         elevation: 0,
-        backgroundColor: Colors.transparent,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('images/verdep2.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
+        title: Text('Tus Plantas'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomePage(widget.userId)));
+            ;
+          },
         ),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>?>(
@@ -62,52 +64,43 @@ class _UserPlantsState extends State<UserPlants> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             showFAB = false;
             return Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('images/verdep2.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              decoration: BoxDecoration(color: OurColors().backgroundColor),
               child: Center(
                 child: Container(
-                  width: 300,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'No se ha encontrado ninguna planta ¿Quieres añadir alguna?',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Button(
-                        text: Text(
-                          'Si!',
+                    width: 300,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'No se ha encontrado ninguna planta ¿Quieres añadir alguna?',
                           style: TextStyle(
-                            color: OurColors().primaryTextColor,
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Button(
+                          text: Text(
+                            'Si!',
+                            style:
+                            TextStyle(color: OurColors().primaryTextColor),
                           ),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              OurColors().primary),
-                          elevation: MaterialStateProperty.all<double>(2.0),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SearchPage(widget.userId),
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  OurColors().primary),
+                              elevation:
+                              MaterialStateProperty.all<double>(2.0)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SearchPage(widget.userId),
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    )),
               ),
             );
           } else {
@@ -115,10 +108,7 @@ class _UserPlantsState extends State<UserPlants> {
             return Container(
               padding: EdgeInsets.only(top: 10.0),
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('images/verdep2.jpg'),
-                  fit: BoxFit.cover,
-                ),
+                color: OurColors().backgroundColor,
               ),
               child: ListView.builder(
                 itemCount: snapshot.data!.length,
@@ -126,13 +116,12 @@ class _UserPlantsState extends State<UserPlants> {
                   final planted = snapshot.data![index];
                   return PlantedItem(
                     plant: Planted(
-                      id: Guid(planted['id']),
-                      user_id: Guid(planted['user_id']),
-                      crop_id: Guid(planted['crop_id']),
-                      land_id: Guid(planted['land_id']),
-                      planted_time: DateTime.parse(planted['planted_time']),
-                      status: planted['status'],
-                    ),
+                        id: Guid(planted['id']),
+                        user_id: Guid(planted['user_id']),
+                        crop_id: Guid(planted['crop_id']),
+                        land_id: Guid(planted['land_id']),
+                        planted_time: DateTime.parse(planted['planted_time']),
+                        status: planted['status']),
                     userId: widget.userId,
                   );
                 },
