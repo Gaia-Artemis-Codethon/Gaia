@@ -26,7 +26,8 @@ class _JoinCommunityState extends State<JoinCommunity> {
   void initState() {
     super.initState();
     _communityIdController.addListener(_updateButtonState);
-    _communityIdController.text = "a8bf60ca-9c16-4322-afe3-a1f2a8b443a4"; //Debug purposes, do not upload to prod
+    _communityIdController.text =
+        "f32b22dd-31d4-42b9-ad73-6a28c06ca83d"; //Debug purposes, do not upload to prod
   }
 
   @override
