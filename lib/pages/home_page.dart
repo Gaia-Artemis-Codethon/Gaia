@@ -1,8 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
-import 'package:flutter_application_huerto/data/models/current_weather.dart';
 import 'package:flutter_application_huerto/pages/map/mapPage.dart';
 import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
 import 'package:flutter_application_huerto/pages/toDo/toDo.dart';
@@ -93,56 +94,83 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          toolbarHeight: 70,
-          title: FutureBuilder<String>(
-            future: _readCommunityName(),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator(); // Muestra un indicador de carga mientras se espera la respuesta
-              } else if (snapshot.hasError) {
-                return Text(
-                    'Error: ${snapshot.error}'); // Muestra un mensaje de error si la future se completa con un error
-              } else {
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const CircleAvatar(
-                        radius: 27,
-                        backgroundColor: Color.fromARGB(108, 155, 79, 1),
-                        child: CircleAvatar(
-                          radius: 25,
-                          backgroundImage: AssetImage('images/granjero.png'),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Column(
-                          children: [
-                            const Text(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image:
+                  AssetImage("images/verdep2.jpg"), // Agregar imagen de fondo
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: const CircleAvatar(
+                    radius: 27,
+                    backgroundColor: Color.fromARGB(108, 155, 79, 1),
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: AssetImage('images/granjero.png'),
+                    ),
+                  ),
+                ),
+                FutureBuilder<String>(
+                  future: _readCommunityName(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: const Text(
                               'MI COMUNIDAD:',
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 21),
                             ),
-                            Text(
-                              snapshot.data ?? 'Default Community Name',
-                              // Usa los datos de la future, o un valor predeterminado si la future es null
-                              style: const TextStyle(color: Colors.black),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ]);
-              }
-            },
+                          ),
+                          Text(
+                            snapshot.data ?? 'Default Community Name',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22),
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
-        body: SingleChildScrollView(
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image:
+                  AssetImage('images/verdep2.jpg'), // Agregar imagen de fondo
+              fit: BoxFit.cover,
+            ),
+          ),
           child: Column(
             children: [
               Padding(
@@ -155,7 +183,6 @@ class HomePage extends StatelessWidget {
                           AsyncSnapshot<CurrentWeatherModel?> snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          // Loading state
                           return Container(
                             width: double.infinity,
                             height: 250,
@@ -182,18 +209,15 @@ class HomePage extends StatelessWidget {
                             ),
                           );
                         } else if (snapshot.hasError) {
-                          // Error state
                           return Center(
                               child:
                                   Text('An error occurred: ${snapshot.error}'));
                         } else {
-                          // Data state
                           final weatherData = snapshot.data;
                           if (weatherData == null) {
                             return Center(
                                 child: Text('No weather data available'));
                           } else {
-                            // Display the weather data in a list using WeatherCard
                             return WeatherCard(weather: weatherData);
                           }
                         }
@@ -347,25 +371,27 @@ class HomePage extends StatelessWidget {
                             const SizedBox(
                               height: 10,
                             ),
-                            Button(
-                              text: Text("Pinturillo"),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>const DrawingPage()),
-                                );
-                              },
-                            )
                           ],
                         ),
                       ),
                     ),
+                    Button(
+                      text: Text("Pinturillo"),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const DrawingPage()),
+                        );
+                      },
+                    )
                   ],
                 ),
               )
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
