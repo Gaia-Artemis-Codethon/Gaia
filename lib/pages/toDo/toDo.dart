@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_huerto/models/task.dart';
 import 'package:flutter_application_huerto/pages/toDo/add_task.dart';
+import 'package:flutter_application_huerto/service/task_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
 import '../../const/colors.dart';
@@ -15,10 +19,15 @@ class ToDo extends StatefulWidget {
   State<ToDo> createState() => _ToDoState();
 }
 
-bool show = true;
-
 class _ToDoState extends State<ToDo> {
   bool showFloatingButton = true;
+  late Stream<List<Task>> _tasksStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _tasksStream = TaskSupabase().getPendingTasks(widget.userId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +69,11 @@ class _ToDoState extends State<ToDo> {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.3),
+                  color: Color.fromARGB(255, 10, 77, 43).withOpacity(0.3),
                   borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
+                      color: Color.fromARGB(114, 2, 133, 70),
                       spreadRadius: 1,
                       blurRadius: 3,
                       offset: const Offset(0, 2),
@@ -77,7 +86,7 @@ class _ToDoState extends State<ToDo> {
                     'Por hacer',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.blue.shade500,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -86,9 +95,28 @@ class _ToDoState extends State<ToDo> {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: StreamNote(false, widget.userId, updateTasks),
+              child: StreamBuilder<List<Task>>(
+                stream: _tasksStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.isEmpty) {
+                      return _emptyTask();
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: StreamNote(false, widget.userId, updateTasks),
+                      );
+                    }
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
               ),
             ),
             const SizedBox(height: 10),
@@ -97,11 +125,11 @@ class _ToDoState extends State<ToDo> {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.3),
+                  color: Color.fromARGB(255, 10, 77, 43).withOpacity(0.3),
                   borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
+                      color: Color.fromARGB(114, 2, 133, 70),
                       spreadRadius: 1,
                       blurRadius: 3,
                       offset: const Offset(0, 2),
@@ -114,7 +142,7 @@ class _ToDoState extends State<ToDo> {
                     'Hecho',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.blue.shade500,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -134,7 +162,35 @@ class _ToDoState extends State<ToDo> {
     );
   }
 
+  Widget _emptyTask() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: Image.asset(
+              'images/junimo.png',
+              width: 200,
+              height: 200,
+            ),
+          ),
+          Text(
+            '¿No tienes tareas por hacer?',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void updateTasks() {
-    setState(() {});
+    setState(() {
+      _tasksStream = TaskSupabase().getPendingTasks(widget.userId);
+    });
   }
 }
