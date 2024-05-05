@@ -100,8 +100,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             children: [
               GestureDetector(
                 onTap: () async {
-                  await TaskSupabase().deleteTask(widget.note.id);
-                  widget.onTaskStatusChanged();
+                  showConfirmationDialog(context);
                 },
                 child: Column(
                   // Wrap each button and text in a Column
@@ -179,6 +178,51 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
         ),
       ),
+    );
+  }
+
+  void showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Eliminar tarea"),
+          content: Text("¿Estás seguro de querer eliminar esta tarea?"),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () async {
+                  await TaskSupabase().deleteTask(widget.note.id);
+                  widget.onTaskStatusChanged();
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: OurColors().primary,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  child: Text(
+                    "Si",
+                    style: TextStyle(color: OurColors().primaryTextColor),
+                  ),
+                )),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: OurColors().deleteButton,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  child: Text(
+                    "No",
+                    style: TextStyle(color: OurColors().primaryTextColor),
+                  ),
+                )),
+          ],
+        );
+      },
     );
   }
 }

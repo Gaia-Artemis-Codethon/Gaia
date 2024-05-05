@@ -117,6 +117,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
+        backgroundColor: OurColors().backgroundColor,
         title: const Align(
           alignment: Alignment.centerRight,
           child: Text(
@@ -178,7 +179,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
               text: const Text(
                 "Continuar",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onPressed: _isButtonEnabled
                   ? () async {
@@ -201,10 +202,10 @@ class _JoinCommunityState extends State<JoinCommunity> {
                   : null,
               icon: const Icon(
                 Icons.arrow_forward,
-                color: Colors.white,
+                color: Colors.black,
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: OurColors().accent,
+                backgroundColor: OurColors().primaryButton,
                 alignment: Alignment.center,
               ),
             ),

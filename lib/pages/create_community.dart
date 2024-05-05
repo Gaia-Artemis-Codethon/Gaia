@@ -77,6 +77,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
+        backgroundColor: OurColors().backgroundColor,
         title: const Align(
           alignment: Alignment.centerRight,
           child: Text(
@@ -131,7 +132,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
             child: Button(
               text: const Text(
                 "Continuar",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
                 textAlign: TextAlign.center,
               ),
               onPressed: _isButtonEnabled
@@ -148,10 +149,10 @@ class _CreateCommunityState extends State<CreateCommunity> {
                   : null,
               icon: const Icon(
                 Icons.arrow_forward,
-                color: Colors.white,
+                color: Colors.black,
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: OurColors().accent,
+                backgroundColor: OurColors().primaryButton,
                 alignment: Alignment.center,
               ),
             ),

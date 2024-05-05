@@ -44,7 +44,7 @@ class FirstHomePage extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[400],
+                    backgroundColor: OurColors().primaryButton,
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -52,7 +52,10 @@ class FirstHomePage extends StatelessWidget {
                   ),
                   child: Text(
                     "Unirse a una comunidad",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),
@@ -69,7 +72,7 @@ class FirstHomePage extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[400],
+                    backgroundColor: OurColors().primaryButton,
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -77,7 +80,7 @@ class FirstHomePage extends StatelessWidget {
                   ),
                   child: Text(
                     "Crear una comunidad",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: Colors.black),
                   ),
                 ),
               ),

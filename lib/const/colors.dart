@@ -9,6 +9,7 @@ class OurColors {
   Color primary = const Color(0xFF74AC51);
   Color primaryBorderColor = const Color(0xFF6C9F4B);
   Color sectionBackground = const Color(0xFFECF4E8);
-  Color backgroundText = const Color (0xFF292929);
+  Color backgroundText = const Color(0xFF292929);
   Color sectionBorder = const Color(0xFFE6E6E6);
+  Color primaryButton = const Color.fromARGB(255, 103, 214, 123);
 }

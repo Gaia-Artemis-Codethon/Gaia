@@ -15,7 +15,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-
 class ForecastPage extends StatefulWidget {
   ForecastPage();
 
@@ -89,9 +88,7 @@ class _ForecastState extends State<ForecastPage> {
     return "Hoy $dayOfWeek $dayOfMonth de $month";
   }
 
-  Future<void> _fetchHourlyForecast() async{
-
-  }
+  Future<void> _fetchHourlyForecast() async {}
 
   Future<void> _fetchForecast() async {
     String? city = await getCurrentLocation();
@@ -214,13 +211,13 @@ class _ForecastState extends State<ForecastPage> {
                       children: [
                         SizedBox(
                           height: 130,
-                          child:
-                          ListView.builder(
+                          child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
                             itemCount: _listHours.length,
                             itemBuilder: (context, index) {
-                              return HourlyForecastItem(weather: _listHours[index]);
+                              return HourlyForecastItem(
+                                  weather: _listHours[index]);
                             },
                           ),
                         ),

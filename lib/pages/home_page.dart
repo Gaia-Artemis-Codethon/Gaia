@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -91,266 +93,176 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          toolbarHeight: 70,
-          title: FutureBuilder<String>(
-            future: _readCommunityName(),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator(); // Muestra un indicador de carga mientras se espera la respuesta
-              } else if (snapshot.hasError) {
-                return Text(
-                    'Error: ${snapshot.error}'); // Muestra un mensaje de error si la future se completa con un error
-              } else {
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const CircleAvatar(
-                        radius: 27,
-                        backgroundColor: Color.fromARGB(108, 155, 79, 1),
-                        child: CircleAvatar(
-                          radius: 25,
-                          backgroundImage: AssetImage('images/granjero.png'),
+      backgroundColor: OurColors().backgroundColor,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: OurColors().backgroundColor,
+        elevation: 0,
+        toolbarHeight: 70,
+        title: FutureBuilder<String>(
+          future: _readCommunityName(),
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const CircleAvatar(
+                    radius: 27,
+                    backgroundColor: Color.fromARGB(108, 155, 79, 1),
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: AssetImage('images/granjero.png'),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Column(
+                      children: [
+                        const Text(
+                          'MI COMUNIDAD:',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Column(
-                          children: [
-                            const Text(
-                              'MI COMUNIDAD:',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              snapshot.data ?? 'Default Community Name',
-                              // Usa los datos de la future, o un valor predeterminado si la future es null
-                              style: const TextStyle(color: Colors.black),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                        Text(
+                          snapshot.data ?? 'Default Community Name',
+                          style: const TextStyle(color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ]);
-              }
-            },
-          ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            }
+          },
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Column(
-                  children: [
-                    FutureBuilder<CurrentWeatherModel?>(
-                      future: _getCurrentWeather(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<CurrentWeatherModel?> snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          // Loading state
-                          return Container(
-                            width: double.infinity,
-                            height: 250,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Color(0xFF7CB9FF), // Start color
-                                  Color(0xFF5162FF), // End color
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircularProgressIndicator(
-                                    valueColor:
-                                        AlwaysStoppedAnimation(Colors.white))
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Column(
+                children: [
+                  FutureBuilder<CurrentWeatherModel?>(
+                    future: _getCurrentWeather(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<CurrentWeatherModel?> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Loading state
+                        return Container(
+                          width: double.infinity,
+                          height: 250,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color(0xFF7CB9FF), // Start color
+                                Color(0xFF5162FF), // End color
                               ],
                             ),
-                          );
-                        } else if (snapshot.hasError) {
-                          // Error state
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white))
+                            ],
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        // Error state
+                        return Center(
+                            child:
+                                Text('An error occurred: ${snapshot.error}'));
+                      } else {
+                        // Data state
+                        final weatherData = snapshot.data;
+                        if (weatherData == null) {
                           return Center(
-                              child:
-                                  Text('An error occurred: ${snapshot.error}'));
+                              child: Text('No weather data available'));
                         } else {
-                          // Data state
-                          final weatherData = snapshot.data;
-                          if (weatherData == null) {
-                            return Center(
-                                child: Text('No weather data available'));
-                          } else {
-                            // Display the weather data in a list using WeatherCard
-                            return WeatherCard(weather: weatherData);
-                          }
+                          // Display the weather data in a list using WeatherCard
+                          return WeatherCard(weather: weatherData);
                         }
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      "Mi parcela",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ToDo(userId),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        height: 180.0,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: OurColors().sectionBackground,
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Lista de tareas",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              icon: SvgPicture.asset("images/todo.svg",
-                                  width: 100, height: 100),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ToDo(userId),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserPlants(userId),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        height: 180.0,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: OurColors().sectionBackground,
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Cultivos",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              icon: SvgPicture.asset("images/planta.svg",
-                                  width: 100, height: 100),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => UserPlants(userId),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MapPage(userId)),
-                        );
-                      },
-                      child: Container(
-                        height: 180.0,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: OurColors().sectionBackground,
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Mapa",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              icon: SvgPicture.asset("images/mapa.svg",
-                                  width: 100, height: 100),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MapPage(userId)),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ));
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Mi parcela",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/todo.svg",
+                width: 30,
+                height: 30,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ToDo(userId),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/planta.svg",
+                width: 30,
+                height: 30,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserPlants(userId),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/mapa.svg",
+                width: 30,
+                height: 30,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MapPage(userId),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
