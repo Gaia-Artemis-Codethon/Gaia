@@ -39,6 +39,7 @@ class _UserPlantsState extends State<UserPlants> {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
+        backgroundColor: OurColors().backgroundColor,
         elevation: 0,
         title: Text('Tus Plantas'),
         leading: IconButton(
@@ -83,13 +84,13 @@ class _UserPlantsState extends State<UserPlants> {
                           text: Text(
                             'Si!',
                             style:
-                            TextStyle(color: OurColors().primaryTextColor),
+                                TextStyle(color: OurColors().primaryTextColor),
                           ),
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   OurColors().primary),
                               elevation:
-                              MaterialStateProperty.all<double>(2.0)),
+                                  MaterialStateProperty.all<double>(2.0)),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -132,23 +133,23 @@ class _UserPlantsState extends State<UserPlants> {
       ),
       floatingActionButton: Visibility(
         visible: showFAB,
-        child: FloatingActionButton(
-          mini: false,
-          heroTag: null,
-          tooltip: 'Add more plants',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SearchPage(widget.userId),
-              ),
-            );
-          },
-          backgroundColor: OurColors().accent,
-          child: Container(
-            padding: const EdgeInsets.all(10),
+        child: ClipOval(
+          child: FloatingActionButton(
+            mini: false,
+            heroTag: null,
+            tooltip: 'Add more plants',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(widget.userId),
+                ),
+              );
+            },
+            backgroundColor: OurColors().primaryButton,
             child: Icon(
               Icons.add,
+              size: 35,
               color: OurColors().sectionBackground,
             ),
           ),

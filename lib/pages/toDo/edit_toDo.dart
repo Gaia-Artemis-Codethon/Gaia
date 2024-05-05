@@ -10,8 +10,9 @@ import '../../service/task_supabase.dart';
 class EditToDo extends StatefulWidget {
   final Task _note;
   final Guid userId;
-  final VoidCallback onTaskStatusChanged; 
-  const EditToDo(this._note, this.userId, this.onTaskStatusChanged,{super.key});
+  final VoidCallback onTaskStatusChanged;
+  const EditToDo(this._note, this.userId, this.onTaskStatusChanged,
+      {super.key});
 
   @override
   State<EditToDo> createState() => _EditToDoState();
@@ -67,7 +68,8 @@ class _EditToDoState extends State<EditToDo> {
                       widget.onTaskStatusChanged();
                       Navigator.pop(context);
                     },
-              child: Text('Añadir tarea',
+              child: Text(
+                'Editar tarea',
                 style: TextStyle(color: OurColors().primaryTextColor),
               ),
             ),
@@ -79,7 +81,8 @@ class _EditToDoState extends State<EditToDo> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancelar',
+              child: Text(
+                'Cancelar',
                 style: TextStyle(color: OurColors().primaryTextColor),
               ),
             ),

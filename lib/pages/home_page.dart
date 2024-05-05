@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, deprecated_member_use
 
 import 'dart:convert';
 
@@ -212,6 +212,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -220,6 +221,7 @@ class HomePage extends StatelessWidget {
                 "images/todo.svg",
                 width: 30,
                 height: 30,
+                color: OurColors().primaryButton,
               ),
               onPressed: () {
                 Navigator.push(
@@ -235,6 +237,7 @@ class HomePage extends StatelessWidget {
                 "images/planta.svg",
                 width: 30,
                 height: 30,
+                color: OurColors().primaryButton,
               ),
               onPressed: () {
                 Navigator.push(
@@ -250,6 +253,7 @@ class HomePage extends StatelessWidget {
                 "images/mapa.svg",
                 width: 30,
                 height: 30,
+                color: OurColors().primaryButton,
               ),
               onPressed: () {
                 Navigator.push(

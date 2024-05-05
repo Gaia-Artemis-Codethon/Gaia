@@ -36,17 +36,19 @@ class _ToDoState extends State<ToDo> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Add_Task(widget.userId, updateTasks),
-          ));
-        },
-        backgroundColor: Colors.green.shade200,
-        child: const Icon(
-          Icons.add,
-          size: 30,
-          color: Colors.white,
+      floatingActionButton: ClipOval(
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Add_Task(widget.userId, updateTasks),
+            ));
+          },
+          backgroundColor: OurColors().primaryButton,
+          child: const Icon(
+            Icons.add,
+            size: 35,
+            color: Colors.white,
+          ),
         ),
       ),
       body: SafeArea(
