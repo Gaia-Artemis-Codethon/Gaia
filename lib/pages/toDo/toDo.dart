@@ -26,11 +26,10 @@ class _ToDoState extends State<ToDo> {
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
         backgroundColor: OurColors().backgroundColor,
-        // Hace que el AppBar sea transparente
-        elevation: 0, // Elimina la sombra del AppBar
+        elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Colors.black, // Color del ícono
+          color: Colors.black,
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -55,32 +54,36 @@ class _ToDoState extends State<ToDo> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Espacio entre el encabezado y la primera tarjeta
             const SizedBox(height: 20),
-            // Encabezado "Is not done" con forma circular y color sugerido
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-              ), // Ajustar el padding aquí
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.3), // Color sugerido
-                  borderRadius: BorderRadius.circular(20.0), // Forma circular
+                  color: Colors.blue.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Text(
-                  'Por hacer',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue.shade500,
-                    fontWeight: FontWeight.bold,
+                child: Center(
+                  child: Text(
+                    'Por hacer',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.blue.shade500,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
             ),
-            // Espacio entre el encabezado y la lista
             const SizedBox(height: 10),
             Expanded(
               child: Padding(
@@ -88,33 +91,36 @@ class _ToDoState extends State<ToDo> {
                 child: StreamNote(false, widget.userId, updateTasks),
               ),
             ),
-            // Separador "isDone"
-            // Espacio entre el separador y la segunda lista
             const SizedBox(height: 10),
-            // Encabezado "isDone" con forma circular y color sugerido
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-              ), // Ajustar el padding aquí
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.3), // Color sugerido
-                  borderRadius: BorderRadius.circular(20.0), // Forma circular
+                  color: Colors.blue.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Text(
-                  'Hecho',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue.shade500,
-                    fontWeight: FontWeight.bold,
+                child: Center(
+                  child: Text(
+                    'Hecho',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.blue.shade500,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
             ),
-            // Espacio entre el encabezado y la segunda lista
             const SizedBox(height: 10),
             Expanded(
               child: Padding(

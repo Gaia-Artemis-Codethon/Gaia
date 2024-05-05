@@ -148,54 +148,64 @@ class HomePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Column(
                 children: [
-                  FutureBuilder<CurrentWeatherModel?>(
-                    future: _getCurrentWeather(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<CurrentWeatherModel?> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        // Loading state
-                        return Container(
-                          width: double.infinity,
-                          height: 250,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color(0xFF7CB9FF), // Start color
-                                Color(0xFF5162FF), // End color
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(
-                                  valueColor:
-                                      AlwaysStoppedAnimation(Colors.white))
-                            ],
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        // Error state
-                        return Center(
-                            child:
-                                Text('An error occurred: ${snapshot.error}'));
-                      } else {
-                        // Data state
-                        final weatherData = snapshot.data;
-                        if (weatherData == null) {
-                          return Center(
-                              child: Text('No weather data available'));
-                        } else {
-                          // Display the weather data in a list using WeatherCard
-                          return WeatherCard(weather: weatherData);
-                        }
-                      }
-                    },
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FutureBuilder<CurrentWeatherModel?>(
+                          future: _getCurrentWeather(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<CurrentWeatherModel?> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              // Loading state
+                              return Container(
+                                width: double.infinity,
+                                height: 150,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xFF7CB9FF), // Start color
+                                      Color(0xFF5162FF), // End color
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor:
+                                        AlwaysStoppedAnimation(Colors.white),
+                                  ),
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              // Error state
+                              return Center(
+                                child: Text(
+                                    'An error occurred: ${snapshot.error}'),
+                              );
+                            } else {
+                              // Data state
+                              final weatherData = snapshot.data;
+                              if (weatherData == null) {
+                                return Center(
+                                  child: Text('No weather data available'),
+                                );
+                              } else {
+                                // Display the weather data in a list using WeatherCard
+                                return WeatherCard(weather: weatherData);
+                              }
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 10),
                   const Text(

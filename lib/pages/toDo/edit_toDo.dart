@@ -20,7 +20,7 @@ class EditToDo extends StatefulWidget {
 
 class _EditToDoState extends State<EditToDo> {
   TextEditingController? title;
-  TextEditingController? subtitle;
+  TextEditingController? description;
 
   FocusNode _focusNode1 = FocusNode();
   FocusNode _focusNode2 = FocusNode();
@@ -30,6 +30,7 @@ class _EditToDoState extends State<EditToDo> {
   void initState() {
     super.initState();
     title = TextEditingController(text: widget._note.name);
+    description = TextEditingController(text: widget._note.description);
   }
 
   @override
@@ -39,7 +40,13 @@ class _EditToDoState extends State<EditToDo> {
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [title_widgets(), const SizedBox(height: 20), button()],
+          children: [
+            title_widgets(),
+            const SizedBox(height: 20),
+            description_widgets(),
+            const SizedBox(height: 20),
+            button(),
+          ],
         ),
       ),
     );
@@ -61,10 +68,12 @@ class _EditToDoState extends State<EditToDo> {
                   ? null
                   : () async {
                       await TaskSupabase().updateTask(Task(
-                          id: widget._note.id,
-                          name: title!.text,
-                          status: widget._note.status,
-                          user_id: widget._note.user_id));
+                        id: widget._note.id,
+                        name: title!.text,
+                        status: widget._note.status,
+                        description: description!.text,
+                        user_id: widget._note.user_id,
+                      ));
                       widget.onTaskStatusChanged();
                       Navigator.pop(context);
                     },
@@ -92,45 +101,6 @@ class _EditToDoState extends State<EditToDo> {
     );
   }
 
-  Container imagess() {
-    return Container(
-      height: 180,
-      child: ListView.builder(
-        itemCount: 4,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                indexx = index;
-              });
-            },
-            child: Padding(
-              padding: EdgeInsets.only(left: index == 0 ? 7 : 0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    width: 2,
-                    color:
-                        indexx == index ? Colors.green.shade200 : Colors.grey,
-                  ),
-                ),
-                width: 140,
-                margin: const EdgeInsets.all(8),
-                child: Column(
-                  children: [
-                    Image.asset('images/${index}.png'),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
   Widget title_widgets() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -144,29 +114,30 @@ class _EditToDoState extends State<EditToDo> {
           focusNode: _focusNode1,
           style: const TextStyle(fontSize: 18, color: Colors.black),
           decoration: InputDecoration(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              hintText: 'title',
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Color(0xffc5c5c5),
-                  width: 2.0,
-                ),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            hintText: 'Title',
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(
+                color: Color(0xffc5c5c5),
+                width: 2.0,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: Colors.green.shade200,
-                  width: 2.0,
-                ),
-              )),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: Colors.green.shade200,
+                width: 2.0,
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Padding subtite_wedgite() {
+  Widget description_widgets() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
@@ -175,14 +146,13 @@ class _EditToDoState extends State<EditToDo> {
           borderRadius: BorderRadius.circular(15),
         ),
         child: TextField(
-          maxLines: 3,
-          controller: subtitle,
+          controller: description,
           focusNode: _focusNode2,
           style: const TextStyle(fontSize: 18, color: Colors.black),
           decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            hintText: 'subtitle',
+            hintText: 'Description',
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(
