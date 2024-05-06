@@ -23,7 +23,8 @@ class _TaskWidgetState extends State<TaskWidget> {
   bool isDone = false;
   bool isDescriptionExpanded = false;
   bool isEditingTitle = false; // Estado para controlar la edición del título
-  bool isEditingDescription = false; // Estado para controlar la edición de la descripción
+  bool isEditingDescription =
+      false; // Estado para controlar la edición de la descripción
   late String description;
   late String title; // Variable para almacenar el título editado
 
@@ -60,14 +61,16 @@ class _TaskWidgetState extends State<TaskWidget> {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Alinear los iconos a la derecha
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceBetween, // Alinear los iconos a la derecha
                       children: [
                         Flexible(
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
                                 isEditingTitle = true;
-                                isEditingDescription = false; // Asegurarse de que la edición de la descripción esté desactivada
+                                isEditingDescription =
+                                    false; // Asegurarse de que la edición de la descripción esté desactivada
                               });
                             },
                             child: Column(
@@ -76,7 +79,8 @@ class _TaskWidgetState extends State<TaskWidget> {
                                 // Usa un Text hasta que se haga clic en él
                                 isEditingTitle
                                     ? TextField(
-                                        controller: TextEditingController(text: title),
+                                        controller:
+                                            TextEditingController(text: title),
                                         onChanged: (value) {
                                           setState(() {
                                             title = value;
@@ -86,7 +90,6 @@ class _TaskWidgetState extends State<TaskWidget> {
                                           setState(() {
                                             isEditingTitle = false;
                                           });
-                                          _updateTaskName();
                                         },
                                       )
                                     : Text(
@@ -110,7 +113,8 @@ class _TaskWidgetState extends State<TaskWidget> {
                                       });
                                     },
                                     child: TextField(
-                                      controller: TextEditingController(text: description),
+                                      controller: TextEditingController(
+                                          text: description),
                                       maxLines: null,
                                       decoration: InputDecoration(
                                         enabledBorder: InputBorder.none,
@@ -129,7 +133,6 @@ class _TaskWidgetState extends State<TaskWidget> {
                                         setState(() {
                                           isEditingDescription = false;
                                         });
-                                        _updateTaskDescription();
                                       },
                                     ),
                                   ),
@@ -143,16 +146,12 @@ class _TaskWidgetState extends State<TaskWidget> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isEditingTitle = false; // Ocultar la barra de edición del título
-                                  isEditingDescription = false; // Ocultar la barra de edición de la descripción
+                                  isEditingTitle =
+                                      false; // Ocultar la barra de edición del título
+                                  isEditingDescription =
+                                      false; // Ocultar la barra de edición de la descripción
                                 });
-                                TaskSupabase().updateTask(Task(
-                                  id: widget.note.id,
-                                  name: title,
-                                  status: widget.note.status,
-                                  description: description,
-                                  user_id: widget.note.user_id,
-                                ));
+                                _updateTaskNameAndDescription();
                               },
                               child: Icon(
                                 Icons.edit,
@@ -191,7 +190,8 @@ class _TaskWidgetState extends State<TaskWidget> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isDescriptionExpanded = !isDescriptionExpanded;
+                                  isDescriptionExpanded =
+                                      !isDescriptionExpanded;
                                 });
                               },
                               child: Icon(
@@ -282,17 +282,7 @@ class _TaskWidgetState extends State<TaskWidget> {
     );
   }
 
-  void _updateTaskName() {
-    TaskSupabase().updateTask(Task(
-      id: widget.note.id,
-      name: title,
-      status: widget.note.status,
-      description: description,
-      user_id: widget.note.user_id,
-    ));
-  }
-
-  void _updateTaskDescription() {
+  void _updateTaskNameAndDescription() {
     TaskSupabase().updateTask(Task(
       id: widget.note.id,
       name: title,
