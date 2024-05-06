@@ -154,7 +154,7 @@ class _MapPageState extends State<MapPage> {
           true, // Esto permite que el cuerpo se extienda detrás del AppBar
       appBar: AppBar(
         backgroundColor:
-            Colors.transparent, // Hace que el AppBar sea transparente
+            OurColors().backgroundColor, // Hace que el AppBar sea transparente
         elevation: 0, // Elimina la sombra del AppBar
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -163,6 +163,7 @@ class _MapPageState extends State<MapPage> {
             Navigator.of(context).pop();
           },
         ),
+        title: const Text('Map'),
       ),
       body: StatefulBuilder(
         builder: (context, setState) => Column(
@@ -236,6 +237,7 @@ class _MapPageState extends State<MapPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        elevation: 0,
         color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
