@@ -20,32 +20,41 @@ class ToDo extends StatefulWidget {
 }
 
 class _ToDoState extends State<ToDo> {
-  bool showFloatingButton = true;
-  late Stream<List<Task>> _tasksStream;
+  late Stream<List<Task>> _pendingTasksStream;
+  late Stream<List<Task>> _completedTasksStream;
 
   @override
   void initState() {
     super.initState();
-    _tasksStream = TaskSupabase().getPendingTasks(widget.userId);
+    _pendingTasksStream = TaskSupabase().getPendingTasks(widget.userId);
+    _completedTasksStream = TaskSupabase().getCompletedTasks(widget.userId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: OurColors().backgroundColor,
-      appBar: AppBar(
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
         backgroundColor: OurColors().backgroundColor,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        appBar: AppBar(
+          backgroundColor: OurColors().backgroundColor,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            color: Colors.black,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          bottom: TabBar(
+            indicatorColor: Colors.black,
+            tabs: [
+              Tab(text: 'Por hacer'),
+              Tab(text: 'Hecho'),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: ClipOval(
-        child: FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => Add_Task(widget.userId, updateTasks),
@@ -58,107 +67,41 @@ class _ToDoState extends State<ToDo> {
             color: Colors.white,
           ),
         ),
-      ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        body: TabBarView(
           children: [
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 10, 77, 43).withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromARGB(114, 2, 133, 70),
-                      spreadRadius: 1,
-                      blurRadius: 3,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Center(
-                  child: Text(
-                    'Por hacer',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: StreamBuilder<List<Task>>(
-                stream: _tasksStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.isEmpty) {
-                      return _emptyTask();
-                    } else {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: StreamNote(false, widget.userId, updateTasks),
-                      );
-                    }
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text('Error: ${snapshot.error}'),
-                    );
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 10, 77, 43).withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromARGB(114, 2, 133, 70),
-                      spreadRadius: 1,
-                      blurRadius: 3,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Center(
-                  child: Text(
-                    'Hecho',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: StreamNote(true, widget.userId, updateTasks),
-              ),
-            ),
+            _buildTaskList(false),
+            _buildTaskList(true),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTaskList(bool completed) {
+    return StreamBuilder<List<Task>>(
+      stream: completed ? _completedTasksStream : _pendingTasksStream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+          return _emptyTask();
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: StreamNote(
+              completed,
+              widget.userId,
+              updateTasks,
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -190,7 +133,8 @@ class _ToDoState extends State<ToDo> {
 
   void updateTasks() {
     setState(() {
-      _tasksStream = TaskSupabase().getPendingTasks(widget.userId);
+      _pendingTasksStream = TaskSupabase().getPendingTasks(widget.userId);
+      _completedTasksStream = TaskSupabase().getCompletedTasks(widget.userId);
     });
   }
 }
