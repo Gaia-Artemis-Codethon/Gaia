@@ -12,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../const/colors.dart';
 import '../../widgets/strem_note.dart';
+import '../home_page.dart';
 import '../map/mapPage.dart';
 
 class ToDo extends StatefulWidget {
@@ -81,6 +82,22 @@ class _ToDoState extends State<ToDo> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/mapa.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(widget.userId),
+                  ),
+                );
+              },
+            ),
             IconButton(
               icon: SvgPicture.asset(
                 "images/todo.svg",

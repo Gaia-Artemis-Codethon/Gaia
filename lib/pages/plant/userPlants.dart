@@ -166,6 +166,22 @@ class _UserPlantsState extends State<UserPlants> {
           children: [
             IconButton(
               icon: SvgPicture.asset(
+                "images/mapa.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(widget.userId),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
                 "images/todo.svg",
                 width: 30,
                 height: 30,

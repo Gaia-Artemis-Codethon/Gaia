@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../models/land.dart';
 import '../../service/land_supabase.dart';
+import '../home_page.dart';
 import '../plant/userPlants.dart';
 import '../toDo/toDo.dart';
 
@@ -239,6 +240,22 @@ class _MapPageState extends State<MapPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/mapa.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(widget.userId),
+                  ),
+                );
+              },
+            ),
             IconButton(
               icon: SvgPicture.asset(
                 "images/todo.svg",

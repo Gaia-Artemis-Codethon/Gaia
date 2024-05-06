@@ -228,6 +228,16 @@ class HomePage extends StatelessWidget {
           children: [
             IconButton(
               icon: SvgPicture.asset(
+                "images/mapa.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {
+              },
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
                 "images/todo.svg",
                 width: 30,
                 height: 30,
