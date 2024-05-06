@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/pages/home_page.dart';
 import 'package:flutter_application_huerto/pages/plant/plantSearch.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../components/button.dart';
 import '../../components/plantedItem.dart';
 import '../../models/planted.dart';
 import '../../service/planted_supabase.dart';
+import '../map/mapPage.dart';
+import '../toDo/toDo.dart';
 import '/const/colors.dart';
 
 class UserPlants extends StatefulWidget {
@@ -156,6 +159,57 @@ class _UserPlantsState extends State<UserPlants> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/todo.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ToDo(widget.userId),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/planta.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {
+              },
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/mapa.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MapPage(widget.userId),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      )
+      
     );
   }
 }

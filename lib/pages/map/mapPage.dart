@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../models/land.dart';
 import '../../service/land_supabase.dart';
+import '../plant/userPlants.dart';
+import '../toDo/toDo.dart';
 
 const MAP_KEY = '9b116f76-e8c1-4133-b90d-c7bd4b68c8c7';
 const styleUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 class MapPage extends StatefulWidget {
   final Guid userId;
-  const MapPage(this.userId, {super.key});
+  const MapPage(this.userId, {Key? key}) : super(key: key);
 
   @override
   State<MapPage> createState() => _MapPageState();
@@ -210,6 +213,7 @@ class _MapPageState extends State<MapPage> {
                                   ? 'Tamaño: ${land.size}, Proximidad: ${_calculateDistance(land).toStringAsFixed(2)} metros'
                                   : 'Tamaño: ${land.size}, Proximidad: No disponible',
                             ),
+                            selected: index == indexLand,
                             onTap: () {
                               setState(() {
                                 indexLand = index;
@@ -226,6 +230,56 @@ class _MapPageState extends State<MapPage> {
                   ),
                 ),
               ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/todo.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ToDo(widget.userId),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/planta.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserPlants(widget.userId),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/mapa.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton, // Highlight the map icon
+              ),
+              onPressed:
+                  () {}, // Disable onTap for the currently selected map page
             ),
           ],
         ),
