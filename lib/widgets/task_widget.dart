@@ -64,7 +64,8 @@ class _TaskWidgetState extends State<TaskWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  //desde aqui muevo,alineo el texto de la tarjeta
+                  padding: const EdgeInsets.fromLTRB(18, 3, 15, 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment
                         .spaceBetween, // Alinear los iconos a la derecha
