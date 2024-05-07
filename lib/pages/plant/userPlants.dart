@@ -131,20 +131,24 @@ class _UserPlantsState extends State<UserPlants> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(widget.userId),
-            ),
-          );
-        },
-        backgroundColor: OurColors().primaryButton,
-        child: const Icon(
-          Icons.add,
-          size: 35,
-          color: Colors.white,
+      floatingActionButton: ClipOval(
+        child: Material(
+          color: OurColors().primaryButton, // Button color
+          child: InkWell(
+            splashColor: Colors.white, // Splash color
+            child: SizedBox(
+                width: 56,
+                height: 56,
+                child: Icon(Icons.add, size: 35, color: Colors.white)),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(widget.userId),
+                ),
+              );
+            },
+          ),
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
