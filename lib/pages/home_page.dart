@@ -123,7 +123,7 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       children: [
                         const Text(
-                          'MI COMUNIDAD:',
+                          'MY COMMUNITY:',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
@@ -209,7 +209,7 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    "Mi parcela",
+                    "My Land",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 30,
@@ -222,10 +222,20 @@ class HomePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        elevation: 0,
         color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/mapa.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {},
+            ),
             IconButton(
               icon: SvgPicture.asset(
                 "images/todo.svg",

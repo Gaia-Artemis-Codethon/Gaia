@@ -12,10 +12,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../const/colors.dart';
 import '../../widgets/strem_note.dart';
+import '../home_page.dart';
 import '../map/mapPage.dart';
 
 class ToDo extends StatefulWidget {
   final Guid userId;
+
   const ToDo(this.userId, {super.key});
 
   @override
@@ -50,10 +52,20 @@ class _ToDoState extends State<ToDo> {
             },
           ),
           bottom: TabBar(
-            indicatorColor: Colors.black,
+            indicatorColor: OurColors().accent,
             tabs: [
-              Tab(text: 'Por hacer'),
-              Tab(text: 'Hecho'),
+              Tab(
+                child: Text(
+                  'To Do',
+                  style: TextStyle(color: OurColors().accent, fontSize: 20),
+                ),
+              ),
+              Tab(
+                child: Text(
+                  'Done',
+                  style: TextStyle(color: OurColors().accent, fontSize: 20),
+                ),
+              ),
             ],
           ),
         ),
@@ -77,55 +89,71 @@ class _ToDoState extends State<ToDo> {
           ],
         ),
         bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/todo.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton,
+          elevation: 0,
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: SvgPicture.asset(
+                  "images/mapa.svg",
+                  width: 30,
+                  height: 30,
+                  color: OurColors().primaryButton,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(widget.userId),
+                    ),
+                  );
+                },
               ),
-              onPressed: () {
-              },
-            ),
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/planta.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton,
+              IconButton(
+                icon: SvgPicture.asset(
+                  "images/todo.svg",
+                  width: 30,
+                  height: 30,
+                  color: OurColors().primaryButton,
+                ),
+                onPressed: () {},
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserPlants(widget.userId),
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/mapa.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton,
+              IconButton(
+                icon: SvgPicture.asset(
+                  "images/planta.svg",
+                  width: 30,
+                  height: 30,
+                  color: OurColors().primaryButton,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserPlants(widget.userId),
+                    ),
+                  );
+                },
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MapPage(widget.userId),
-                  ),
-                );
-              },
-            ),
-          ],
+              IconButton(
+                icon: SvgPicture.asset(
+                  "images/mapa.svg",
+                  width: 30,
+                  height: 30,
+                  color: OurColors().primaryButton,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapPage(widget.userId),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

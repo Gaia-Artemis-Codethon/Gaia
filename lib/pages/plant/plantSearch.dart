@@ -77,7 +77,7 @@ class _PlantSearchState extends State<SearchPage> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        int id = _plants[index]['id'];
+                        var id = _plants[index]['id'];
                         _showPlantDetails(id);
                       },
                       child: Column(

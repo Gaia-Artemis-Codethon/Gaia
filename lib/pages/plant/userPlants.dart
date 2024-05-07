@@ -44,7 +44,7 @@ class _UserPlantsState extends State<UserPlants> {
         appBar: AppBar(
           backgroundColor: OurColors().backgroundColor,
           elevation: 0,
-          title: Text('Tus Plantas'),
+          title: Text('Your Plants'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -76,7 +76,7 @@ class _UserPlantsState extends State<UserPlants> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'No se ha encontrado ninguna planta ¿Quieres añadir alguna?',
+                            'No plant was found, do you want to add any?',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
@@ -85,7 +85,7 @@ class _UserPlantsState extends State<UserPlants> {
                           ),
                           Button(
                             text: Text(
-                              'Si!',
+                              'Yeah!',
                               style: TextStyle(
                                   color: OurColors().primaryTextColor),
                             ),
@@ -127,7 +127,8 @@ class _UserPlantsState extends State<UserPlants> {
                           crop_id: Guid(planted['crop_id']),
                           land_id: Guid(planted['land_id']),
                           planted_time: DateTime.parse(planted['planted_time']),
-                          status: planted['status']),
+                          status: planted['status'],
+                          perenual_id: planted['perenual_id']),
                       userId: widget.userId,
                     );
                   },
@@ -162,10 +163,27 @@ class _UserPlantsState extends State<UserPlants> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         bottomNavigationBar: BottomAppBar(
-          color: Colors.white,
+          elevation: 0,
+          color: OurColors().primaryTextColor,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              IconButton(
+                icon: SvgPicture.asset(
+                  "images/mapa.svg",
+                  width: 30,
+                  height: 30,
+                  color: OurColors().primaryButton,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(widget.userId),
+                    ),
+                  );
+                },
+              ),
               IconButton(
                 icon: SvgPicture.asset(
                   "images/todo.svg",

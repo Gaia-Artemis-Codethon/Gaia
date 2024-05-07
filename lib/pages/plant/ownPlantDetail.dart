@@ -14,17 +14,17 @@ import '../../models/planted.dart';
 import '../../models/planted_log.dart';
 import '../../service/planted_log_supabase.dart';
 
-class PlantDetail extends StatefulWidget {
+class OwnPlantDetail extends StatefulWidget {
   final int plantId;
   final Guid user_id;
 
-  PlantDetail({super.key, required this.plantId, required this.user_id});
+  OwnPlantDetail({super.key, required this.plantId, required this.user_id});
 
   @override
-  _PlantDetailsPageState createState() => _PlantDetailsPageState();
+  _OwnPlantDetailsPageState createState() => _OwnPlantDetailsPageState();
 }
 
-class _PlantDetailsPageState extends State<PlantDetail> {
+class _OwnPlantDetailsPageState extends State<OwnPlantDetail> {
   late Map<String, dynamic> _plantDetails;
 
   static const String PERENUAL_TOKEN = 'sk-CgNd6623dc0d606905197';
@@ -89,94 +89,6 @@ class _PlantDetailsPageState extends State<PlantDetail> {
           )
         ],
       ),
-    );
-  }
-
-  void showConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Add plant"),
-          content: Text("Are you sure you want to add this plant?"),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () async {
-                  Guid newPlantedId = Guid.newGuid;
-                  Guid newCropId = Guid(
-                      Uuid().v5(Uuid.NAMESPACE_URL, widget.plantId.toString()));
-                  final crop = await CropSupabase().getCropById(Guid(Uuid()
-                      .v5(Uuid.NAMESPACE_URL, widget.plantId.toString())));
-                  if (crop == null) {
-                    print('Crop does not exist');
-                    try {
-                      await CropSupabase().addCrop(Crop(
-                        id: newCropId,
-                        name: _plantDetails['scientific_name'][0] ?? 'No name',
-                        descript: _plantDetails['description'] ??
-                            'No information available',
-                        difficulty:
-                            Crop.parseDifficulty(_plantDetails['care_level']),
-                        thumbnail: _plantDetails['default_image']['thumbnail'],
-                        season: _plantDetails['flowering_season'] ??
-                            'No information',
-                      ));
-                    } catch (e) {
-                      print('Error $e');
-                    }
-                  }
-
-                  await PlantedSupabase().addPlant(
-                    Planted(
-                        id: newPlantedId,
-                        crop_id: newCropId,
-                        land_id: Guid('1467de98-de3e-4601-a6bd-2a5abc488bdd'),
-                        planted_time: DateTime.now(),
-                        status: 0,
-                        user_id: widget.user_id,
-                        perenual_id: widget.plantId),
-                  );
-
-                  await PlantedLogSupabase().addPlantLog(PlantedLog(
-                      id: newPlantedId,
-                      user_id: widget.user_id,
-                      planted_id: newPlantedId,
-                      name: _plantDetails['scientific name'] ?? 'No name',
-                      description: _plantDetails['description'] ??
-                          'No information available',
-                      date: DateTime.now()));
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => UserPlants(widget.user_id)));
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: OurColors().primary,
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                  child: Text(
-                    "Yes",
-                    style: TextStyle(color: OurColors().primaryTextColor),
-                  ),
-                )),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: OurColors().deleteButton,
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                  child: Text(
-                    "No",
-                    style: TextStyle(color: OurColors().primaryTextColor),
-                  ),
-                )),
-          ],
-        );
-      },
     );
   }
 
@@ -262,13 +174,10 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                           },
                         ),
                       ),
-                      Container(
-                        width: 350,
-                        child: Text(
-                          _plantDetails['scientific_name'][0] ?? 'No name',
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
+                      Text(
+                        _plantDetails['scientific_name'][0] ?? 'No name',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 10),
                       Text(
@@ -350,26 +259,6 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                 ),
         ],
       ),
-      floatingActionButton: Visibility(
-        visible: true,
-        child: ClipOval(
-          child: FloatingActionButton(
-            mini: false,
-            heroTag: null,
-            tooltip: 'Add plant to your crops',
-            onPressed: () {
-              showConfirmationDialog(context);
-            },
-            backgroundColor: OurColors().primaryButton,
-            child: Icon(
-              Icons.add,
-              size: 35,
-              color: OurColors().sectionBackground,
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

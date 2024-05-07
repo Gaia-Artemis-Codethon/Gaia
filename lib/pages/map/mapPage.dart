@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../models/land.dart';
 import '../../service/land_supabase.dart';
+import '../home_page.dart';
 import '../plant/userPlants.dart';
 import '../toDo/toDo.dart';
 
@@ -153,7 +154,7 @@ class _MapPageState extends State<MapPage> {
           true, // Esto permite que el cuerpo se extienda detrás del AppBar
       appBar: AppBar(
         backgroundColor:
-            Colors.transparent, // Hace que el AppBar sea transparente
+            OurColors().backgroundColor, // Hace que el AppBar sea transparente
         elevation: 0, // Elimina la sombra del AppBar
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -162,6 +163,7 @@ class _MapPageState extends State<MapPage> {
             Navigator.of(context).pop();
           },
         ),
+        title: const Text('Map'),
       ),
       body: StatefulBuilder(
         builder: (context, setState) => Column(
@@ -235,10 +237,27 @@ class _MapPageState extends State<MapPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        elevation: 0,
         color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            IconButton(
+              icon: SvgPicture.asset(
+                "images/mapa.svg",
+                width: 30,
+                height: 30,
+                color: OurColors().primaryButton,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(widget.userId),
+                  ),
+                );
+              },
+            ),
             IconButton(
               icon: SvgPicture.asset(
                 "images/todo.svg",

@@ -3,6 +3,8 @@ import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
 import 'package:flutter_application_huerto/service/planted_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import '../models/planted.dart';
+import '../pages/plant/ownPlantDetail.dart';
+import '../pages/plant/plantDetail.dart';
 import '../service/crop_supabase.dart';
 import '../models/crop.dart';
 import '../const/colors.dart';
@@ -34,8 +36,8 @@ class _PlantedItemState extends State<PlantedItem> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Eliminar planta"),
-          content: Text("¿Estás seguro de querer borrar esta planta?"),
+          title: Text("Remove plant"),
+          content: Text("Do you want to delete this plant?"),
           actions: <Widget>[
             TextButton(
                 onPressed: () {
@@ -52,7 +54,7 @@ class _PlantedItemState extends State<PlantedItem> {
                       color: OurColors().primary,
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),
                   child: Text(
-                    "Si",
+                    "Yes",
                     style: TextStyle(color: OurColors().primaryTextColor),
                   ),
                 )),
@@ -87,66 +89,78 @@ class _PlantedItemState extends State<PlantedItem> {
               child: CircularProgressIndicator(),
             );
           } else {
-            return Container(
-              height: 140,
-              width: 300,
-              child: Card(
-                  elevation: 0,
-                  color: OurColors().primaryTextColor,
-                  margin: EdgeInsets.fromLTRB(16.0, 0, 16.0, 10),
-                  child: Center(
-                    child: ListTile(
-                      leading: imgURL != null || imgURL != ''
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Image.network(
-                                imgURL,
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OwnPlantDetail(plantId: widget.plant.perenual_id, user_id: widget.userId),
+                  ),
+                );
+              },
+              child: Container(
+                height: 140,
+                width: 300,
+                child: Card(
+                    elevation: 0,
+                    color: OurColors().primaryTextColor,
+                    margin: EdgeInsets.fromLTRB(16.0, 0, 16.0, 10),
+                    child: Center(
+                      child: ListTile(
+                        leading: imgURL != null || imgURL != ''
+                            ? ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            imgURL,
+                            width: 60,
+                            height: 80,
+                            fit: BoxFit.fill,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
                                 width: 60,
                                 height: 80,
-                                fit: BoxFit.fill,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    width: 60,
-                                    height: 80,
-                                    decoration: BoxDecoration(
-                                      color: OurColors().backgroundColor,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Icon(
-                                      Icons.local_florist,
-                                      size: 40,
-                                      color: OurColors().primary,
-                                    ),
-                                  );
-                                },
-                              ),
-                            )
-                          : Container(
-                              width: 60,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                color: OurColors().backgroundColor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Icon(
-                                Icons.local_florist,
-                                size: 40,
-                                color: OurColors().primary,
-                              ),
-                            ),
-                      title: Text(cropName),
-                      subtitle: Text(
-                          'Planted on: ${widget.plant.planted_time.toString().split(' ')[0] ?? 'Unknown Date'}\n' +
-                              'Status: ${Planted.parseStatus(widget.plant.status)}'),
-                      trailing: IconButton(
-                        icon: Icon(Icons.close),
-                        onPressed: () {
-                          showConfirmationDialog(context);
-                        },
+                                decoration: BoxDecoration(
+                                  color: OurColors().backgroundColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Icon(
+                                  Icons.local_florist,
+                                  size: 40,
+                                  color: OurColors().primary,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                            : Container(
+                          width: 60,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: OurColors().backgroundColor,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Icon(
+                            Icons.local_florist,
+                            size: 40,
+                            color: OurColors().primary,
+                          ),
+                        ),
+                        title: Text(cropName),
+                        subtitle: Text(
+                            'Planted on: ${widget.plant.planted_time.toString().split(' ')[0] ?? 'Unknown Date'}\n' +
+                                'Status: ${Planted.parseStatus(widget.plant.status)}'),
+                        trailing: IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () {
+                            showConfirmationDialog(context);
+                          },
+                        ),
                       ),
-                    ),
-                  )),
+                    )),
+              )
             );
+
+
           }
         });
   }
