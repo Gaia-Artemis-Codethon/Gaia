@@ -1,24 +1,23 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/models/task.dart';
+import 'package:flutter_application_huerto/pages/home_page.dart';
+import 'package:flutter_application_huerto/pages/map/mapPage.dart';
 import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
 import 'package:flutter_application_huerto/pages/toDo/add_task.dart';
 import 'package:flutter_application_huerto/service/task_supabase.dart';
+import 'package:flutter_application_huerto/shared/bottom_navigation_bar.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../const/colors.dart';
 import '../../widgets/strem_note.dart';
-import '../home_page.dart';
-import '../map/mapPage.dart';
 
 class ToDo extends StatefulWidget {
   final Guid userId;
 
-  const ToDo(this.userId, {super.key});
+  const ToDo(this.userId, {Key? key}) : super(key: key);
 
   @override
   State<ToDo> createState() => _ToDoState();
@@ -27,6 +26,7 @@ class ToDo extends StatefulWidget {
 class _ToDoState extends State<ToDo> {
   late Stream<List<Task>> _pendingTasksStream;
   late Stream<List<Task>> _completedTasksStream;
+  int _currentIndex = 1;
 
   @override
   void initState() {
@@ -42,15 +42,9 @@ class _ToDoState extends State<ToDo> {
       child: Scaffold(
         backgroundColor: OurColors().backgroundColor,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: OurColors().backgroundColor,
           elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
           bottom: TabBar(
             indicatorColor: OurColors().accent,
             tabs: [
@@ -88,71 +82,37 @@ class _ToDoState extends State<ToDo> {
             _buildTaskList(true),
           ],
         ),
-        bottomNavigationBar: BottomAppBar(
-          elevation: 0,
-          color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                icon: SvgPicture.asset(
-                  "images/mapa.svg",
-                  width: 30,
-                  height: 30,
-                  color: OurColors().primaryButton,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(widget.userId),
-                    ),
-                  );
-                },
-              ),
-              IconButton(
-                icon: SvgPicture.asset(
-                  "images/todo.svg",
-                  width: 30,
-                  height: 30,
-                  color: OurColors().primaryButton,
-                ),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: SvgPicture.asset(
-                  "images/planta.svg",
-                  width: 30,
-                  height: 30,
-                  color: OurColors().primaryButton,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserPlants(widget.userId),
-                    ),
-                  );
-                },
-              ),
-              IconButton(
-                icon: SvgPicture.asset(
-                  "images/mapa.svg",
-                  width: 30,
-                  height: 30,
-                  color: OurColors().primaryButton,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MapPage(widget.userId),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          onTap: (index) {
+            if (index != _currentIndex) {
+              setState(() {
+                _currentIndex = index;
+              });
+              if (_currentIndex == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(widget.userId),
+                  ),
+                );
+              } else if (_currentIndex == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserPlants(widget.userId),
+                  ),
+                );
+              } else if (_currentIndex == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MapPage(widget.userId),
+                  ),
+                );
+              }
+            }
+          },
+          currentIndex: _currentIndex,
         ),
       ),
     );

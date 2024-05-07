@@ -121,13 +121,6 @@ class _OwnPlantDetailsPageState extends State<OwnPlantDetail> {
       appBar: AppBar(
         backgroundColor: OurColors().backgroundColor,
         title: const Text('Plant Details'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
       ),
       body: Stack(
         children: [
