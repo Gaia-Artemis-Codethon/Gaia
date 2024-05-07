@@ -38,13 +38,6 @@ class _PlantSearchState extends State<SearchPage> {
         appBar: AppBar(
           backgroundColor: OurColors().backgroundColor,
           title: Text('Busca tus plantas favoritas '),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
         ),
         body: Container(
           color: OurColors().backgroundColor,
@@ -77,7 +70,7 @@ class _PlantSearchState extends State<SearchPage> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        int id = _plants[index]['id'];
+                        var id = _plants[index]['id'];
                         _showPlantDetails(id);
                       },
                       child: Column(

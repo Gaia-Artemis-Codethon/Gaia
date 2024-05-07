@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class OurColors {
-  Color backgroundColor = const Color(0xFFECF4E8);
+  Color backgroundColor =
+      Color.fromARGB(255, 240, 240, 240); // Color blanco sombreado
   Color accent = const Color(0xFFF6917B);
   Color accentBorderColor = const Color(0xFFF47C61);
   Color deleteButton = const Color(0xFFFF3863);
@@ -12,4 +13,6 @@ class OurColors {
   Color backgroundText = const Color(0xFF292929);
   Color sectionBorder = const Color(0xFFE6E6E6);
   Color primaryButton = const Color.fromARGB(255, 103, 214, 123);
+  Color navBarDefault = Color.fromARGB(255, 104, 101, 98);
+  Color navBarBackground = Color.fromARGB(255, 66, 64, 62);
 }

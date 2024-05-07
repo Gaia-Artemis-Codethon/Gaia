@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, deprecated_member_use
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -9,6 +7,7 @@ import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
 import 'package:flutter_application_huerto/pages/toDo/toDo.dart';
 import 'package:flutter_application_huerto/service/community_supabase.dart';
 import 'package:flutter_application_huerto/service/supabaseService.dart';
+import 'package:flutter_application_huerto/shared/bottom_navigation_bar.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocode/geocode.dart';
@@ -16,15 +15,29 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
-import '../components/button.dart';
 import '../const/weather_constants.dart';
 import '../models/current_weather_model.dart';
 import '../widgets/weather_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final Guid userId;
 
-  const HomePage(this.userId, {super.key});
+  const HomePage(this.userId, {Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = 0;
+  }
 
   Future<String> _readCommunityName() async {
     Guid guid = await SupabaseService().getUserId() as Guid;
@@ -93,6 +106,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -123,7 +137,7 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       children: [
                         const Text(
-                          'MI COMUNIDAD:',
+                          'MY COMMUNITY:',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
@@ -209,7 +223,7 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    "Mi parcela",
+                    "My Land",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 30,
@@ -221,71 +235,44 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/mapa.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton,
-              ),
-              onPressed: () {
-              },
-            ),
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/todo.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ToDo(userId),
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/planta.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserPlants(userId),
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/mapa.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MapPage(userId),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        onTap: (index) {
+          if (index != _currentIndex) {
+            setState(() {
+              _currentIndex = index;
+            });
+            if (_currentIndex == 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(widget.userId),
+                ),
+              );
+            } else if (_currentIndex == 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ToDo(widget.userId),
+                ),
+              );
+            } else if (_currentIndex == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserPlants(widget.userId),
+                ),
+              );
+            } else if (_currentIndex == 3) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MapPage(widget.userId),
+                ),
+              );
+            }
+          }
+        },
+        currentIndex: _currentIndex,
       ),
     );
   }

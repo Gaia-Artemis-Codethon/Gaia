@@ -11,6 +11,7 @@ import '../../service/land_supabase.dart';
 import '../home_page.dart';
 import '../plant/userPlants.dart';
 import '../toDo/toDo.dart';
+import '../../shared/bottom_navigation_bar.dart';
 
 const MAP_KEY = '9b116f76-e8c1-4133-b90d-c7bd4b68c8c7';
 const styleUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -32,6 +33,7 @@ class _MapPageState extends State<MapPage> {
   List<Land> lands = [];
   List<Marker> markers = [];
 
+  int _currentIndex = 3;
   int indexLand = -1;
 
   @override
@@ -100,10 +102,9 @@ class _MapPageState extends State<MapPage> {
               icon: const Icon(
                 Icons.location_on,
                 color: Colors.blue,
-                size: 30.0, // Reducir el tamaño del icono
+                size: 30.0,
               ),
               onPressed: () {
-                // Centra el mapa en la ubicación actual
                 mapController.move(myPosition!, 18);
               },
             ),
@@ -130,10 +131,9 @@ class _MapPageState extends State<MapPage> {
           icon: const Icon(
             Icons.location_on,
             color: Colors.black,
-            size: 30.0, // Reducir el tamaño del icono
+            size: 30.0,
           ),
           onPressed: () {
-            // Centra el mapa en la ubicación de la propiedad
             mapController.move(LatLng(land.latitude, land.longitude), 18);
           },
         ),
@@ -150,18 +150,13 @@ class _MapPageState extends State<MapPage> {
     }
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
-      extendBodyBehindAppBar:
-          true, // Esto permite que el cuerpo se extienda detrás del AppBar
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor:
-            Colors.transparent, // Hace que el AppBar sea transparente
-        elevation: 0, // Elimina la sombra del AppBar
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black, // Color del ícono
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        automaticallyImplyLeading: false,
+        backgroundColor: OurColors().backgroundColor,
+        elevation: 0,
+        title: Center(
+          child: Text('Map'),
         ),
       ),
       body: StatefulBuilder(
@@ -211,8 +206,8 @@ class _MapPageState extends State<MapPage> {
                             title: Text(land.location),
                             subtitle: Text(
                               hasLocationPermission
-                                  ? 'Tamaño: ${land.size}, Proximidad: ${_calculateDistance(land).toStringAsFixed(2)} metros'
-                                  : 'Tamaño: ${land.size}, Proximidad: No disponible',
+                                  ? 'Size: ${land.size}, Proximity: ${_calculateDistance(land).toStringAsFixed(2)} meters'
+                                  : 'Size: ${land.size}, Proximity: Not available',
                             ),
                             selected: index == indexLand,
                             onTap: () {
@@ -235,71 +230,37 @@ class _MapPageState extends State<MapPage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/mapa.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(widget.userId),
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/todo.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ToDo(widget.userId),
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/planta.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserPlants(widget.userId),
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              icon: SvgPicture.asset(
-                "images/mapa.svg",
-                width: 30,
-                height: 30,
-                color: OurColors().primaryButton, // Highlight the map icon
-              ),
-              onPressed:
-                  () {}, // Disable onTap for the currently selected map page
-            ),
-          ],
-        ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        onTap: (index) {
+          if (index != _currentIndex) {
+            setState(() {
+              _currentIndex = index;
+            });
+            if (_currentIndex == 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(widget.userId),
+                ),
+              );
+            } else if (_currentIndex == 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ToDo(widget.userId),
+                ),
+              );
+            } else if (_currentIndex == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserPlants(widget.userId),
+                ),
+              );
+            }
+          }
+        },
+        currentIndex: _currentIndex,
       ),
     );
   }

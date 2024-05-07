@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
-import 'package:flutter_application_huerto/main.dart';
 import 'package:flutter_application_huerto/models/task.dart';
 import 'package:flutter_application_huerto/service/task_supabase.dart';
-import 'package:flutter_guid/flutter_guid.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../components/text_field_tasks.dart';
-import '../pages/toDo/edit_toDo.dart';
 
 class TaskWidget extends StatefulWidget {
   final Task note;
@@ -22,14 +17,10 @@ class TaskWidget extends StatefulWidget {
 class _TaskWidgetState extends State<TaskWidget> {
   bool isDone = false;
   bool isDescriptionExpanded = false;
-  bool isEditingTitle = false; // Estado para controlar la edición del título
-  bool isEditingDescription =
-      false; // Estado para controlar la edición de la descripción
   late TextEditingController titleController;
   late TextEditingController descriptionController;
+  late String title;
   late String description;
-  late String title; // Variable para almacenar el título editado
-  bool isEditingMode = false;
 
   @override
   void initState() {
@@ -64,48 +55,23 @@ class _TaskWidgetState extends State<TaskWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.fromLTRB(18, 3, 15, 5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .spaceBetween, // Alinear los iconos a la derecha
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Usa un Text hasta que se haga clic en él
-                            isEditingTitle
-                                ? TextField(
-                                    controller: titleController,
-                                    textInputAction: TextInputAction.done,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        title = value;
-                                      });
-                                    },
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        isEditingTitle = false;
-                                        _updateTaskNameAndDescription(); // Actualizar tanto el título como la descripción al confirmar la edición
-                                      });
-                                    },
-                                  )
-                                : GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isEditingTitle = true;
-                                        isEditingDescription =
-                                            false; // Asegurarse de que solo un campo esté en modo edición
-                                      });
-                                    },
-                                    child: Text(
-                                      title,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-
+                            GestureDetector(
+                              onTap: () {
+                                _editTaskPopup(context);
+                              },
+                              child: Text(
+                                title,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
                             AnimatedCrossFade(
                               duration: Duration(milliseconds: 300),
                               crossFadeState: isDescriptionExpanded
@@ -114,38 +80,12 @@ class _TaskWidgetState extends State<TaskWidget> {
                               firstChild: SizedBox.shrink(),
                               secondChild: GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    isEditingDescription = true;
-                                    isEditingTitle =
-                                        false; // Asegurarse de que solo un campo esté en modo edición
-                                  });
+                                  _editTaskPopup(context);
                                 },
-                                child: Container(
-                                  width: double.infinity,
-                                  child: TextField(
-                                    controller: descriptionController,
-                                    textInputAction: TextInputAction.done,
-                                    maxLines: null,
-                                    decoration: InputDecoration(
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                    ),
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 14,
-                                    ),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        description = value;
-                                      });
-                                    },
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        isEditingDescription = false;
-                                        _updateTaskNameAndDescription(); // Actualizar tanto el título como la descripción al confirmar la edición
-                                      });
-                                    },
-                                  ),
+                                child: Text(
+                                  description,
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 14),
                                 ),
                               ),
                             ),
@@ -275,7 +215,65 @@ class _TaskWidgetState extends State<TaskWidget> {
     );
   }
 
-  void _updateTaskNameAndDescription() {
+  void _editTaskPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: titleController,
+                  decoration: InputDecoration(labelText: 'Title'),
+                  onChanged: (value) {
+                    setState(() {
+                      title = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(labelText: 'Description'),
+                  onChanged: (value) {
+                    setState(() {
+                      description = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Cancel'),
+                    ),
+                    SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        _updateTask();
+                        Navigator.pop(context);
+                      },
+                      child: Text('Save'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _updateTask() {
     TaskSupabase().updateTask(Task(
       id: widget.note.id,
       name: title,
@@ -283,5 +281,6 @@ class _TaskWidgetState extends State<TaskWidget> {
       description: description,
       user_id: widget.note.user_id,
     ));
+    widget.onTaskStatusChanged();
   }
 }

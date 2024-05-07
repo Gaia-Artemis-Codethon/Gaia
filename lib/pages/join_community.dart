@@ -200,10 +200,6 @@ class _JoinCommunityState extends State<JoinCommunity> {
                       }
                     }
                   : null,
-              icon: const Icon(
-                Icons.arrow_forward,
-                color: Colors.black,
-              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: OurColors().primaryButton,
                 alignment: Alignment.center,
