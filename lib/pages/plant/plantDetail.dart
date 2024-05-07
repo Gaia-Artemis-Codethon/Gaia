@@ -234,7 +234,9 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 20,),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(40.0),
                         child: Image.network(
@@ -344,19 +346,22 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                 ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        mini: false,
-        heroTag: null,
-        tooltip: 'Añade la planta a tus cultivos',
-        onPressed: () {
-          showConfirmationDialog(context);
-        },
-        backgroundColor: OurColors().accent,
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          child: Icon(
-            Icons.add,
-            color: OurColors().sectionBackground,
+      floatingActionButton: Visibility(
+        visible: true,
+        child: ClipOval(
+          child: FloatingActionButton(
+            mini: false,
+            heroTag: null,
+            tooltip: 'Add plant to your crops',
+            onPressed: () {
+              showConfirmationDialog(context);
+            },
+            backgroundColor: OurColors().primaryButton,
+            child: Icon(
+              Icons.add,
+              size: 35,
+              color: OurColors().sectionBackground,
+            ),
           ),
         ),
       ),
