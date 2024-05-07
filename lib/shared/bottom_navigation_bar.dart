@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_huerto/const/colors.dart';
+
+import '../const/colors.dart';
+import '../pages/map/mapPage.dart';
+import '../pages/plant/userPlants.dart';
+import '../pages/toDo/toDo.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -14,75 +18,65 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      elevation: 0,
-      backgroundColor: Colors.white,
-      selectedItemColor: OurColors().primaryButton,
-      unselectedItemColor: Colors.grey,
-      currentIndex: currentIndex,
-      onTap: onTap,
-      items: [
-        BottomNavigationBarItem(
-          icon: currentIndex == 0
-              ? SvgPicture.asset(
-                  "images/home.svg",
-                  width: 30,
-                  height: 30,
-                  color: OurColors().primaryButton,
-                )
-              : SvgPicture.asset(
-                  "images/home.svg",
-                  width: 30,
-                  height: 30,
-                ),
-          label: 'Home',
+    return Container(
+      color: Colors.white,
+      child: SizedBox(
+        height: 70,
+        child: BottomAppBar(
+          elevation: 0,
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavBarItem(
+                index: 0,
+                icon: "images/home.svg",
+                onPressed: onTap,
+                currentIndex: currentIndex,
+              ),
+              _buildNavBarItem(
+                index: 1,
+                icon: "images/todo.svg",
+                onPressed: onTap,
+                currentIndex: currentIndex,
+              ),
+              _buildNavBarItem(
+                index: 2,
+                icon: "images/planta.svg",
+                onPressed: onTap,
+                currentIndex: currentIndex,
+              ),
+              _buildNavBarItem(
+                index: 3,
+                icon: "images/mapa.svg",
+                onPressed: onTap,
+                currentIndex: currentIndex,
+              ),
+            ],
+          ),
         ),
-        BottomNavigationBarItem(
-          icon: currentIndex == 1
-              ? SvgPicture.asset(
-                  "images/todo.svg",
-                  width: 30,
-                  height: 30,
-                  color: OurColors().primaryButton,
-                )
-              : SvgPicture.asset(
-                  "images/todo.svg",
-                  width: 30,
-                  height: 30,
-                ),
-          label: 'ToDo',
-        ),
-        BottomNavigationBarItem(
-          icon: currentIndex == 2
-              ? SvgPicture.asset(
-                  "images/planta.svg",
-                  width: 30,
-                  height: 30,
-                  color: OurColors().primaryButton,
-                )
-              : SvgPicture.asset(
-                  "images/planta.svg",
-                  width: 30,
-                  height: 30,
-                ),
-          label: 'Plants',
-        ),
-        BottomNavigationBarItem(
-          icon: currentIndex == 3
-              ? SvgPicture.asset(
-                  "images/mapa.svg",
-                  width: 30,
-                  height: 30,
-                  color: OurColors().primaryButton,
-                )
-              : SvgPicture.asset(
-                  "images/mapa.svg",
-                  width: 30,
-                  height: 30,
-                ),
-          label: 'Map',
-        ),
-      ],
+      ),
+    );
+  }
+
+  Widget _buildNavBarItem({
+    required int index,
+    required String icon,
+    required ValueChanged<int> onPressed,
+    required int currentIndex,
+  }) {
+    return IconButton(
+      icon: SvgPicture.asset(
+        icon,
+        width: 30,
+        height: 30,
+        color: currentIndex == index
+            ? OurColors().primaryButton
+            : OurColors().navBarDefault,
+      ),
+      onPressed: () {
+        onPressed(index);
+      },
     );
   }
 }
