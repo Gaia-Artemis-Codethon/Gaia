@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OurColors {
-  Color backgroundColor = Color.fromARGB(255, 255, 255, 255);
+  Color backgroundColor = const Color(0xFFECF4E8);
   Color accent = const Color(0xFFF6917B);
   Color accentBorderColor = const Color(0xFFF47C61);
   Color deleteButton = const Color(0xFFFF3863);
