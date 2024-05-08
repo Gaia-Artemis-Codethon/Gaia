@@ -123,30 +123,35 @@ class _ToDoState extends State<ToDo> {
   }
 
   Widget _buildTaskList(bool completed) {
-    return StreamBuilder<List<Task>>(
-      stream: completed ? _completedTasksStream : _pendingTasksStream,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-          return _emptyTask();
-        } else {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: StreamNote(
-              completed,
-              widget.userId,
-              updateTasks,
-            ),
-          );
-        }
-      },
+    return Padding(
+      padding:
+          //ajustamos el padding respecto las tarjetas desde aqui
+          const EdgeInsets.fromLTRB(16.0, 19.0, 16.0, 0), // Ajuste del padding
+      child: StreamBuilder<List<Task>>(
+        stream: completed ? _completedTasksStream : _pendingTasksStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+            return _emptyTask();
+          } else {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: StreamNote(
+                completed,
+                widget.userId,
+                updateTasks,
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
