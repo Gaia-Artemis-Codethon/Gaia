@@ -52,50 +52,52 @@ class _Add_TaskState extends State<Add_Task> {
   }
 
   Widget button(bool isEnabled) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green.shade200,
-            minimumSize: const Size(170, 48),
-          ),
-          onPressed: isEnabled
-              ? () async {
-                  await TaskSupabase().addTask(Task(
-                    id: Guid.newGuid,
-                    name: title.text,
-                    status: false,
-                    description: description.text,
-                    user_id: widget.userId,
-                    creation_date: DateTime.now(),
-                    priority: priority, // Asignar la prioridad seleccionada
-                  ));
-                  widget.onTaskStatusChanged();
-                  Navigator.pop(context);
-                }
-              : null,
-          child: Text(
-            'Add task',
-            style: TextStyle(color: OurColors().primaryTextColor, fontSize: 16),
-          ),
+  final isPrioritySelected = priority != -1; // Verificar si se ha seleccionado una prioridad
+  
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green.shade200,
+          minimumSize: const Size(170, 48),
         ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
-            minimumSize: const Size(170, 48),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text(
-            'Cancel',
-            style: TextStyle(color: OurColors().primaryTextColor, fontSize: 16),
-          ),
+        onPressed: isEnabled && isPrioritySelected // Habilitar solo si hay texto y se ha seleccionado una prioridad
+            ? () async {
+                await TaskSupabase().addTask(Task(
+                  id: Guid.newGuid,
+                  name: title.text,
+                  status: false,
+                  description: description.text,
+                  user_id: widget.userId,
+                  creation_date: DateTime.now(),
+                  priority: priority, // Asignar la prioridad seleccionada
+                ));
+                widget.onTaskStatusChanged();
+                Navigator.pop(context);
+              }
+            : null,
+        child: Text(
+          'Add task',
+          style: TextStyle(color: OurColors().primaryTextColor, fontSize: 16),
         ),
-      ],
-    );
-  }
+      ),
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+          minimumSize: const Size(170, 48),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text(
+          'Cancel',
+          style: TextStyle(color: OurColors().primaryTextColor, fontSize: 16),
+        ),
+      ),
+    ],
+  );
+}
 
   Widget name_widgets() {
     return Padding(
