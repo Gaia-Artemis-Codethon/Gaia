@@ -22,6 +22,8 @@ class _TaskWidgetState extends State<TaskWidget> {
   late String title;
   late String description;
   late String tempTitle;
+  int selectedPriority = -1;
+  int previousPriority = -1;
 
   @override
   void initState() {
@@ -31,6 +33,8 @@ class _TaskWidgetState extends State<TaskWidget> {
     description = widget.note.description ?? '';
     titleController = TextEditingController(text: title);
     descriptionController = TextEditingController(text: description);
+    selectedPriority = widget.note.priority; // Establecer la prioridad inicial
+    previousPriority = widget.note.priority; // Establecer la prioridad
   }
 
   @override
@@ -97,13 +101,13 @@ class _TaskWidgetState extends State<TaskWidget> {
                                 isDone = !isDone;
                               });
                               await TaskSupabase().taskIsDone(Task(
-                                id: widget.note.id,
-                                status: isDone,
-                                name: title,
-                                description: description,
-                                user_id: widget.note.user_id,
-                                creation_date: widget.note.creation_date
-                              ));
+                                  id: widget.note.id,
+                                  status: isDone,
+                                  name: title,
+                                  description: description,
+                                  user_id: widget.note.user_id,
+                                  creation_date: widget.note.creation_date,
+                                  priority: selectedPriority));
                               widget.onTaskStatusChanged();
                             },
                           ),
@@ -143,6 +147,11 @@ class _TaskWidgetState extends State<TaskWidget> {
               ],
             ),
           ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: priorityCircle(), // Mostrar el círculo de prioridad
+          ),
         ],
       ),
     );
@@ -162,6 +171,28 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget priorityCircle() {
+    Color circleColor;
+    switch (selectedPriority) {
+      case 0:
+        circleColor = Colors.red;
+        break;
+      case 1:
+        circleColor = Colors.yellow;
+        break;
+      case 2:
+        circleColor = Colors.green;
+        break;
+      default:
+        circleColor = Colors.grey;
+    }
+
+    return CircleAvatar(
+      radius: 8,
+      backgroundColor: circleColor,
     );
   }
 
@@ -223,56 +254,62 @@ class _TaskWidgetState extends State<TaskWidget> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: titleController,
-                  decoration: InputDecoration(labelText: 'Title'),
-                  onChanged: (value) {
-                    setState(() {
-                      tempTitle = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 10),
-                TextField(
-                  controller: descriptionController,
-                  decoration: InputDecoration(labelText: 'Description'),
-                  onChanged: (value) {
-                    setState(() {
-                      description = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        // Revert changes
-                        titleController.text = title;
-                        descriptionController.text = description;
-                        Navigator.pop(context);
+                    TextField(
+                      controller: titleController,
+                      decoration: InputDecoration(labelText: 'Title'),
+                      onChanged: (value) {
+                        setState(() {
+                          tempTitle = value;
+                        });
                       },
-                      child: Text('Cancel'),
                     ),
-                    SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed: () async {
-                        await _updateTask();
-                        Navigator.pop(context);
+                    SizedBox(height: 10),
+                    TextField(
+                      controller: descriptionController,
+                      decoration: InputDecoration(labelText: 'Description'),
+                      onChanged: (value) {
+                        setState(() {
+                          description = value;
+                        });
                       },
-                      child: Text('Save'),
+                    ),
+                    SizedBox(height: 20),
+                    prioritySelection(), // Mostrar la selección de prioridad
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            // Revert changes
+                            titleController.text = title;
+                            descriptionController.text = description;
+                            selectedPriority = previousPriority;
+                            Navigator.pop(context);
+                          },
+                          child: Text('Cancel'),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await _updateTask();
+                            Navigator.pop(context);
+                          },
+                          child: Text('Save'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         );
       },
@@ -280,10 +317,6 @@ class _TaskWidgetState extends State<TaskWidget> {
   }
 
   Future<void> _updateTask() async {
-    // Update task locally
-    setState(() {
-      title = tempTitle;
-    });
     // Update task on the server
     await TaskSupabase().updateTask(Task(
       id: widget.note.id,
@@ -292,6 +325,62 @@ class _TaskWidgetState extends State<TaskWidget> {
       description: description,
       user_id: widget.note.user_id,
       creation_date: widget.note.creation_date,
+      priority: selectedPriority, // Asignar la prioridad seleccionada
     ));
+
+    // Update task locally
+    setState(() {
+      title = tempTitle;
+      widget.onTaskStatusChanged();
+    });
+  }
+
+  Widget prioritySelection() {
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundColor: selectedPriority == 0
+              ? Colors.red
+              : Colors.grey, // Color para prioridad 0
+          child: IconButton(
+            onPressed: () {
+              selectedPriority = selectedPriority == 0
+                  ? -1
+                  : 0; // Si está seleccionado, lo deselecciona, de lo contrario, lo selecciona
+            },
+            icon: Icon(Icons.circle_sharp),
+            color: Colors.white,
+          ),
+        ),
+        CircleAvatar(
+          backgroundColor: selectedPriority == 1
+              ? Colors.yellow
+              : Colors.grey, // Color para prioridad 1
+          child: IconButton(
+            onPressed: () {
+              selectedPriority = selectedPriority == 1
+                  ? -1
+                  : 1; // Si está seleccionado, lo deselecciona, de lo contrario, lo selecciona
+            },
+            icon: Icon(Icons.circle_sharp),
+            color: Colors.white,
+          ),
+        ),
+        CircleAvatar(
+          backgroundColor: selectedPriority == 2
+              ? Colors.green
+              : Colors.grey, // Color para prioridad 2
+          child: IconButton(
+            onPressed: () {
+              selectedPriority = selectedPriority == 2
+                  ? -1
+                  : 2; // Si está seleccionado, lo deselecciona, de lo contrario, lo selecciona
+            },
+            icon: Icon(Icons.circle_sharp),
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
   }
 }

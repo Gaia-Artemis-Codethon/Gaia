@@ -23,6 +23,7 @@ class _Add_TaskState extends State<Add_Task> {
   FocusNode _focusNode1 = FocusNode();
   FocusNode _focusNode2 = FocusNode();
   int indexx = 0;
+  int priority = 0; // Variable para almacenar la prioridad seleccionada
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,8 @@ class _Add_TaskState extends State<Add_Task> {
             name_widgets(),
             const SizedBox(height: 20),
             description_widgets(),
+            const SizedBox(height: 20),
+            prioritySelection(), // Agregar la selección de prioridad
             const SizedBox(height: 20),
             ValueListenableBuilder<TextEditingValue>(
               valueListenable: title,
@@ -66,6 +69,7 @@ class _Add_TaskState extends State<Add_Task> {
                     description: description.text,
                     user_id: widget.userId,
                     creation_date: DateTime.now(),
+                    priority: priority, // Asignar la prioridad seleccionada
                   ));
                   widget.onTaskStatusChanged();
                   Navigator.pop(context);
@@ -163,6 +167,50 @@ class _Add_TaskState extends State<Add_Task> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget prioritySelection() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        CircleAvatar(
+          backgroundColor: Colors.red, // Color para prioridad 0
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                priority = 0; // Asignar prioridad 0
+              });
+            },
+            icon: Icon(Icons.circle_sharp),
+            color: Colors.white,
+          ),
+        ),
+        CircleAvatar(
+          backgroundColor: Colors.yellow, // Color para prioridad 1
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                priority = 1; // Asignar prioridad 1
+              });
+            },
+            icon: Icon(Icons.circle_sharp),
+            color: Colors.white,
+          ),
+        ),
+        CircleAvatar(
+          backgroundColor: Colors.green, // Color para prioridad 2
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                priority = 2; // Asignar prioridad 2
+              });
+            },
+            icon: Icon(Icons.circle_sharp),
+            color: Colors.white,
+          ),
+        ),
+      ],
     );
   }
 }
