@@ -65,6 +65,7 @@ class _Add_TaskState extends State<Add_Task> {
                     status: false,
                     description: description.text,
                     user_id: widget.userId,
+                    creation_date: DateTime.now(),
                   ));
                   widget.onTaskStatusChanged();
                   Navigator.pop(context);

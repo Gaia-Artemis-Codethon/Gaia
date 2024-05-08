@@ -6,6 +6,7 @@ class Task {
   final bool status;
   final String? description; // Nueva propiedad para la descripción de la tarea
   final Guid? user_id;
+  final DateTime creation_date;
 
   Task({
     required this.id,
@@ -13,6 +14,7 @@ class Task {
     required this.status,
     this.description, // Parámetro opcional para la descripción de la tarea
     this.user_id,
+    required this.creation_date
   });
 
   static Task fromJson(Map<String, dynamic> data) {
@@ -22,6 +24,7 @@ class Task {
       status: data['status'],
       description: data['description'], // Obtener la descripción de los datos
       user_id: data['user_id'] == null ? null : Guid(data['user_id']),
+      creation_date: DateTime.parse(data['creation_date']),
     );
   }
 
@@ -32,6 +35,7 @@ class Task {
       "status": task.status,
       "description": task.description, // Agregar la descripción al mapa JSON
       "user_id": task.user_id == null ? null : task.user_id!.value,
+      "creation_date": task.creation_date!.toIso8601String()
     };
   }
 }

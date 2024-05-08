@@ -117,6 +117,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                                 name: title,
                                 description: description,
                                 user_id: widget.note.user_id,
+                                creation_date: widget.note.creation_date
                               ));
                               widget.onTaskStatusChanged();
                             },
@@ -280,6 +281,7 @@ class _TaskWidgetState extends State<TaskWidget> {
       status: widget.note.status,
       description: description,
       user_id: widget.note.user_id,
+      creation_date: widget.note.creation_date,
     ));
     widget.onTaskStatusChanged();
   }

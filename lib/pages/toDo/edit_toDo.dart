@@ -73,6 +73,7 @@ class _EditToDoState extends State<EditToDo> {
                         status: widget._note.status,
                         description: description!.text,
                         user_id: widget._note.user_id,
+                        creation_date: widget._note.creation_date,
                       ));
                       widget.onTaskStatusChanged();
                       Navigator.pop(context);
