@@ -121,35 +121,39 @@ class _HomePageState extends State<HomePage> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const CircleAvatar(
-                    radius: 27,
-                    backgroundColor: Color.fromARGB(108, 155, 79, 1),
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage('images/granjero.png'),
+              return Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const CircleAvatar(
+                      radius: 27,
+                      backgroundColor: Color.fromARGB(108, 155, 79, 1),
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: AssetImage('images/granjero.png'),
+                      ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Column(
-                      children: [
-                        const Text(
-                          'MY COMMUNITY:',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          snapshot.data ?? 'Default Community Name',
-                          style: const TextStyle(color: Colors.black),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Column(
+                        children: [
+                          const Text(
+                            'MY COMMUNITY:',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            snapshot.data ?? 'Default Community Name',
+                            style: const TextStyle(color: Colors.black),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             }
           },
