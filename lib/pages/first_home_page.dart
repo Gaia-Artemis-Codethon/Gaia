@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/pages/create_community.dart';
 import 'package:flutter_application_huerto/pages/join_community.dart';
 import 'package:http/http.dart' as http;
@@ -7,161 +8,95 @@ import 'package:http/http.dart' as http;
 import '../components/button.dart';
 
 class FirstHomePage extends StatelessWidget {
-  const FirstHomePage({super.key});
+  const FirstHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            'SIN COMUNIDAD',
-            style: TextStyle(color: Colors.black),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/firstH.png"),
+            fit: BoxFit.cover,
           ),
         ),
-        leading: const CircleAvatar(
-          backgroundImage:
-              AssetImage("images/granjero.png"), // Cambiado a la imagen local
-        ),
-        elevation: 0,
-      ),
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('images/stardew.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned.fill(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(
-                    height:
-                        kToolbarHeight), // Para dejar espacio para el AppBar
-                Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 350,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          color: Colors.lightGreen[200]?.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(43),
+                Text(
+                  'BIENVENID@S',
+                  style: TextStyle(color: Colors.black, fontSize: 28),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  '¿Qué quieres hacer?',
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+                SizedBox(height: 40),
+                SizedBox(
+                  width:
+                      double.infinity, // Ajustar el ancho al máximo disponible
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const JoinCommunity(),
                         ),
-                        child: Stack(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Únete a una comunidad',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 24),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    'Si tus vecinos ya tienen una',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 8,
-                              right: 20,
-                              child: Button(
-                                text: const Text(
-                                  "Comenzar",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                icon: const Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const JoinCommunity()),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: OurColors().primaryButton,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
                       ),
-                      const SizedBox(height: 20),
-                      Container(
-                        width: 350,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          color: Colors.lightGreen[200]?.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(43),
-                        ),
-                        child: Stack(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Crea una comunidad',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 24),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    'Se el primer vecino',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 8,
-                              right: 20,
-                              child: Button(
-                                text: const Text(
-                                  "Comenzar",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                icon: const Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const CreateCommunity()),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+                    ),
+                    child: Text(
+                      "Unirse a una comunidad",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
                       ),
-                    ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 40),
+                SizedBox(
+                  width:
+                      double.infinity, // Ajustar el ancho al máximo disponible
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateCommunity(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: OurColors().primaryButton,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: Text(
+                      "Crear una comunidad",
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

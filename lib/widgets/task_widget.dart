@@ -1,93 +1,149 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
-import 'package:flutter_application_huerto/main.dart';
 import 'package:flutter_application_huerto/models/task.dart';
 import 'package:flutter_application_huerto/service/task_supabase.dart';
-import 'package:flutter_guid/flutter_guid.dart';
-import '../pages/toDo/edit_toDo.dart';
 
 class TaskWidget extends StatefulWidget {
   final Task note;
-  final VoidCallback onTaskStatusChanged; // Nuevo argumento para el callback
+  final VoidCallback onTaskStatusChanged;
 
-  const TaskWidget(this.note, this.onTaskStatusChanged, {super.key});
+  const TaskWidget(this.note, this.onTaskStatusChanged, {Key? key})
+      : super(key: key);
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
+  bool isDone = false;
+  bool isDescriptionExpanded = false;
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
+  late String title;
+  late String description;
+  late String tempTitle;
+
+  @override
+  void initState() {
+    super.initState();
+    isDone = widget.note.status;
+    title = widget.note.name;
+    description = widget.note.description ?? '';
+    titleController = TextEditingController(text: title);
+    descriptionController = TextEditingController(text: description);
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isDone = widget.note.status;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Container(
-        width: double.infinity,
-        height: 130,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          // ignore: prefer_const_constructors
-          image: DecorationImage(
-            image:
-                AssetImage('images/madera.jpg'), // Imagen de textura de madera
-            fit: BoxFit.cover,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 2),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      child: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            widget.note.name,
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 3, 15, 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: InkWell(
+                          onTap: () {
+                            _editTaskPopup(context);
+                          },
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  title,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Checkbox(
-                          activeColor: Colors.green.shade200,
-                          value: isDone,
-                          onChanged: (value) async {
-                            setState(() {
-                              isDone = !isDone;
-                            });
-                            await TaskSupabase().taskIsDone(Task(
+                      ),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              showConfirmationDialog(context);
+                            },
+                            child: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Checkbox(
+                            activeColor: Colors.green.shade200,
+                            value: isDone,
+                            onChanged: (value) async {
+                              setState(() {
+                                isDone = !isDone;
+                              });
+                              await TaskSupabase().taskIsDone(Task(
                                 id: widget.note.id,
                                 status: isDone,
-                                name: widget.note.name,
-                                user_id: widget.note.user_id));
-                            widget.onTaskStatusChanged();
-                          },
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    editTime(),
-                  ],
+                                name: title,
+                                description: description,
+                                user_id: widget.note.user_id,
+                                creation_date: widget.note.creation_date
+                              ));
+                              widget.onTaskStatusChanged();
+                            },
+                          ),
+                          SizedBox(width: 8),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isDescriptionExpanded = !isDescriptionExpanded;
+                              });
+                            },
+                            child: Icon(
+                              isDescriptionExpanded
+                                  ? Icons.keyboard_arrow_up
+                                  : Icons.keyboard_arrow_down,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                if (isDescriptionExpanded)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 0, 15, 5),
+                    child: InkWell(
+                      onTap: () {
+                        _editTaskPopup(context);
+                      },
+                      child: Text(
+                        description,
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                editTime(),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -102,80 +158,140 @@ class _TaskWidgetState extends State<TaskWidget> {
             spacing: 8.0,
             runSpacing: 4.0,
             direction: Axis.horizontal,
-            children: [
-              GestureDetector(
-                onTap: () async {
-                  await TaskSupabase().deleteTask(widget.note.id);
-                  widget.onTaskStatusChanged();
-                },
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      'images/bot.png',
-                      width: 130,
-                      height: 45,
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      top:
-                          5, // Ajusta esta línea para mover el texto hacia abajo
-                      bottom: 0,
-                      child: Center(
-                        child: Text(
-                          'Eliminar',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors
-                                .white, // Asegúrate de que el color del texto sea visible sobre el fondo
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 20),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => EditToDo(
-                        widget.note, userId!, widget.onTaskStatusChanged),
-                  ));
-                },
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      'images/bot.png',
-                      width: 130,
-                      height: 45,
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      top:
-                          5, // Ajusta esta línea para mover el texto hacia abajo
-                      bottom: 0,
-                      child: Center(
-                        child: Text(
-                          'Editar',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors
-                                .white, // Asegúrate de que el color del texto sea visible sobre el fondo
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            children: [],
           ),
         ),
       ),
     );
+  }
+
+  void showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Eliminar tarea"),
+          content: Text("¿Estás seguro de querer eliminar esta tarea?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                await TaskSupabase().deleteTask(widget.note.id);
+                widget.onTaskStatusChanged();
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: OurColors().primary,
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                ),
+                child: Text(
+                  "Si",
+                  style: TextStyle(color: OurColors().primaryTextColor),
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: OurColors().deleteButton,
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                ),
+                child: Text(
+                  "No",
+                  style: TextStyle(color: OurColors().primaryTextColor),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _editTaskPopup(BuildContext context) {
+    tempTitle = title;
+    titleController.text = title;
+    descriptionController.text = description;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: titleController,
+                  decoration: InputDecoration(labelText: 'Title'),
+                  onChanged: (value) {
+                    setState(() {
+                      tempTitle = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(labelText: 'Description'),
+                  onChanged: (value) {
+                    setState(() {
+                      description = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        // Revert changes
+                        titleController.text = title;
+                        descriptionController.text = description;
+                        Navigator.pop(context);
+                      },
+                      child: Text('Cancel'),
+                    ),
+                    SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await _updateTask();
+                        Navigator.pop(context);
+                      },
+                      child: Text('Save'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _updateTask() async {
+    // Update task locally
+    setState(() {
+      title = tempTitle;
+    });
+    // Update task on the server
+    await TaskSupabase().updateTask(Task(
+      id: widget.note.id,
+      name: tempTitle,
+      status: widget.note.status,
+      description: description,
+      user_id: widget.note.user_id,
+      creation_date: widget.note.creation_date,
+    ));
   }
 }

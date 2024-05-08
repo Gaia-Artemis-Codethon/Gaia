@@ -26,7 +26,8 @@ class _JoinCommunityState extends State<JoinCommunity> {
   void initState() {
     super.initState();
     _communityIdController.addListener(_updateButtonState);
-    _communityIdController.text = "544b7be4-a82f-4425-80e1-390004064742"; //Debug purposes, do not upload to prod
+    _communityIdController.text =
+        "f32b22dd-31d4-42b9-ad73-6a28c06ca83d"; //Debug purposes, do not upload to prod
   }
 
   @override
@@ -116,6 +117,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
+        backgroundColor: OurColors().backgroundColor,
         title: const Align(
           alignment: Alignment.centerRight,
           child: Text(
@@ -177,7 +179,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
               text: const Text(
                 "Continuar",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onPressed: _isButtonEnabled
                   ? () async {
@@ -198,12 +200,8 @@ class _JoinCommunityState extends State<JoinCommunity> {
                       }
                     }
                   : null,
-              icon: const Icon(
-                Icons.arrow_forward,
-                color: Colors.white,
-              ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: OurColors().accent,
+                backgroundColor: OurColors().primaryButton,
                 alignment: Alignment.center,
               ),
             ),

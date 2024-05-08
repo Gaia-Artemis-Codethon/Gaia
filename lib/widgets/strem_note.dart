@@ -20,7 +20,7 @@ class _StreamNoteState extends State<StreamNote> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Task>>(
-      stream: TaskSupabase().stream(widget.userId, widget.done),
+      stream: TaskSupabase().stream(widget.userId, widget.done), // Use asMap for indexing
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == null) {
           return Center(
@@ -31,7 +31,10 @@ class _StreamNoteState extends State<StreamNote> {
             ),
           );
         }
-        final tasksList = snapshot.data!;
+
+        // Sort tasks in descending order of creationDate (newest to oldest)
+        final tasksList = snapshot.data!..sort((a, b) => b.creation_date.compareTo(a.creation_date));
+
         return ListView.builder(
           shrinkWrap: true,
           itemBuilder: (context, index) {
@@ -46,7 +49,9 @@ class _StreamNoteState extends State<StreamNote> {
                 // Actualiza el stream después de eliminar una tarea
               },
               child: TaskWidget(
-                  task, widget.onTaskStatusChanged), // Pasa el callback aquí
+                task,
+                widget.onTaskStatusChanged, // Pass the callback here
+              ),
             );
           },
           itemCount: tasksList.length,

@@ -1,166 +1,190 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_application_huerto/pages/toDo/add_task.dart';
-import 'package:flutter_guid/flutter_guid.dart';
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import '../../const/colors.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/const/colors.dart';
+import 'package:flutter_application_huerto/models/task.dart';
+import 'package:flutter_application_huerto/pages/home_page.dart';
+import 'package:flutter_application_huerto/pages/map/mapPage.dart';
+import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
+import 'package:flutter_application_huerto/pages/toDo/add_task.dart';
+import 'package:flutter_application_huerto/service/task_supabase.dart';
+import 'package:flutter_application_huerto/shared/bottom_navigation_bar.dart';
+import 'package:flutter_guid/flutter_guid.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 import '../../widgets/strem_note.dart';
 
 class ToDo extends StatefulWidget {
   final Guid userId;
-  const ToDo(this.userId, {super.key});
+
+  const ToDo(this.userId, {Key? key}) : super(key: key);
 
   @override
   State<ToDo> createState() => _ToDoState();
 }
 
-bool show = true;
-
 class _ToDoState extends State<ToDo> {
-  late ScrollController _scrollController;
+  late Stream<List<Task>> _pendingTasksStream;
+  late Stream<List<Task>> _completedTasksStream;
+  int _currentIndex = 1;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
+    _pendingTasksStream = TaskSupabase().getPendingTasks(widget.userId);
+    _completedTasksStream = TaskSupabase().getCompletedTasks(widget.userId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Add_Task(widget.userId, updateTasks),
-          ));
-        },
-        backgroundColor: Colors.transparent,
-        child: Stack(
-          children: [
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('images/madera.jpg'),
-                  fit: BoxFit.cover,
-                ),
-                shape: BoxShape.circle,
-              ),
-            ),
-            Center(
-              child: Icon(
-                Icons.add,
-                size: 30,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/mclara.jpg'), // Textura de madera clara
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          AssetImage('images/madera.jpg'), // Textura de madera
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Text(
-                    'Por hacer',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: OurColors().backgroundColor,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: OurColors().backgroundColor,
+          elevation: 0,
+          bottom: TabBar(
+            indicatorColor: OurColors().accent,
+            tabs: [
+              Tab(
+                child: Text(
+                  'To Do',
+                  style: TextStyle(color: OurColors().accent, fontSize: 20),
                 ),
               ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: StreamNote(false, widget.userId, updateTasks),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          AssetImage('images/madera.jpg'), // Textura de madera
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Text(
-                    'Hecho',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: StreamNote(true, widget.userId, updateTasks),
+              Tab(
+                child: Text(
+                  'Done',
+                  style: TextStyle(color: OurColors().accent, fontSize: 20),
                 ),
               ),
             ],
           ),
         ),
+        floatingActionButton: ClipOval(
+          child: Material(
+            color: OurColors().primaryButton, // Button color
+            child: InkWell(
+              splashColor: Colors.white, // Splash color
+              child: SizedBox(
+                  width: 56,
+                  height: 56,
+                  child: Icon(Icons.add, size: 35, color: Colors.white)),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Add_Task(widget.userId, updateTasks),
+                ));
+              },
+            ),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            _buildTaskList(false),
+            _buildTaskList(true),
+          ],
+        ),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          onTap: (index) {
+            if (index != _currentIndex) {
+              setState(() {
+                _currentIndex = index;
+              });
+              if (_currentIndex == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(widget.userId),
+                  ),
+                );
+              } else if (_currentIndex == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserPlants(widget.userId),
+                  ),
+                );
+              } else if (_currentIndex == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MapPage(widget.userId),
+                  ),
+                );
+              }
+            }
+          },
+          currentIndex: _currentIndex,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTaskList(bool completed) {
+    return Padding(
+      padding:
+          //ajustamos el padding respecto las tarjetas desde aqui
+          const EdgeInsets.fromLTRB(16.0, 19.0, 16.0, 0), // Ajuste del padding
+      child: StreamBuilder<List<Task>>(
+        stream: completed ? _completedTasksStream : _pendingTasksStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+            return _emptyTask();
+          } else {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: StreamNote(
+                completed,
+                widget.userId,
+                updateTasks,
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _emptyTask() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: Image.asset(
+              'images/junimo.png',
+              width: 200,
+              height: 200,
+            ),
+          ),
+          Text(
+            '¿No tienes tareas por hacer?',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
     );
   }
 
   void updateTasks() {
-    setState(() {});
+    setState(() {
+      _pendingTasksStream = TaskSupabase().getPendingTasks(widget.userId);
+      _completedTasksStream = TaskSupabase().getCompletedTasks(widget.userId);
+    });
   }
 }
