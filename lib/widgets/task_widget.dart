@@ -21,6 +21,7 @@ class _TaskWidgetState extends State<TaskWidget> {
   late TextEditingController descriptionController;
   late String title;
   late String description;
+  late String tempTitle;
 
   @override
   void initState() {
@@ -60,36 +61,20 @@ class _TaskWidgetState extends State<TaskWidget> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                _editTaskPopup(context);
-                              },
-                              child: Text(
-                                title,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
-                            AnimatedCrossFade(
-                              duration: Duration(milliseconds: 300),
-                              crossFadeState: isDescriptionExpanded
-                                  ? CrossFadeState.showSecond
-                                  : CrossFadeState.showFirst,
-                              firstChild: SizedBox.shrink(),
-                              secondChild: GestureDetector(
-                                onTap: () {
-                                  _editTaskPopup(context);
-                                },
+                        child: InkWell(
+                          onTap: () {
+                            _editTaskPopup(context);
+                          },
+                          child: Row(
+                            children: [
+                              Expanded(
                                 child: Text(
-                                  description,
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 14),
+                                  title,
+                                  style: TextStyle(fontSize: 16),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       Row(
@@ -141,6 +126,19 @@ class _TaskWidgetState extends State<TaskWidget> {
                     ],
                   ),
                 ),
+                if (isDescriptionExpanded)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 0, 15, 5),
+                    child: InkWell(
+                      onTap: () {
+                        _editTaskPopup(context);
+                      },
+                      child: Text(
+                        description,
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                    ),
+                  ),
                 editTime(),
               ],
             ),
@@ -217,6 +215,10 @@ class _TaskWidgetState extends State<TaskWidget> {
   }
 
   void _editTaskPopup(BuildContext context) {
+    tempTitle = title;
+    titleController.text = title;
+    descriptionController.text = description;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -232,7 +234,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                   decoration: InputDecoration(labelText: 'Title'),
                   onChanged: (value) {
                     setState(() {
-                      title = value;
+                      tempTitle = value;
                     });
                   },
                 ),
@@ -252,14 +254,17 @@ class _TaskWidgetState extends State<TaskWidget> {
                   children: [
                     TextButton(
                       onPressed: () {
+                        // Revert changes
+                        titleController.text = title;
+                        descriptionController.text = description;
                         Navigator.pop(context);
                       },
                       child: Text('Cancel'),
                     ),
                     SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed: () {
-                        _updateTask();
+                      onPressed: () async {
+                        await _updateTask();
                         Navigator.pop(context);
                       },
                       child: Text('Save'),
@@ -274,15 +279,19 @@ class _TaskWidgetState extends State<TaskWidget> {
     );
   }
 
-  void _updateTask() {
-    TaskSupabase().updateTask(Task(
+  Future<void> _updateTask() async {
+    // Update task locally
+    setState(() {
+      title = tempTitle;
+    });
+    // Update task on the server
+    await TaskSupabase().updateTask(Task(
       id: widget.note.id,
-      name: title,
+      name: tempTitle,
       status: widget.note.status,
       description: description,
       user_id: widget.note.user_id,
       creation_date: widget.note.creation_date,
     ));
-    widget.onTaskStatusChanged();
   }
 }
