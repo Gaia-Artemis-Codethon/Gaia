@@ -15,15 +15,15 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  bool isDone = false;
+  late bool isDone;
   bool isDescriptionExpanded = false;
   late TextEditingController titleController;
   late TextEditingController descriptionController;
   late String title;
   late String description;
   late String tempTitle;
-  int selectedPriority = -1;
-  int previousPriority = -1;
+  late int selectedPriority;
+  late int previousPriority;
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _TaskWidgetState extends State<TaskWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(18, 3, 15, 5),
+                  padding: const EdgeInsets.fromLTRB(40, 0, 25, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -81,51 +81,55 @@ class _TaskWidgetState extends State<TaskWidget> {
                           ),
                         ),
                       ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              showConfirmationDialog(context);
-                            },
-                            child: Icon(
-                              Icons.delete,
-                              color: Colors.red,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                showConfirmationDialog(context);
+                              },
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 8),
-                          Checkbox(
-                            activeColor: Colors.green.shade200,
-                            value: isDone,
-                            onChanged: (value) async {
-                              setState(() {
-                                isDone = !isDone;
-                              });
-                              await TaskSupabase().taskIsDone(Task(
-                                  id: widget.note.id,
-                                  status: isDone,
-                                  name: title,
-                                  description: description,
-                                  user_id: widget.note.user_id,
-                                  creation_date: widget.note.creation_date,
-                                  priority: selectedPriority));
-                              widget.onTaskStatusChanged();
-                            },
-                          ),
-                          SizedBox(width: 8),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isDescriptionExpanded = !isDescriptionExpanded;
-                              });
-                            },
-                            child: Icon(
-                              isDescriptionExpanded
-                                  ? Icons.keyboard_arrow_up
-                                  : Icons.keyboard_arrow_down,
-                              color: Colors.grey,
+                            SizedBox(width: 8),
+                            Checkbox(
+                              activeColor: Colors.green.shade200,
+                              value: isDone,
+                              onChanged: (value) async {
+                                setState(() {
+                                  isDone = !isDone;
+                                });
+                                await TaskSupabase().taskIsDone(Task(
+                                    id: widget.note.id,
+                                    status: isDone,
+                                    name: title,
+                                    description: description,
+                                    user_id: widget.note.user_id,
+                                    creation_date: widget.note.creation_date,
+                                    priority: selectedPriority));
+                                widget.onTaskStatusChanged();
+                              },
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isDescriptionExpanded =
+                                      !isDescriptionExpanded;
+                                });
+                              },
+                              child: Icon(
+                                isDescriptionExpanded
+                                    ? Icons.keyboard_arrow_up
+                                    : Icons.keyboard_arrow_down,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -149,7 +153,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
           Positioned(
             top: 10,
-            right: 10,
+            left: 10,
             child: priorityCircle(), // Mostrar el círculo de prioridad
           ),
         ],
@@ -190,9 +194,18 @@ class _TaskWidgetState extends State<TaskWidget> {
         circleColor = Colors.grey;
     }
 
-    return CircleAvatar(
-      radius: 8,
-      backgroundColor: circleColor,
+    return GestureDetector(
+      onTap: () {
+        _updatePriority();
+      },
+      child: Padding(
+        //padding para controlar distancia de los botones
+        padding: const EdgeInsets.fromLTRB(4, 14, 0, 0),
+        child: CircleAvatar(
+          radius: 8,
+          backgroundColor: circleColor,
+        ),
+      ),
     );
   }
 
@@ -282,7 +295,6 @@ class _TaskWidgetState extends State<TaskWidget> {
                       },
                     ),
                     SizedBox(height: 20),
-                    prioritySelection(), // Mostrar la selección de prioridad
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -335,52 +347,38 @@ class _TaskWidgetState extends State<TaskWidget> {
     });
   }
 
-  Widget prioritySelection() {
-    return Row(
-      children: [
-        CircleAvatar(
-          backgroundColor: selectedPriority == 0
-              ? Colors.red
-              : Colors.grey, // Color para prioridad 0
-          child: IconButton(
-            onPressed: () {
-              selectedPriority = selectedPriority == 0
-                  ? -1
-                  : 0; // Si está seleccionado, lo deselecciona, de lo contrario, lo selecciona
-            },
-            icon: Icon(Icons.circle_sharp),
-            color: Colors.white,
-          ),
-        ),
-        CircleAvatar(
-          backgroundColor: selectedPriority == 1
-              ? Colors.yellow
-              : Colors.grey, // Color para prioridad 1
-          child: IconButton(
-            onPressed: () {
-              selectedPriority = selectedPriority == 1
-                  ? -1
-                  : 1; // Si está seleccionado, lo deselecciona, de lo contrario, lo selecciona
-            },
-            icon: Icon(Icons.circle_sharp),
-            color: Colors.white,
-          ),
-        ),
-        CircleAvatar(
-          backgroundColor: selectedPriority == 2
-              ? Colors.green
-              : Colors.grey, // Color para prioridad 2
-          child: IconButton(
-            onPressed: () {
-              selectedPriority = selectedPriority == 2
-                  ? -1
-                  : 2; // Si está seleccionado, lo deselecciona, de lo contrario, lo selecciona
-            },
-            icon: Icon(Icons.circle_sharp),
-            color: Colors.white,
-          ),
-        ),
-      ],
-    );
+  Future<void> _updatePriority() async {
+    int newPriority;
+    switch (selectedPriority) {
+      case 0:
+        newPriority = 2; // Cambiar de verde (0) a rojo (2)
+        break;
+      case 1:
+        newPriority = 0; // Cambiar de amarillo (1) a verde (0)
+        break;
+      case 2:
+        newPriority = 1; // Cambiar de rojo (2) a amarillo (1)
+        break;
+      default:
+        newPriority =
+            0; // Si la prioridad no está definida, establecer como verde (0)
+    }
+
+    // Actualizar la prioridad en la base de datos
+    await TaskSupabase().updateTask(Task(
+      id: widget.note.id,
+      name: title,
+      status: widget.note.status,
+      description: description,
+      user_id: widget.note.user_id,
+      creation_date: widget.note.creation_date,
+      priority: newPriority,
+    ));
+
+    // Actualizar la prioridad localmente
+    setState(() {
+      selectedPriority = newPriority;
+      widget.onTaskStatusChanged();
+    });
   }
 }
