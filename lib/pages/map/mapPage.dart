@@ -201,14 +201,6 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: OurColors().backgroundColor,
-        elevation: 0,
-        title: Center(
-          child: Text('Map'),
-        ),
-      ),
       body: StatefulBuilder(
         builder: (context, setState) => Column(
           children: [
@@ -280,6 +272,38 @@ class _MapPageState extends State<MapPage> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        onTap: (index) {
+          if (index != _currentIndex) {
+            setState(() {
+              _currentIndex = index;
+            });
+            if (_currentIndex == 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(widget.userId),
+                ),
+              );
+            } else if (_currentIndex == 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ToDo(widget.userId),
+                ),
+              );
+            } else if (_currentIndex == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserPlants(widget.userId),
+                ),
+              );
+            }
+          }
+        },
+        currentIndex: _currentIndex,
       ),
     );
   }
