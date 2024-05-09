@@ -3,10 +3,11 @@ import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-
-import '../../models/land.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../models/land.dart'; // Replace with your Land model definition
 import '../../service/land_supabase.dart';
 import '../home_page.dart';
 import '../plant/userPlants.dart';
@@ -28,6 +29,7 @@ class _MapPageState extends State<MapPage> {
   final MapController mapController = MapController();
   bool hasLocationPermission = false;
   bool isLoading = true;
+  bool hasInternetConnection = true;
 
   LatLng? myPosition;
   List<Land> lands = [];
@@ -36,10 +38,13 @@ class _MapPageState extends State<MapPage> {
   int _currentIndex = 3;
   int indexLand = -1;
 
+  final Connectivity connectivity = Connectivity();
+
   @override
   void initState() {
     super.initState();
     _requestLocationPermission();
+    _checkInternetConnection();
   }
 
   void _requestLocationPermission() async {
@@ -64,9 +69,9 @@ class _MapPageState extends State<MapPage> {
       print("Location permission permanently denied");
     } else {
       await getCurrentLocation().then((_) => setState(() {
-            isLoading = false;
-            loadLands();
-          }));
+        isLoading = false;
+        loadLands();
+      }));
     }
   }
 
@@ -85,6 +90,25 @@ class _MapPageState extends State<MapPage> {
       debugPrint("Error getting location: $e");
     }
   }
+
+  void _checkInternetConnection() async {
+    List<ConnectivityResult> connectivityResult = await connectivity.checkConnectivity();
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      setState(() {
+        hasInternetConnection = true;
+      });
+    } else {
+      setState(() {
+        hasInternetConnection = false;
+      });
+      // Handle no internet connection scenario
+      print("No internet connection detected");
+      // You can show a dialog or snackbar to inform the user about the issue
+      // and provide options like retrying or going to settings
+    }
+  }
+
 
   void loadLands() async {
     lands = await LandSupabase().readLands();
@@ -142,126 +166,118 @@ class _MapPageState extends State<MapPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-    return Scaffold(
-      backgroundColor: OurColors().backgroundColor,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: OurColors().backgroundColor,
-        elevation: 0,
-        title: Center(
-          child: Text('Map'),
-        ),
-      ),
-      body: StatefulBuilder(
-        builder: (context, setState) => Column(
-          children: [
-            Expanded(
-              flex: 3,
-              child: FlutterMap(
-                mapController: mapController,
-                options: MapOptions(
-                  initialCenter: indexLand != -1
-                      ? LatLng(
-                          lands[indexLand].latitude, lands[indexLand].longitude)
-                      : (hasLocationPermission
-                          ? myPosition!
-                          : const LatLng(39.4702, -0.3898)),
-                  zoom: 18,
-                  keepAlive: false,
-                ),
-                children: [
-                  TileLayer(
-                    urlTemplate: styleUrl,
-                    additionalOptions: const {
-                      'accessToken': MAP_KEY,
-                    },
-                  ),
-                  MarkerLayer(markers: markers),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: Scrollbar(
-                    thumbVisibility: true,
-                    child: ListView.builder(
-                      itemCount: lands.length,
-                      itemBuilder: (context, index) {
-                        final land = lands[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: ListTile(
-                            title: Text(land.location),
-                            subtitle: Text(
-                              hasLocationPermission
-                                  ? 'Size: ${land.size}, Proximity: ${_calculateDistance(land).toStringAsFixed(2)} meters'
-                                  : 'Size: ${land.size}, Proximity: Not available',
-                            ),
-                            selected: index == indexLand,
-                            onTap: () {
-                              setState(() {
-                                indexLand = index;
-                                mapController.move(
-                                    LatLng(lands[index].latitude,
-                                        lands[index].longitude),
-                                    18);
-                              });
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        onTap: (index) {
-          if (index != _currentIndex) {
-            setState(() {
-              _currentIndex = index;
-            });
-            if (_currentIndex == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomePage(widget.userId),
-                ),
-              );
-            } else if (_currentIndex == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ToDo(widget.userId),
-                ),
-              );
-            } else if (_currentIndex == 2) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UserPlants(widget.userId),
-                ),
-              );
-            }
-          }
-        },
-        currentIndex: _currentIndex,
-      ),
+Widget build(BuildContext context) {
+  if (isLoading) {
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
+  /*if (!hasInternetConnection) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('No internet connection detected'),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              _checkInternetConnection();
+            },
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
+    );
+  }*/
+  return Scaffold(
+    backgroundColor: OurColors().backgroundColor,
+    extendBodyBehindAppBar: true,
+    appBar: AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: OurColors().backgroundColor,
+      elevation: 0,
+      title: Center(
+        child: Text('Map'),
+      ),
+    ),
+    body: StatefulBuilder(
+      builder: (context, setState) => Column(
+        children: [
+          Expanded(
+            flex: 3,
+            child: FlutterMap(
+              mapController: mapController,
+              options: MapOptions(
+                initialCenter: indexLand != -1
+                    ? LatLng(lands[indexLand].latitude, lands[indexLand].longitude)
+                    : (hasLocationPermission ? myPosition! : const LatLng(39.4702, -0.3898)),
+                zoom: 18,
+                keepAlive: false,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: styleUrl,
+                  additionalOptions: const {
+                    'accessToken': MAP_KEY,
+                  },
+                ),
+                MarkerLayer(markers: markers),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  child: ListView.builder(
+                    itemCount: lands.length,
+                    itemBuilder: (context, index) {
+                      final land = lands[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: ListTile(
+                          title: Text(land.location),
+                          subtitle: Text(
+                            hasLocationPermission
+                                ? 'Size: ${land.size}, Proximity: ${_calculateDistance(land).toStringAsFixed(2)} meters'
+                                : 'Size: ${land.size}, Proximity: Not available',
+                          ),
+                          selected: index == indexLand,
+                          onTap: () async {
+                            setState(() {
+                              indexLand = index;
+                              mapController.move(
+                                LatLng(lands[index].latitude, lands[index].longitude),
+                                18,
+                              );
+                            });
+                            double destinationLatitude = land.latitude;
+                            double destinationLongitude = land.longitude;
+                            String url =
+                                'https://www.google.com/maps/dir/?api=1&destination=$destinationLatitude,$destinationLongitude';
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
+}
+
