@@ -69,9 +69,9 @@ class _MapPageState extends State<MapPage> {
       print("Location permission permanently denied");
     } else {
       await getCurrentLocation().then((_) => setState(() {
-        isLoading = false;
-        loadLands();
-      }));
+            isLoading = false;
+            loadLands();
+          }));
     }
   }
 
@@ -92,7 +92,8 @@ class _MapPageState extends State<MapPage> {
   }
 
   void _checkInternetConnection() async {
-    List<ConnectivityResult> connectivityResult = await connectivity.checkConnectivity();
+    List<ConnectivityResult> connectivityResult =
+        await connectivity.checkConnectivity();
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       setState(() {
@@ -108,7 +109,6 @@ class _MapPageState extends State<MapPage> {
       // and provide options like retrying or going to settings
     }
   }
-
 
   void loadLands() async {
     lands = await LandSupabase().readLands();
@@ -157,8 +157,17 @@ class _MapPageState extends State<MapPage> {
             color: Colors.black,
             size: 30.0,
           ),
-          onPressed: () {
+          onPressed: () async {
             mapController.move(LatLng(land.latitude, land.longitude), 18);
+            double destinationLatitude = land.latitude;
+            double destinationLongitude = land.longitude;
+            String url =
+                'https://www.google.com/maps/dir/?api=1&destination=$destinationLatitude,$destinationLongitude';
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+              throw 'Could not launch $url';
+            }
           },
         ),
       );
@@ -166,13 +175,13 @@ class _MapPageState extends State<MapPage> {
   }
 
   @override
-Widget build(BuildContext context) {
-  if (isLoading) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-  /*if (!hasInternetConnection) {
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    /*if (!hasInternetConnection) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -189,95 +198,89 @@ Widget build(BuildContext context) {
       ),
     );
   }*/
-  return Scaffold(
-    backgroundColor: OurColors().backgroundColor,
-    extendBodyBehindAppBar: true,
-    appBar: AppBar(
-      automaticallyImplyLeading: false,
+    return Scaffold(
       backgroundColor: OurColors().backgroundColor,
-      elevation: 0,
-      title: Center(
-        child: Text('Map'),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: OurColors().backgroundColor,
+        elevation: 0,
+        title: Center(
+          child: Text('Map'),
+        ),
       ),
-    ),
-    body: StatefulBuilder(
-      builder: (context, setState) => Column(
-        children: [
-          Expanded(
-            flex: 3,
-            child: FlutterMap(
-              mapController: mapController,
-              options: MapOptions(
-                initialCenter: indexLand != -1
-                    ? LatLng(lands[indexLand].latitude, lands[indexLand].longitude)
-                    : (hasLocationPermission ? myPosition! : const LatLng(39.4702, -0.3898)),
-                zoom: 18,
-                keepAlive: false,
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: styleUrl,
-                  additionalOptions: const {
-                    'accessToken': MAP_KEY,
-                  },
+      body: StatefulBuilder(
+        builder: (context, setState) => Column(
+          children: [
+            Expanded(
+              flex: 3,
+              child: FlutterMap(
+                mapController: mapController,
+                options: MapOptions(
+                  initialCenter: indexLand != -1
+                      ? LatLng(
+                          lands[indexLand].latitude, lands[indexLand].longitude)
+                      : (hasLocationPermission
+                          ? myPosition!
+                          : const LatLng(39.4702, -0.3898)),
+                  zoom: 18,
+                  keepAlive: false,
                 ),
-                MarkerLayer(markers: markers),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: MediaQuery.removePadding(
-              context: context,
-              removeTop: true,
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.1,
-                child: Scrollbar(
-                  thumbVisibility: true,
-                  child: ListView.builder(
-                    itemCount: lands.length,
-                    itemBuilder: (context, index) {
-                      final land = lands[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: ListTile(
-                          title: Text(land.location),
-                          subtitle: Text(
-                            hasLocationPermission
-                                ? 'Size: ${land.size}, Proximity: ${_calculateDistance(land).toStringAsFixed(2)} meters'
-                                : 'Size: ${land.size}, Proximity: Not available',
-                          ),
-                          selected: index == indexLand,
-                          onTap: () async {
-                            setState(() {
-                              indexLand = index;
-                              mapController.move(
-                                LatLng(lands[index].latitude, lands[index].longitude),
-                                18,
-                              );
-                            });
-                            double destinationLatitude = land.latitude;
-                            double destinationLongitude = land.longitude;
-                            String url =
-                                'https://www.google.com/maps/dir/?api=1&destination=$destinationLatitude,$destinationLongitude';
-                            if (await canLaunch(url)) {
-                              await launch(url);
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
-                        ),
-                      );
+                children: [
+                  TileLayer(
+                    urlTemplate: styleUrl,
+                    additionalOptions: const {
+                      'accessToken': MAP_KEY,
                     },
+                  ),
+                  MarkerLayer(markers: markers),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    child: ListView.builder(
+                      itemCount: lands.length,
+                      itemBuilder: (context, index) {
+                        final land = lands[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: ListTile(
+                            title: Text(land.location),
+                            subtitle: Text(
+                              hasLocationPermission
+                                  ? 'Size: ${land.size}, Proximity: ${_calculateDistance(land).toStringAsFixed(2)} meters'
+                                  : 'Size: ${land.size}, Proximity: Not available',
+                            ),
+                            selected: index == indexLand,
+                            onTap: () async {
+                              setState(() {
+                                indexLand = index;
+                                mapController.move(
+                                  LatLng(lands[index].latitude,
+                                      lands[index].longitude),
+                                  18,
+                                );
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
-}
-
