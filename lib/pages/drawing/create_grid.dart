@@ -127,23 +127,28 @@ class _GridPageState extends State<GridPage> {
                               shrinkWrap: true,
                               itemCount: owners.length,
                               itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                                  child: ElevatedButton(
+                                return Button(
                                     onPressed: () {
                                       setState(() {
                                         currentOwner = owners[index];
                                       });
                                     },
-                                    child: Text(owners[index].name),
-                                  ),
-                                );
+                                    text: Text(owners[index].name),
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(owners[index].getColor()),
+                                      foregroundColor: MaterialStateProperty.all(getFontColorForText(owners[index].getColor()))
+                                    ),
+                                  );
                               },
                             )
                           : Container(child: CircularProgressIndicator()))
                 ],
               )
             : CircularProgressIndicator());
+  }
+
+  Color getFontColorForText(Color background) {
+    return (background.computeLuminance() > 0.179)? Colors.black : Colors.white;
   }
 
   Color getColorByOwner(int index) {
