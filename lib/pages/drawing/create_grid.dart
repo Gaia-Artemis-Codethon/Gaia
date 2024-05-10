@@ -20,18 +20,24 @@ class GridPage extends StatefulWidget {
 
 class _GridPageState extends State<GridPage> {
   List<Owner> owners = <Owner>[
-    Owner("Gabriel",Colors.blue,<int>[]),
-    Owner("Laijie",Colors.red,<int>[]),
-    Owner("Dani",Colors.green,<int>[]),
-    Owner("Luis",Colors.yellow,<int>[]),
+    Owner("Gabriel", Colors.blue, <int>[]),
+    Owner("Laijie", Colors.red, <int>[]),
+    Owner("Dani", Colors.green, <int>[]),
+    Owner("Luis", Colors.yellow, <int>[]),
   ];
 
-  Owner currentOwner = Owner("Artemis",Colors.grey,<int>[]);
+  Owner currentOwner = Owner("Artemis", Colors.grey, <int>[]);
 
-  Map<Owner,List<int>> belongsTo = Map<Owner,List<int>>();
-
+  Map<Owner, List<int>> belongsTo = Map<Owner, List<int>>();
+  static const DEFAULT_GRID_SIZE = 100;
   late Auth session;
-  late GridDto gridDao = GridDto(id: Guid.defaultValue, communityId: Guid.defaultValue, dimensionsX: -1, dimensionsY: -1, tileDistribution: {},);
+  late GridDto gridDao = GridDto(
+    id: Guid.defaultValue,
+    communityId: Guid.defaultValue,
+    dimensionsX: -1,
+    dimensionsY: -1,
+    tileDistribution: {},
+  );
 
   @override
   void initState() {
@@ -43,12 +49,13 @@ class _GridPageState extends State<GridPage> {
   void _getGridData() async {
     Auth session = Auth();
     print("Here");
-    GridDto? data= await GridSupabase().getGridDataByCommunityId(session.community);
+    GridDto? data =
+        await GridSupabase().getGridDataByCommunityId(session.community);
     setState(() {
       gridDao = data!;
-      owners =<Owner>[];
+      owners = <Owner>[];
       gridDao.tileDistribution.forEach((key, value) {
-        owners.add(Owner(key,getRandomColor(),value));
+        owners.add(Owner(key, getRandomColor(), value));
       });
       build(context);
       print("Data: ${gridDao.communityId}");
@@ -71,72 +78,81 @@ class _GridPageState extends State<GridPage> {
         appBar: AppBar(
           title: Text("Community's farm"),
         ),
-        body: gridDao.id != Guid.defaultValue ?
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GridView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                itemCount: gridDao.dimensionsX*gridDao.dimensionsY,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 10,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: (){
-                      if(session.isAdmin){
-                        print("Container ${index} pressed");
-                        setState(() {
-                          currentOwner.addProperty(index);
-                          build(context);
-                        });
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: getColorByOwner(index),// Change color when pressed
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.blueAccent)),
-                      child: Text("${index}",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  );
-            }),
-            SizedBox(
-              height: 300,
-              child: gridDao.communityId != Guid.defaultValue ?
-              ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: owners.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          currentOwner = owners[index];
-                        });
-                      },
-                      child: Text(owners[index].name),
-                    ),
-                  );
-                },
-              ) : Container(child:CircularProgressIndicator())
-            )
-          ],
-        ): CircularProgressIndicator());
+        body: gridDao.id != Guid.defaultValue
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GridView.builder(
+                      shrinkWrap: true,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      itemCount: //In case of being bigger than 100 tiles or smaller than 0 takes default size
+                          gridDao.dimensionsX * gridDao.dimensionsY > 10 ||
+                                  gridDao.dimensionsX * gridDao.dimensionsY < 0
+                              ? DEFAULT_GRID_SIZE
+                              : gridDao.dimensionsX * gridDao.dimensionsY,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 10, //Do not change
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                          onTap: () {
+                            if (session.isAdmin) {
+                              print("Container ${index} pressed");
+                              setState(() {
+                                currentOwner.addProperty(index);
+                                build(context);
+                              });
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: getColorByOwner(
+                                    index), // Change color when pressed
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Colors.blueAccent)),
+                            child: Text("${index}",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        );
+                      }),
+                  SizedBox(
+                      height: 300,
+                      child: gridDao.communityId != Guid.defaultValue
+                          ? ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: owners.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        currentOwner = owners[index];
+                                      });
+                                    },
+                                    child: Text(owners[index].name),
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(child: CircularProgressIndicator()))
+                ],
+              )
+            : CircularProgressIndicator());
   }
 
-  Color getColorByOwner(int index){
+  Color getColorByOwner(int index) {
     Color c = Colors.black;
     owners.forEach((owner) {
       owner.getProperties().forEach((property) {
-        if(property==index){c = owner.getColor();}
+        if (property == index) {
+          c = owner.getColor();
+        }
       });
     });
     return c;
