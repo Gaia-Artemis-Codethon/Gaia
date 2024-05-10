@@ -71,13 +71,14 @@ class _GridPageState extends State<GridPage> {
         appBar: AppBar(
           title: Text("Community's farm"),
         ),
-        body: Column(
+        body: gridDao.id != Guid.defaultValue ?
+        Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             GridView.builder(
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                itemCount: 100,
+                itemCount: gridDao.dimensionsX*gridDao.dimensionsY,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 10,
                 ),
@@ -128,7 +129,7 @@ class _GridPageState extends State<GridPage> {
               ) : Container(child:CircularProgressIndicator())
             )
           ],
-        ));
+        ): CircularProgressIndicator());
   }
 
   Color getColorByOwner(int index){
