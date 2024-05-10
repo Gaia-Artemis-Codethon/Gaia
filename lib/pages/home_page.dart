@@ -34,12 +34,12 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   late int _currentIndex;
-
+  late Auth session;
   @override
   void initState() {
     super.initState();
     _currentIndex = 0;
-    Auth session = Auth();
+    session = Auth();
   }
 
   Future<String> _readCommunityName() async {
@@ -129,12 +129,19 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const CircleAvatar(
-                      radius: 27,
-                      backgroundColor: Color.fromARGB(108, 155, 79, 1),
+                    GestureDetector(
+                      onTap: () {
+                        if(session.isAdmin){
+                          //ToDo Modify image
+                        }
+                      },
                       child: CircleAvatar(
-                        radius: 25,
-                        backgroundImage: AssetImage('images/granjero.png'),
+                        radius: 27,
+                        backgroundColor: Color.fromARGB(108, 155, 79, 1),
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: AssetImage('images/granjero.png'),
+                        ),
                       ),
                     ),
                     Align(

@@ -1,7 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_huerto/components/button.dart';
+import 'package:flutter_application_huerto/service/grid_supabase.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 
+import '../../models/Auth.dart';
+import '../../models/grid.dart';
 import '../../models/owner.dart';
 
 class GridPage extends StatefulWidget {
@@ -22,18 +29,47 @@ class _GridPageState extends State<GridPage> {
   Owner currentOwner = Owner("Artemis",Colors.grey,<int>[]);
 
   Map<Owner,List<int>> belongsTo = Map<Owner,List<int>>();
-  List<bool> _isPressedList = List.generate(100, (index) => false);
+
+  late Auth session;
+  late GridDto gridDao = GridDto(id: Guid.defaultValue, communityId: Guid.defaultValue, dimensionsX: -1, dimensionsY: -1, tileDistribution: {},);
 
   @override
   void initState() {
     super.initState();
+    session = Auth();
+    _getGridData();
+  }
+
+  void _getGridData() async {
+    Auth session = Auth();
+    print("Here");
+    GridDto? data= await GridSupabase().getGridDataByCommunityId(session.community);
+    setState(() {
+      gridDao = data!;
+      owners =<Owner>[];
+      gridDao.tileDistribution.forEach((key, value) {
+        owners.add(Owner(key,getRandomColor(),value));
+      });
+      build(context);
+      print("Data: ${gridDao.communityId}");
+    });
+  }
+
+  Color getRandomColor() {
+    Random random = Random();
+    return Color.fromRGBO(
+      random.nextInt(256), // Red value
+      random.nextInt(256), // Green value
+      random.nextInt(256), // Blue value
+      1.0, // Alpha value (fully opaque)
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Parcela"),
+          title: Text("Community's farm"),
         ),
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -48,11 +84,13 @@ class _GridPageState extends State<GridPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: (){
-                      print("Container ${index} pressed");
-                      setState(() {
-                        currentOwner.addProperty(index);
-                        build(context);
-                      });
+                      if(session.isAdmin){
+                        print("Container ${index} pressed");
+                        setState(() {
+                          currentOwner.addProperty(index);
+                          build(context);
+                        });
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -67,41 +105,27 @@ class _GridPageState extends State<GridPage> {
                     ),
                   );
             }),
-            Row(
-              children: [
-                Button(
-                  text: Text("Gabriel"),
-                  onPressed: (){
-                    setState(() {
-                      currentOwner = owners[0];
-                    });
-                  },
-                ),
-                Button(
-                  text: Text("Laijie"),
-                  onPressed: (){
-                    setState(() {
-                      currentOwner = owners[1];
-                    });
-                  },
-                ),
-                Button(
-                  text: Text("Dani"),
-                  onPressed: (){
-                    setState(() {
-                      currentOwner = owners[2];
-                    });
-                  },
-                ),
-                Button(
-                  text: Text("Luis"),
-                  onPressed: (){
-                    setState(() {
-                      currentOwner = owners[3];
-                    });
-                  },
-                ),
-              ],
+            SizedBox(
+              height: 300,
+              child: gridDao.communityId != Guid.defaultValue ?
+              ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: owners.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          currentOwner = owners[index];
+                        });
+                      },
+                      child: Text(owners[index].name),
+                    ),
+                  );
+                },
+              ) : Container(child:CircularProgressIndicator())
             )
           ],
         ));
