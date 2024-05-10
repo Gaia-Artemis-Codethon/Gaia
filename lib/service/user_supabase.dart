@@ -11,6 +11,7 @@ class UserSupabase {
       "name": userLoged.name,
       "email": userLoged.email,
       "community_id": userLoged.community_id == null ? null : userLoged.community_id!.value,
+      "isAdmin": userLoged.community_id == null ? null : userLoged.community_id!.value
     };
     await SupabaseService().updateData("User", id.value, newValues);
   }
@@ -28,6 +29,7 @@ class UserSupabase {
           email: data[0]['email'],
           community_id:
               null, // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
+          is_admin: data[0]['isAdmin'],
         );
         return user;
       } else {
@@ -38,6 +40,7 @@ class UserSupabase {
           email: data[0]['email'],
           community_id: Guid(data[0][
               'community_id']), // Asegúrate de que 'community_id' es opcional y maneja el caso en que no esté presente
+          is_admin: data[0]['isAdmin'],
         );
         return user;
       }

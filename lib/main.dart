@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/models/Auth.dart';
 import 'package:flutter_application_huerto/pages/first_home_page.dart';
 import 'package:flutter_application_huerto/service/supabaseService.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
@@ -24,6 +25,18 @@ Future<void> initializeApp() async {
         .signInWithEmailAndPassword('user@example.com', 'qwerty');
     userId = await SupabaseService().getUserId();
     user = await UserSupabase().getUserById(userId!);
+
+    Auth auth = Auth();
+
+    if(user != null){
+      auth.initialize(
+        id: user!.id,
+        username: user!.name,
+        community: user!.community_id!,
+        isAdmin: user!.is_admin!,
+      );
+    }
+
     isInitialized = true; // Marca que Supabase ya está inicializado
   }
 }

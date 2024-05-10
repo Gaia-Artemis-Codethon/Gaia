@@ -16,8 +16,10 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
 import '../const/weather_constants.dart';
+import '../models/Auth.dart';
 import '../models/current_weather_model.dart';
 import '../widgets/weather_card.dart';
+import 'drawing/create_grid.dart';
 
 class HomePage extends StatefulWidget {
   final Guid userId;
@@ -37,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _currentIndex = 0;
+    Auth session = Auth();
   }
 
   Future<String> _readCommunityName() async {
@@ -232,6 +235,31 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.black,
                         fontSize: 30,
                         fontWeight: FontWeight.bold),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const GridPage(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: OurColors().primaryButton,
+                      padding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: Text(
+                      "Grid goes brrr",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
                   ),
                 ],
               ),
