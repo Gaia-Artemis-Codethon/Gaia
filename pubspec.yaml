@@ -46,6 +46,10 @@ dependencies:
   flutter_screenutil:
   flutter_spinkit:
   cached_network_image:
+  connectivity_plus: ^6.0.3
+  android_intent_plus: ^3.0.0
+
+
 
 dev_dependencies:
   flutter_test:

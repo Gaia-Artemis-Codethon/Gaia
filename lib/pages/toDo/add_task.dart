@@ -10,7 +10,8 @@ class Add_Task extends StatefulWidget {
   final Guid userId;
   final VoidCallback onTaskStatusChanged;
 
-  const Add_Task(this.userId, this.onTaskStatusChanged, {super.key});
+  const Add_Task(this.userId, this.onTaskStatusChanged, {Key? key})
+      : super(key: key);
 
   @override
   State<Add_Task> createState() => _Add_TaskState();
@@ -22,7 +23,7 @@ class _Add_TaskState extends State<Add_Task> {
 
   FocusNode _focusNode1 = FocusNode();
   FocusNode _focusNode2 = FocusNode();
-  int indexx = 0;
+  int priority = 0; // Variable para almacenar la prioridad seleccionada
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,8 @@ class _Add_TaskState extends State<Add_Task> {
             name_widgets(),
             const SizedBox(height: 20),
             description_widgets(),
+            const SizedBox(height: 20),
+            prioritySelection(), // Agregar la selección de prioridad
             const SizedBox(height: 20),
             ValueListenableBuilder<TextEditingValue>(
               valueListenable: title,
@@ -49,6 +52,9 @@ class _Add_TaskState extends State<Add_Task> {
   }
 
   Widget button(bool isEnabled) {
+    final isPrioritySelected =
+        priority != -1; // Verificar si se ha seleccionado una prioridad
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -57,7 +63,8 @@ class _Add_TaskState extends State<Add_Task> {
             backgroundColor: Colors.green.shade200,
             minimumSize: const Size(170, 48),
           ),
-          onPressed: isEnabled
+          onPressed: isEnabled &&
+                  isPrioritySelected // Habilitar solo si hay texto y se ha seleccionado una prioridad
               ? () async {
                   await TaskSupabase().addTask(Task(
                     id: Guid.newGuid,
@@ -66,6 +73,7 @@ class _Add_TaskState extends State<Add_Task> {
                     description: description.text,
                     user_id: widget.userId,
                     creation_date: DateTime.now(),
+                    priority: priority, // Asignar la prioridad seleccionada
                   ));
                   widget.onTaskStatusChanged();
                   Navigator.pop(context);
@@ -160,6 +168,57 @@ class _Add_TaskState extends State<Add_Task> {
                 width: 2.0,
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget prioritySelection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: DropdownButtonFormField<int>(
+            value: priority,
+            onChanged: (value) {
+              setState(() {
+                priority = value!;
+              });
+            },
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              border: InputBorder.none,
+            ),
+            items: [
+              DropdownMenuItem<int>(
+                value: 0,
+                child: Text(
+                  'Alta',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+              DropdownMenuItem<int>(
+                value: 1,
+                child: Text(
+                  'Media',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+              DropdownMenuItem<int>(
+                value: 2,
+                child: Text(
+                  'Baja',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
           ),
         ),
       ),

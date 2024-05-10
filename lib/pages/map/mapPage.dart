@@ -3,10 +3,11 @@ import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-
-import '../../models/land.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../models/land.dart'; // Replace with your Land model definition
 import '../../service/land_supabase.dart';
 import '../home_page.dart';
 import '../plant/userPlants.dart';
@@ -28,6 +29,7 @@ class _MapPageState extends State<MapPage> {
   final MapController mapController = MapController();
   bool hasLocationPermission = false;
   bool isLoading = true;
+  bool hasInternetConnection = true;
 
   LatLng? myPosition;
   List<Land> lands = [];
@@ -36,10 +38,13 @@ class _MapPageState extends State<MapPage> {
   int _currentIndex = 3;
   int indexLand = -1;
 
+  final Connectivity connectivity = Connectivity();
+
   @override
   void initState() {
     super.initState();
     _requestLocationPermission();
+    _checkInternetConnection();
   }
 
   void _requestLocationPermission() async {
@@ -83,6 +88,25 @@ class _MapPageState extends State<MapPage> {
       });
     } catch (e) {
       debugPrint("Error getting location: $e");
+    }
+  }
+
+  void _checkInternetConnection() async {
+    List<ConnectivityResult> connectivityResult =
+        await connectivity.checkConnectivity();
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      setState(() {
+        hasInternetConnection = true;
+      });
+    } else {
+      setState(() {
+        hasInternetConnection = false;
+      });
+      // Handle no internet connection scenario
+      print("No internet connection detected");
+      // You can show a dialog or snackbar to inform the user about the issue
+      // and provide options like retrying or going to settings
     }
   }
 
@@ -133,8 +157,17 @@ class _MapPageState extends State<MapPage> {
             color: Colors.black,
             size: 30.0,
           ),
-          onPressed: () {
+          onPressed: () async {
             mapController.move(LatLng(land.latitude, land.longitude), 18);
+            double destinationLatitude = land.latitude;
+            double destinationLongitude = land.longitude;
+            String url =
+                'https://www.google.com/maps/dir/?api=1&destination=$destinationLatitude,$destinationLongitude';
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+              throw 'Could not launch $url';
+            }
           },
         ),
       );
@@ -148,17 +181,26 @@ class _MapPageState extends State<MapPage> {
         child: CircularProgressIndicator(),
       );
     }
+    /*if (!hasInternetConnection) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('No internet connection detected'),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              _checkInternetConnection();
+            },
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
+    );
+  }*/
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: OurColors().backgroundColor,
-        elevation: 0,
-        title: Center(
-          child: Text('Map'),
-        ),
-      ),
       body: StatefulBuilder(
         builder: (context, setState) => Column(
           children: [
@@ -210,13 +252,14 @@ class _MapPageState extends State<MapPage> {
                                   : 'Size: ${land.size}, Proximity: Not available',
                             ),
                             selected: index == indexLand,
-                            onTap: () {
+                            onTap: () async {
                               setState(() {
                                 indexLand = index;
                                 mapController.move(
-                                    LatLng(lands[index].latitude,
-                                        lands[index].longitude),
-                                    18);
+                                  LatLng(lands[index].latitude,
+                                      lands[index].longitude),
+                                  18,
+                                );
                               });
                             },
                           ),
