@@ -141,7 +141,7 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                       id: newPlantedId,
                       user_id: widget.user_id,
                       planted_id: newPlantedId,
-                      name: _plantDetails['scientific name'] ?? 'No name',
+                      name: _plantDetails['common_name'] ?? 'No name',
                       description: _plantDetails['description'] ??
                           'No information available',
                       date: DateTime.now()));
@@ -202,6 +202,17 @@ class _PlantDetailsPageState extends State<PlantDetail> {
     }
   }
 
+  String parseArray(String inp) {
+    return inp.substring(1, inp.length - 1);
+  }
+
+  String capitalizeFirstChar(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input[0].toUpperCase() + input.substring(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -240,39 +251,80 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                       ),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(40.0),
-                        child: Image.network(
-                          _plantDetails['default_image']['thumbnail'],
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              width: 200,
-                              height: 200,
-                              decoration: BoxDecoration(
-                                color: OurColors().backgroundColor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Icon(
-                                Icons.local_florist,
-                                size: 90,
-                                color: OurColors().primary,
-                              ),
-                            );
-                          },
+                        child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    child: Container(
+                                      width: 300, // Adjust the width as needed
+                                      height: 330, // Adjust the height as needed
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.network(
+                                          _plantDetails['default_image']['regular_url'],
+                                          width: 300,
+                                          height: 350,
+                                          fit: BoxFit.fill,
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Container(
+                                              width: 120,
+                                              height: 120,
+                                              decoration: BoxDecoration(
+                                                color: OurColors().backgroundColor,
+                                                borderRadius: BorderRadius.circular(15),
+                                              ),
+                                              child: Icon(
+                                                Icons.local_florist,
+                                                size: 60,
+                                                color: OurColors().primary,
+                                              ),
+                                            );
+                                          },   // Adjust the fit property as needed
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          child: Image.network(
+                            _plantDetails['default_image']['thumbnail'],
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                width: 200,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  color: OurColors().backgroundColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Icon(
+                                  Icons.local_florist,
+                                  size: 90,
+                                  color: OurColors().primary,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                       Container(
                         width: 350,
                         child: Text(
-                          _plantDetails['scientific_name'][0] ?? 'No name',
+                          capitalizeFirstChar(_plantDetails['common_name'] ?? 'No name available'),
                           style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
+                              fontSize: 24, fontWeight: FontWeight.bold
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       SizedBox(height: 10),
                       Text(
-                        _plantDetails['common_name'] ??
+                        _plantDetails['scientific_name'][0] ??
                             'No information available',
                         textAlign: TextAlign.center,
                       ),
@@ -331,7 +383,7 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                               const SizedBox(height: 10),
                               growthCard(
                                   'Light requirements',
-                                  '${_plantDetails['sunlight'].toString()}',
+                                  parseArray(_plantDetails['sunlight'].toString()),
                                   Icons.wb_sunny_outlined),
                               const SizedBox(height: 20),
                               const Text(
@@ -340,7 +392,7 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                'Light requirements: ${_plantDetails['sunlight'].toString() ?? 'No data'}',
+                                'Time to water: ${_plantDetails['watering_period']}',
                                 textAlign: TextAlign.left,
                               ),
                             ],

@@ -37,7 +37,7 @@ class _PlantSearchState extends State<SearchPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: OurColors().backgroundColor,
-          title: Text('Busca tus plantas favoritas '),
+          title: Text('Search for plants'),
         ),
         body: Container(
           color: OurColors().backgroundColor,
@@ -48,7 +48,7 @@ class _PlantSearchState extends State<SearchPage> {
                 child: TextField(
                   controller: _controller,
                   decoration: InputDecoration(
-                    labelText: 'Nombre científico/ingles de la planta',
+                    labelText: 'Scientific/common name of the plant',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       // Border radius
@@ -75,60 +75,65 @@ class _PlantSearchState extends State<SearchPage> {
                       },
                       child: Column(
                         children: [
-                          ListTile(
-                            leading: _plants[index]['default_image'] != null &&
-                                    _plants[index]['default_image']
-                                            ['thumbnail'] !=
-                                        null
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.network(
-                                      _plants[index]['default_image']
-                                          ['thumbnail'],
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Container(
-                                          width: 50,
-                                          height: 50,
-                                          decoration: BoxDecoration(
-                                            color: OurColors().backgroundColor,
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                          ),
-                                          child: Icon(
-                                            Icons.local_florist,
-                                            size: 30,
-                                            color: OurColors().primary,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                : Container(
-                                    width: 50,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: OurColors().backgroundColor,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Icon(
-                                      Icons.local_florist,
-                                      size: 30,
-                                      color: OurColors().primary,
-                                    ),
-                                  ),
-                            title: Text(
-                              _plants[index]['scientific_name'][0] ??
-                                  'Scientific Name not available',
-                              style:
-                                  TextStyle(color: OurColors().backgroundText),
+                          Container(
+                            height: 80,
+                            child: ListTile(
+                              leading: _plants[index]['default_image'] != null &&
+                                  _plants[index]['default_image']
+                                  ['thumbnail'] !=
+                                      null
+                                  ? Container(
+                                height: 70,
+                                width: 70,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                                child: Image.network(
+                                  _plants[index]['default_image']
+                                  ['thumbnail'],
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.cover,
+                                  errorBuilder:
+                                      (context, error, stackTrace) {
+                                    return Container(
+                                      width: 70,
+                                      height: 70,
+                                      decoration: BoxDecoration(
+                                        color: OurColors().backgroundColor,
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                      ),
+                                      child: Icon(
+                                        Icons.local_florist,
+                                        size: 30,
+                                        color: OurColors().primary,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                                  : Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: OurColors().backgroundColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Icon(
+                                  Icons.local_florist,
+                                  size: 30,
+                                  color: OurColors().primary,
+                                ),
+                              ),
+                              title: Text(
+                                _plants[index]['scientific_name'][0] ??
+                                    'Scientific Name not available',
+                                style:
+                                TextStyle(color: OurColors().backgroundText),
+                              ),
+                              subtitle: Text(_plants[index]['common_name'] ?? ''),
                             ),
-                            subtitle: Text(_plants[index]['common_name'] ?? ''),
                           ),
-                          Divider(height: 1, color: Colors.grey),
+                          Divider(height: 2, color: Colors.grey),
                         ],
                       ),
                     );
