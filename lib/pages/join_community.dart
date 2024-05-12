@@ -102,7 +102,8 @@ class _JoinCommunityState extends State<JoinCommunity> {
           id: user.id,
           name: user.name,
           email: user.email,
-          community_id: community.id);
+          community_id: community.id,
+          is_admin: false); //Is not admin by default
       await UserSupabase().updateUser(userId, updatedUser);
       print("User updated successfully");
       return userId; // Devuelve el userId

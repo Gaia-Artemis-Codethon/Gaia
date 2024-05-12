@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_huerto/components/button.dart';
+import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/service/grid_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
@@ -48,7 +49,6 @@ class _GridPageState extends State<GridPage> {
 
   void _getGridData() async {
     Auth session = Auth();
-    print("Here");
     GridDto? data =
         await GridSupabase().getGridDataByCommunityId(session.community);
     setState(() {
@@ -62,14 +62,36 @@ class _GridPageState extends State<GridPage> {
     });
   }
 
+  void _updateGridData() async{
+    bool isUpdated = await GridSupabase().updateGridDataByCommunityId(gridDao);
+    if(isUpdated){
+      _getGridData();
+    }
+  }
+
   Color getRandomColor() {
     Random random = Random();
-    return Color.fromRGBO(
-      random.nextInt(256), // Red value
-      random.nextInt(256), // Green value
-      random.nextInt(256), // Blue value
-      1.0, // Alpha value (fully opaque)
-    );
+    Color targetColor = OurColors().primaryButton;
+    const int threshold = 50;
+
+    Color generatedColor;
+    do {
+      generatedColor = Color.fromRGBO(
+        random.nextInt(256), // Red value
+        random.nextInt(256), // Green value
+        random.nextInt(256), // Blue value
+        1.0, // Alpha value (fully opaque)
+      );
+    } while (_colorDifference(generatedColor, targetColor) < threshold);
+
+    return generatedColor;
+  }
+
+  int _colorDifference(Color color1, Color color2) {
+    return ((color1.red - color2.red).abs() +
+        (color1.green - color2.green).abs() +
+        (color1.blue - color2.blue).abs()) ~/
+        3;
   }
 
   @override
@@ -98,7 +120,6 @@ class _GridPageState extends State<GridPage> {
                         return InkWell(
                           onTap: () {
                             if (session.isAdmin) {
-                              print("Container ${index} pressed");
                               setState(() {
                                 currentOwner.addProperty(index);
                                 build(context);
@@ -120,7 +141,7 @@ class _GridPageState extends State<GridPage> {
                         );
                       }),
                   SizedBox(
-                      height: 300,
+                      height: 350,
                       child: gridDao.communityId != Guid.defaultValue
                           ? ListView.builder(
                               scrollDirection: Axis.vertical,
@@ -129,9 +150,11 @@ class _GridPageState extends State<GridPage> {
                               itemBuilder: (context, index) {
                                 return Button(
                                     onPressed: () {
-                                      setState(() {
-                                        currentOwner = owners[index];
-                                      });
+                                      if(session.isAdmin){
+                                        setState(() {
+                                          currentOwner = owners[index];
+                                        });
+                                      }
                                     },
                                     text: Text(owners[index].name),
                                     style: ButtonStyle(
@@ -141,7 +164,47 @@ class _GridPageState extends State<GridPage> {
                                   );
                               },
                             )
-                          : Container(child: CircularProgressIndicator()))
+                          : Container(child: CircularProgressIndicator())),
+                  session.isAdmin ?
+                      Button(
+                        text: Text(
+                            "Save changes",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                            ),),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(OurColors().primaryButton),
+                            foregroundColor: MaterialStateProperty.all(Colors.black),
+                        ),
+                        onPressed: (){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Save changes'),
+                                content: Text('Are you sure you want to update the distribution?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+
+                                    },
+                                    child: Text('Yes'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ) :
+                      Container()
                 ],
               )
             : CircularProgressIndicator());

@@ -11,7 +11,7 @@ class UserSupabase {
       "name": userLoged.name,
       "email": userLoged.email,
       "community_id": userLoged.community_id == null ? null : userLoged.community_id!.value,
-      "isAdmin": userLoged.community_id == null ? null : userLoged.community_id!.value
+      "isAdmin": userLoged.community_id == null ? null : userLoged.is_admin!
     };
     await SupabaseService().updateData("User", id.value, newValues);
   }
