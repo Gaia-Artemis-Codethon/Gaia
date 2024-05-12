@@ -46,18 +46,20 @@ class _ToDoState extends State<ToDo> {
           backgroundColor: OurColors().backgroundColor,
           elevation: 0,
           bottom: TabBar(
-            indicatorColor: OurColors().accent,
+            indicatorColor: OurColors().primaryButton,
             tabs: [
               Tab(
                 child: Text(
                   'To Do',
-                  style: TextStyle(color: OurColors().accent, fontSize: 20),
+                  style:
+                      TextStyle(color: OurColors().primaryButton, fontSize: 20),
                 ),
               ),
               Tab(
                 child: Text(
                   'Done',
-                  style: TextStyle(color: OurColors().accent, fontSize: 20),
+                  style:
+                      TextStyle(color: OurColors().primaryButton, fontSize: 20),
                 ),
               ),
             ],

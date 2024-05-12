@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/pages/home_page.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
-import 'package:flutter_guid/flutter_guid_error.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import '../components/button.dart';
 import '../const/colors.dart';
 import '../models/userLoged.dart';
 import '../service/supabaseService.dart';
-
-import 'package:flutter_guid/flutter_guid.dart';
 import '../models/community.dart';
 import '../service/community_supabase.dart';
 
@@ -64,7 +62,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
           email: user.email,
           community_id: community.id,
           is_admin: true //The creator is the admin
-      );
+          );
       await UserSupabase().updateUser(Id, updatedUser);
       print("User updated successfully");
       return Id;
@@ -78,80 +76,100 @@ class _CreateCommunityState extends State<CreateCommunity> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
-      appBar: AppBar(
-        backgroundColor: OurColors().backgroundColor,
-        title: const Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            'CREA UNA COMUNIDAD',
-          ),
-        ),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
         children: [
-          const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Crea una nueva comunidad",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24), // Aumenta el tamaño de la fuente aquí
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Disfruta creando el mejor huerto urbano de Valencia",
-              textAlign: TextAlign.left,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Nombre de la comunidad",
-              textAlign: TextAlign.left,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 40,
-              child: TextField(
-                controller: _communityNameController,
-                style: const TextStyle(fontSize: 18, color: Colors.black),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.green[100],
-                ),
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/cu.png'),
+                fit: BoxFit.cover,
               ),
+            ),
+          ),
+          Positioned(
+            top: 40,
+            left: 10,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
           Center(
-            child: Button(
-              text: const Text(
-                "Continuar",
-                style: TextStyle(color: Colors.black),
-                textAlign: TextAlign.center,
-              ),
-              onPressed: _isButtonEnabled
-                  ? () async {
-                      Community communityAux = await _createCommunityByName();
-                      Guid? id = await _updateUserIdCommunity(communityAux);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(id!),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(40, 200, 35, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "Crea una nueva comunidad",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24), // Aumenta el tamaño de la fuente aquí
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "Disfruta creando el mejor huerto urbano de Valencia",
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "Nombre de la comunidad",
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 40,
+                      child: TextField(
+                        controller: _communityNameController,
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.black),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.green[100],
                         ),
-                      );
-                    }
-                  : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: OurColors().primaryButton,
-                alignment: Alignment.center,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Button(
+                      text: const Text(
+                        "Continuar",
+                        style: TextStyle(color: Colors.black),
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: _isButtonEnabled
+                          ? () async {
+                              Community communityAux =
+                                  await _createCommunityByName();
+                              Guid? id =
+                                  await _updateUserIdCommunity(communityAux);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomePage(id!),
+                                ),
+                              );
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: OurColors().primaryButton,
+                        alignment: Alignment.center,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
