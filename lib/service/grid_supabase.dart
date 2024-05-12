@@ -27,15 +27,15 @@ class GridSupabase {
 
   Future<bool> updateGridDataByCommunityId(GridDto gridDao) async {
     try {
-      dynamic newData = [
+      Map<String, dynamic> newData =
         {
-          'id': gridDao.id,
+          'id': gridDao.id.value,
           'community_id': gridDao.communityId.value,
           'dimensions_X': gridDao.dimensionsX,
           'dimensions_Y': gridDao.dimensionsY,
           'tile_distribution': gridDao.tileDistribution
-        }
-      ];
+        };
+
       await SupabaseService().updateData("Grid", gridDao.id.value, newData);
       return true;
     } catch (e) {

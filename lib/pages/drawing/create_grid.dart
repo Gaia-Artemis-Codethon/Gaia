@@ -193,8 +193,8 @@ class _GridPageState extends State<GridPage> {
                                   ),
                                   TextButton(
                                     onPressed: () {
+                                      _updateGridData();
                                       Navigator.of(context).pop();
-
                                     },
                                     child: Text('Yes'),
                                   ),
