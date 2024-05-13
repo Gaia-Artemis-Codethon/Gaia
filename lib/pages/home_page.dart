@@ -237,7 +237,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    "My Land",
+                    "Our Plot",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 30,
