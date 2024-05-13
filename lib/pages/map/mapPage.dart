@@ -154,7 +154,7 @@ class _MapPageState extends State<MapPage> {
         child: IconButton(
           icon: const Icon(
             Icons.location_on,
-            color: Colors.black,
+            color: Color.fromARGB(255, 19, 67, 29),
             size: 30.0,
           ),
           onPressed: () async {
@@ -245,8 +245,22 @@ class _MapPageState extends State<MapPage> {
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: ListTile(
-                            title: Text(land.location),
+                            title: Text(
+                              land.location,
+                              style: TextStyle(
+                                color: index == indexLand
+                                    ? Color.fromARGB(255, 6, 96,
+                                        9) // Cambiar a verde si está seleccionado
+                                    : Colors.black,
+                              ),
+                            ),
                             subtitle: Text(
+                              style: TextStyle(
+                                color: index == indexLand
+                                    ? Color.fromARGB(255, 6, 96,
+                                        9) // Cambiar a verde si está seleccionado
+                                    : Colors.black,
+                              ),
                               hasLocationPermission
                                   ? 'Size: ${land.size}, Proximity: ${_calculateDistance(land).toStringAsFixed(2)} meters'
                                   : 'Size: ${land.size}, Proximity: Not available',

@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        if(session.isAdmin){
+                        if (session.isAdmin) {
                           //ToDo Modify image
                         }
                       },
@@ -243,8 +243,8 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 30,
                         fontWeight: FontWeight.bold),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -252,19 +252,16 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: OurColors().primaryButton,
-                      padding:
-                      EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: Text(
-                      "Grid goes brrr",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.width * 0.6,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                          image: AssetImage('images/hdom.jpg'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
