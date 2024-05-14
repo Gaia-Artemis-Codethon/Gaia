@@ -200,21 +200,21 @@ class _Add_TaskState extends State<Add_Task> {
               DropdownMenuItem<int>(
                 value: 0,
                 child: Text(
-                  'Alta',
+                  'High',
                   style: TextStyle(fontSize: 18),
                 ),
               ),
               DropdownMenuItem<int>(
                 value: 1,
                 child: Text(
-                  'Media',
+                  'Medium',
                   style: TextStyle(fontSize: 18),
                 ),
               ),
               DropdownMenuItem<int>(
                 value: 2,
                 child: Text(
-                  'Baja',
+                  'Low',
                   style: TextStyle(fontSize: 18),
                 ),
               ),

@@ -11,24 +11,21 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
-
 import '../components/custom_image.dart';
 import '../const/weather_constants.dart';
 import '../models/current_weather_model.dart';
 import '../models/forecast_model.dart';
 import '../pages/forecast/forecast_page.dart';
 
-
 class WeatherCard extends StatelessWidget {
-final CurrentWeatherModel weather;
-const WeatherCard({required this.weather});
-
+  final CurrentWeatherModel weather;
+  const WeatherCard({required this.weather});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -66,9 +63,9 @@ const WeatherCard({required this.weather});
                   Text(
                     '${weather.location.name}',
                     style: theme.textTheme.displayMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
                     ),
                   ),
                   Text(
@@ -76,13 +73,14 @@ const WeatherCard({required this.weather});
                     style: theme.textTheme.displayMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 22
-                    ),
+                        fontSize: 22),
                   ),
                 ],
               ).animate().slideX(
-                duration: 200.ms, begin: -1, curve: Curves.easeInSine,
-              ),
+                    duration: 200.ms,
+                    begin: -1,
+                    curve: Curves.easeInSine,
+                  ),
             ),
             Column(
               children: [
@@ -90,20 +88,21 @@ const WeatherCard({required this.weather});
                 Row(
                   children: [
                     Text(
-                      "Viento",
+                      "Wind",
                       style: theme.textTheme.displayMedium?.copyWith(
                         color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-                Row( // Adding a Row widget
+                Row(
+                  // Adding a Row widget
                   children: [
                     SvgPicture.asset('images/wind.svg'),
                     Text(
-                      '${weather.current.wind}'+" Km/h",
+                      '${weather.current.wind}' + " Km/h",
                       style: theme.textTheme.displaySmall?.copyWith(
                         color: Colors.white,
                         fontSize: 24,
@@ -113,14 +112,15 @@ const WeatherCard({required this.weather});
                 ),
                 SizedBox(height: 13),
                 Text(
-                  "Humedad",
+                  "Humidity",
                   style: theme.textTheme.displayMedium?.copyWith(
                     color: Colors.white,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Row( // Adding a Row widget
+                Row(
+                  // Adding a Row widget
                   children: [
                     SvgPicture.asset('images/humidity.svg'),
                     Text(
@@ -134,13 +134,13 @@ const WeatherCard({required this.weather});
                 )
               ],
             ).animate().slideX(
-              duration: 200.ms, begin: 1, curve: Curves.easeInSine,
-            ),
+                  duration: 200.ms,
+                  begin: 1,
+                  curve: Curves.easeInSine,
+                ),
           ],
         ),
       ),
     );
   }
-
-
 }

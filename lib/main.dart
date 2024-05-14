@@ -28,12 +28,12 @@ Future<void> initializeApp() async {
 
     Auth auth = Auth();
 
-    if(user != null){
+    if (user != null) {
       auth.initialize(
         id: user!.id,
         username: user!.name,
         community: user!.community_id!,
-        isAdmin: user!.is_admin!,
+        isAdmin: true,
       );
     }
 

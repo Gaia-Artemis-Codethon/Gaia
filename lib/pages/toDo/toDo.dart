@@ -160,18 +160,16 @@ class _ToDoState extends State<ToDo> {
   Widget _emptyTask() {
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Flexible(
-            child: Image.asset(
-              'images/junimo.png',
-              width: 200,
-              height: 200,
-            ),
+          SizedBox(height: 117),
+          Image.asset(
+            'images/junimo.png',
+            width: 200,
+            height: 200,
           ),
           Text(
-            '¿No tienes tareas por hacer?',
+            'Don\'t you have tasks to do?',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
