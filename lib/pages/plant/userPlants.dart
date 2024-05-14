@@ -64,8 +64,14 @@ class _UserPlantsState extends State<UserPlants> {
                 child: Container(
                   width: 300,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      SizedBox(height: 117),
+                      Image.asset(
+                        'images/junimo.png',
+                        height: 200,
+                        width: 200,
+                      ),
                       Text(
                         'No plant was found, do you want to add any?',
                         style: TextStyle(

@@ -82,10 +82,10 @@ class _ForecastState extends State<ForecastPage> {
 
   String getFormattedDate() {
     DateTime now = DateTime.now();
-    String dayOfWeek = DateFormat('EEEE', 'es').format(now);
-    String dayOfMonth = DateFormat('d', 'es').format(now);
-    String month = DateFormat('MMMM', 'es').format(now);
-    return "Hoy $dayOfWeek $dayOfMonth de $month";
+    String dayOfWeek = DateFormat('EEEE', 'en').format(now);
+    String dayOfMonth = DateFormat('d', 'en').format(now);
+    String month = DateFormat('MMMM', 'en').format(now);
+    return "Today $dayOfWeek $dayOfMonth of $month";
   }
 
   Future<void> _fetchHourlyForecast() async {}
@@ -150,7 +150,7 @@ class _ForecastState extends State<ForecastPage> {
         appBar: AppBar(
           backgroundColor: Color(0xFF7CB9FF),
           title: Text(
-            "Previsión Meteorológica",
+            "Weather forecast",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -195,13 +195,6 @@ class _ForecastState extends State<ForecastPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("${getFormattedDate()}",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold))
-                      ],
                     ),
                     SizedBox(
                       height: 10,

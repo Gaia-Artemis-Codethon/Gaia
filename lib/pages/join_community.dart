@@ -117,96 +117,116 @@ class _JoinCommunityState extends State<JoinCommunity> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
-      appBar: AppBar(
-        backgroundColor: OurColors().backgroundColor,
-        title: const Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            'ÚNETE A UNA COMUNIDAD',
-          ),
-        ),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
         children: [
-          const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Únete a una comunidad",
-              textAlign: TextAlign.left,
-              style: TextStyle(fontWeight: FontWeight.bold),
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/cu.png'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Únete ahora mismo a una comunidad y comienza a plantar un futuro sostenible junto a tus vecinos!",
-              textAlign: TextAlign.left,
+          Positioned(
+            top: 40,
+            left: 10,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "ID de la comunidad",
-              textAlign: TextAlign.left,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "PREGUNTA ESTE CÓDIGO A ALGÚN VECINO",
-              textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 10),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 40,
-              child: TextField(
-                controller: _communityIdController,
-                style: const TextStyle(fontSize: 18, color: Colors.black),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.green[100],
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10.0), // Ajusta la distancia hacia abajo
+                      child: Text(
+                        "Únete a una comunidad",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      "Comienza a plantar junto a tus vecinos!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    SizedBox(height: 24.0),
+                    Text(
+                      "ID de la comunidad",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 40,
+                        child: TextField(
+                          controller: _communityIdController,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.green[100],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Button(
+                      text: Text(
+                        "Continuar",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      onPressed: _isButtonEnabled
+                          ? () async {
+                              Community? community = await _readCommunityById();
+                              if (community != null) {
+                                // Aquí ya se ha navegado a HomePage con el userId en _readCommunityById
+                                // Asegúrate de que el userId se obtenga correctamente antes de la navegación
+                                Guid? userId =
+                                    await _updateUserIdCommunity(community);
+                                if (userId != null) {
+                                  // Navega a HomePage con el userId
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePage(userId),
+                                    ),
+                                  );
+                                }
+                              }
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: OurColors().primaryButton,
+                        alignment: Alignment.center,
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                  ],
                 ),
               ),
             ),
           ),
-          Center(
-            child: Button(
-              text: const Text(
-                "Continuar",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
-              ),
-              onPressed: _isButtonEnabled
-                  ? () async {
-                      Community? community = await _readCommunityById();
-                      if (community != null) {
-                        // Aquí ya se ha navegado a HomePage con el userId en _readCommunityById
-                        // Asegúrate de que el userId se obtenga correctamente antes de la navegación
-                        Guid? userId = await _updateUserIdCommunity(community);
-                        if (userId != null) {
-                          // Navega a HomePage con el userId
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomePage(userId),
-                            ),
-                          );
-                        }
-                      }
-                    }
-                  : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: OurColors().primaryButton,
-                alignment: Alignment.center,
-              ),
-            ),
-          )
         ],
       ),
     );
