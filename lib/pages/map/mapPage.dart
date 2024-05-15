@@ -189,7 +189,7 @@ class _MapPageState extends State<MapPage> {
     return Column(
       children: [
         Expanded(
-          flex: 2, // Aumenta el espacio del mapa
+          flex: 3, // Aumenta el espacio del mapa
           child: FlutterMap(
             mapController: mapController,
             options: MapOptions(
@@ -211,8 +211,8 @@ class _MapPageState extends State<MapPage> {
             ],
           ),
         ),
-        Expanded(
-          flex: 1, // Reduce el espacio de la lista de huertos
+        SizedBox(
+          height: 190, // Fija la altura del contenedor de la lista de huertos
           child: ListView.builder(
             padding: EdgeInsets.zero, // Elimina el padding adicional
             itemCount: lands.length,
