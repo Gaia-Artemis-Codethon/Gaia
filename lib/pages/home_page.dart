@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/components/button.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/pages/map/mapPage.dart';
 import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
@@ -20,6 +21,7 @@ import '../models/Auth.dart';
 import '../models/current_weather_model.dart';
 import '../widgets/weather_card.dart';
 import 'drawing/create_grid.dart';
+import 'login/loginPage.dart';
 import 'marketPlace/marketPlace.dart';
 
 class HomePage extends StatefulWidget {
@@ -117,6 +119,14 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: OurColors().backgroundColor,
         elevation: 0,
         toolbarHeight: 70,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              _showLogoutDialog(); // Mostrar el diálogo de cerrar sesión
+            },
+          ),
+        ],
         title: FutureBuilder<String>(
           future: _readCommunityName(),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -314,6 +324,17 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            Button(
+              text: const Text("Log out"),
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                ),
+              },
+            )
           ],
         ),
       ),
@@ -358,4 +379,39 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Cerrar sesión"),
+          content: Text("¿Estás seguro de que quieres cerrar sesión?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo
+              },
+              child: Text("Cancelar"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo
+                _logout(); // Llamar al método para cerrar sesión
+              },
+              child: Text("Cerrar sesión"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _logout() {
+    // Lógica para cerrar sesión
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => LoginPage()),
+      (Route<dynamic> route) => false,
+    );
+  }
+
 }
