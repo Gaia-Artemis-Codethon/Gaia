@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../const/colors.dart';
 import '../pages/map/mapPage.dart';
 import '../pages/plant/userPlants.dart';
@@ -21,7 +20,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: SizedBox(
-        height: 70,
+        height: 65, // Ajusta esta altura según tus necesidades
         child: BottomAppBar(
           elevation: 0,
           color: Colors.white,
@@ -30,25 +29,25 @@ class CustomBottomNavigationBar extends StatelessWidget {
             children: [
               _buildNavBarItem(
                 index: 0,
-                icon: "images/home.svg",
+                icon: "images/home-alt-svgrepo-com.svg",
                 onPressed: onTap,
                 currentIndex: currentIndex,
               ),
               _buildNavBarItem(
                 index: 1,
-                icon: "images/todo.svg",
+                icon: "images/task-square-svgrepo-com.svg",
                 onPressed: onTap,
                 currentIndex: currentIndex,
               ),
               _buildNavBarItem(
                 index: 2,
-                icon: "images/planta.svg",
+                icon: "images/plant-pot-svgrepo-com.svg",
                 onPressed: onTap,
                 currentIndex: currentIndex,
               ),
               _buildNavBarItem(
                 index: 3,
-                icon: "images/mapa.svg",
+                icon: "images/map-location-pin-svgrepo-com.svg",
                 onPressed: onTap,
                 currentIndex: currentIndex,
               ),
@@ -65,18 +64,21 @@ class CustomBottomNavigationBar extends StatelessWidget {
     required ValueChanged<int> onPressed,
     required int currentIndex,
   }) {
-    return IconButton(
-      icon: SvgPicture.asset(
-        icon,
-        width: 30,
-        height: 30,
-        color: currentIndex == index
-            ? OurColors().primaryButton
-            : OurColors().navBarDefault,
+    return GestureDetector(
+      onTap: () => onPressed(index),
+      child: Container(
+        width: 50, // Anchura fija para el contenedor
+        height: 50, // Altura fija para el contenedor
+        alignment: Alignment.center,
+        child: SvgPicture.asset(
+          icon,
+          width: 30, // Nuevo tamaño del icono
+          height: 30, // Nuevo tamaño del icono
+          color: currentIndex == index
+              ? OurColors().primeWhite
+              : OurColors().navBarDefault,
+        ),
       ),
-      onPressed: () {
-        onPressed(index);
-      },
     );
   }
 }
