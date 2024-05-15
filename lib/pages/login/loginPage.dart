@@ -29,12 +29,6 @@ class _LoginPageState extends State<LoginPage> {
       UserLoged? user = await UserSupabase().getUserById(userId!);
 
       if (user != null) {
-        Auth().initialize(
-          id: user.id,
-          username: user.name,
-          community: user.community_id!,
-          isAdmin: user.is_admin!,
-        );
         if (user.community_id != null) {
           Navigator.push(
             context,
@@ -51,10 +45,11 @@ class _LoginPageState extends State<LoginPage> {
           );
         }
       } else {
+
         _showError('User and/or password incorrect');
       }
     } catch (error) {
-      _showError('User and/or password incorrect');
+      _showError(error.toString());
     }
   }
 
@@ -131,7 +126,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 30.0),
               SizedBox(
                 width: double.infinity,
                 height: 45.0, // Match the height of the TextField
@@ -154,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   child: Text(
-                    'Register',
+                    'Login',
                     style: TextStyle(
                       color: Colors.black,
                     ),

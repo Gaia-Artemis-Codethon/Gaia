@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import '../components/button.dart';
 
 class FirstHomePage extends StatelessWidget {
-  const FirstHomePage({Key? key}) : super(key: key);
+  const FirstHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
