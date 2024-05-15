@@ -64,7 +64,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
           community_id: community.id,
           is_admin: true //The creator is the admin
           );
-      user = await UserSupabase().updateUser(updatedUser) as UserLoged;
+      user = await UserSupabase().getUserById(Id!) as UserLoged;
       Auth().initialize(
           id: user.id,
           username: user.name,
