@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
+import 'package:flutter_application_huerto/pages/chat/chat.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
 import '../../models/market.dart';
 import '../../models/userLoged.dart';
 import '../../service/market_supabase.dart';
+import 'chat_list.dart';
 
 class MarketPage extends StatefulWidget {
   final Guid communityId;
@@ -407,11 +410,25 @@ class MarketCard extends StatelessWidget {
                       },
                     ),),
                     Visibility(
-                      visible: (marketPost.user != userId),
+                      visible: true,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Add your action when the button is pressed
-                          // TODO:  Add connection with chat
+                          if(marketPost.user == userId){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatListPage(marketPost: marketPost, clientId: userId),
+                              ),
+                            );
+                          }else{
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatPage(postId: marketPost.id, client: userId, seller: marketPost.user,),
+                              ),
+                            );
+                          }
+
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(

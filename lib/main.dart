@@ -22,7 +22,8 @@ Future<void> initializeApp() async {
         anonKey:
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4YWZtanFzbGdwc3duZHF6ZnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAzNjYzNjIsImV4cCI6MjAyNTk0MjM2Mn0.xbGjWmYqPUO3i2g1_4tmE7sWhI_c9ymFqckSA_CaFOs");
     await SupabaseService()
-        .signInWithEmailAndPassword('user@example.com', 'qwerty');
+        .signInWithEmailAndPassword('moncho@mail.com', 'abc123.'); //Moncho
+        //.signInWithEmailAndPassword('elpepe@mail.com', 'abc123.'); //El Pepe
     userId = await SupabaseService().getUserId();
     user = await UserSupabase().getUserById(userId!);
 

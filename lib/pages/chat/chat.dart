@@ -9,6 +9,8 @@ import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:uuid/uuid.dart';
 
+import '../../const/colors.dart';
+import '../../models/Auth.dart';
 import '../../models/chat.dart';
 import '../../service/supabaseService.dart';
 
@@ -30,9 +32,11 @@ class ChatPage extends StatefulWidget{
     late Guid _sellerId;
     late types.User _client;
     late types.User _seller;
+    late Auth session;
 
     @override
     void initState() {
+      session = Auth();
       super.initState();
       _postId = widget.postId;
       _clientId = widget.client;
@@ -47,39 +51,47 @@ class ChatPage extends StatefulWidget{
     void _loadMessages() async {
       ChatSupabase cs = new ChatSupabase();
       //ChatDto? data = await cs.getChatMessagesFromRoomAndUsers(_postId, _clientId, _sellerId);
-      List<ChatDto>? data = await cs.getChatMessagesFromRoomAndUsers(Guid('7f57335b-139b-41d5-b3bd-f62e2abfadfb')
-          , Guid('e8225895-77c2-4648-bdaa-ab9145a7994a')
-        , Guid('98deadb7-ef23-493b-9044-4b76eafe044f'));
+      List<ChatDto>? data = await cs.getChatMessagesFromRoomAndUsers(_postId
+          , _clientId
+        , _sellerId);
       if(data==null){return;}
       List<ChatDto> chatDao = data!;
       List<types.Message> messages = [];
 
-      for (ChatDto chatDto in data) {
-        final message = types.Message.fromJson(jsonDecode(chatDto.messages) as Map<String, dynamic>);
-        messages.add(message);
-      }
+
       setState(() {
-        _messages = messages;
+        for (ChatDto chatDto in data) {
+          var message = types.Message.fromJson(jsonDecode(chatDto.messages) as Map<String, dynamic>);
+          //if(message.author!=_client){message.author=_seller;}
+          //messages.add(message);
+          _messages.insert(0, message);
+        }
       });
     }
 
     @override
     Widget build(BuildContext context) {
       return Scaffold(
+        appBar: AppBar(
+          title: Text('Chat with '),
+          elevation: 1,
+          backgroundColor: OurColors().sectionBackground,
+        ),
         body: _client != null && _seller != null
           ? Chat(
-          messages: _messages, onSendPressed: _handleSendPressed, user: _client, theme: GaiaChatTheme(),)
+          messages: _messages, onSendPressed: _handleSendPressed, user: types.User(id: session.id.value), theme: GaiaChatTheme(),)
           : CircularProgressIndicator()
       );
     }
 
     void _handleSendPressed(types.PartialText message) {
+      print(session.username);
       final textMessage = types.TextMessage(
-        author: _client,
+        author: types.User(id: session.id.value),
         createdAt: DateTime
             .now()
             .millisecondsSinceEpoch,
-        id: '525d9a72-c93f-40e1-8f5d-77cb826e62fe',
+        id: const Uuid().v4(),
         text: message.text,
         roomId: _postId.value+_clientId.value+_sellerId.value
       );
