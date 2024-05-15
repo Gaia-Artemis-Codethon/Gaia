@@ -28,7 +28,7 @@ class _MapPageState extends State<MapPage> {
   int indexLand = -1;
   int _currentIndex = 3;
   LatLng? currentPosition;
-   bool hasLocationPermission = false;
+  bool hasLocationPermission = false;
 
   @override
   void initState() {
@@ -44,41 +44,43 @@ class _MapPageState extends State<MapPage> {
   }
 
   Future<void> _requestPermissionAndLoadData() async {
-  final permissionStatus = await Geolocator.requestPermission();
-  setState(() {
-    hasLocationPermission = permissionStatus == LocationPermission.always ||
-        permissionStatus == LocationPermission.whileInUse;
-  });
-  if (permissionStatus == LocationPermission.deniedForever) {
+    final permissionStatus = await Geolocator.requestPermission();
     setState(() {
-      currentPosition = LatLng(39.4699, -0.3763); // Latitud y longitud de Valencia
+      hasLocationPermission = permissionStatus == LocationPermission.always ||
+          permissionStatus == LocationPermission.whileInUse;
     });
-  } else if (permissionStatus == LocationPermission.denied) {
-    // Si el usuario negó los permisos, puedes mostrar un diálogo o mensaje para informar y solicitar permisos nuevamente.
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Permiso de ubicación necesario'),
-          content: Text('La aplicación necesita permiso de ubicación para funcionar correctamente. Por favor, habilite los permisos en la configuración de la aplicación.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Aceptar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                _requestPermissionAndLoadData(); // Solicita permisos nuevamente
-              },
-            ),
-          ],
-        );
-      },
-    );
-  } else {
-    // Si se otorgan permisos, obtén la ubicación actual y carga los datos
-    await _getCurrentLocation();
+    if (permissionStatus == LocationPermission.deniedForever) {
+      setState(() {
+        currentPosition =
+            LatLng(39.4699, -0.3763); // Latitud y longitud de Valencia
+      });
+    } else if (permissionStatus == LocationPermission.denied) {
+      // Si el usuario negó los permisos, puedes mostrar un diálogo o mensaje para informar y solicitar permisos nuevamente.
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Permiso de ubicación necesario'),
+            content: Text(
+                'La aplicación necesita permiso de ubicación para funcionar correctamente. Por favor, habilite los permisos en la configuración de la aplicación.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Aceptar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _requestPermissionAndLoadData(); // Solicita permisos nuevamente
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // Si se otorgan permisos, obtén la ubicación actual y carga los datos
+      await _getCurrentLocation();
+    }
+    await _loadLands();
   }
-  await _loadLands();
-}
 
   Future<void> _loadLands() async {
     lands = await LandSupabase().readLands();

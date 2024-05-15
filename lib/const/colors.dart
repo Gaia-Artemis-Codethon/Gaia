@@ -16,5 +16,4 @@ class OurColors {
   Color navBarDefault = Color.fromARGB(255, 104, 101, 98);
   Color navBarBackground = Color.fromARGB(255, 66, 64, 62);
   Color primeWhite = Color(0xFF4edfa2);
-  Color primeDark = Color(0xFF5CBC94);
 }
