@@ -130,7 +130,8 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                     Planted(
                         id: newPlantedId,
                         crop_id: newCropId,
-                        land_id: Guid('11ec8d5f-19b3-4c4a-b9bd-7046cdf411d0'), //The Land Id associated with the community Id
+                        land_id: Guid(
+                            '11ec8d5f-19b3-4c4a-b9bd-7046cdf411d0'), //The Land Id associated with the community Id
                         planted_time: DateTime.now(),
                         status: 0,
                         user_id: widget.user_id,
@@ -252,43 +253,47 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(40.0),
                         child: GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    child: Container(
-                                      width: 300, // Adjust the width as needed
-                                      height: 330, // Adjust the height as needed
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: Image.network(
-                                          _plantDetails['default_image']['regular_url'],
-                                          width: 300,
-                                          height: 350,
-                                          fit: BoxFit.fill,
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Container(
-                                              width: 120,
-                                              height: 120,
-                                              decoration: BoxDecoration(
-                                                color: OurColors().backgroundColor,
-                                                borderRadius: BorderRadius.circular(15),
-                                              ),
-                                              child: Icon(
-                                                Icons.local_florist,
-                                                size: 60,
-                                                color: OurColors().primary,
-                                              ),
-                                            );
-                                          },   // Adjust the fit property as needed
-                                        ),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  child: Container(
+                                    width: 300, // Adjust the width as needed
+                                    height: 330, // Adjust the height as needed
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                        _plantDetails['default_image']
+                                            ['regular_url'],
+                                        width: 300,
+                                        height: 350,
+                                        fit: BoxFit.fill,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Container(
+                                            width: 120,
+                                            height: 120,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  OurColors().backgroundColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Icon(
+                                              Icons.local_florist,
+                                              size: 60,
+                                              color: OurColors().primary,
+                                            ),
+                                          );
+                                        }, // Adjust the fit property as needed
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
+                                  ),
+                                );
+                              },
+                            );
+                          },
                           child: Image.network(
                             _plantDetails['default_image']['thumbnail'],
                             width: 200,
@@ -315,10 +320,10 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                       Container(
                         width: 350,
                         child: Text(
-                          capitalizeFirstChar(_plantDetails['common_name'] ?? 'No name available'),
+                          capitalizeFirstChar(_plantDetails['common_name'] ??
+                              'No name available'),
                           style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold
-                          ),
+                              fontSize: 24, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -383,7 +388,8 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                               const SizedBox(height: 10),
                               growthCard(
                                   'Light requirements',
-                                  parseArray(_plantDetails['sunlight'].toString()),
+                                  parseArray(
+                                      _plantDetails['sunlight'].toString()),
                                   Icons.wb_sunny_outlined),
                               const SizedBox(height: 20),
                               const Text(
@@ -412,7 +418,7 @@ class _PlantDetailsPageState extends State<PlantDetail> {
             onPressed: () {
               showConfirmationDialog(context);
             },
-            backgroundColor: OurColors().primaryButton,
+            backgroundColor: OurColors().primeWhite,
             child: Icon(
               Icons.add,
               size: 35,
