@@ -5,15 +5,28 @@ import 'package:flutter_guid/flutter_guid.dart';
 class UserSupabase {
   final client = SupabaseService().client;
 
-  Future<void> updateUser(Guid id, UserLoged userLoged) async {
+  Future<void> updateUser(UserLoged userLoged) async {
     Map<String, dynamic> newValues = {
-      "id": id.value,
+      "id": userLoged.id.value,
       "name": userLoged.name,
       "email": userLoged.email,
-      "community_id": userLoged.community_id == null ? null : userLoged.community_id!.value,
+      "community_id":
+          userLoged.community_id == null ? null : userLoged.community_id!.value,
       "isAdmin": userLoged.community_id == null ? null : userLoged.is_admin!
     };
-    await SupabaseService().updateData("User", id.value, newValues);
+    await SupabaseService().updateData("User", userLoged.id.value, newValues);
+  }
+
+  Future<void> addUser(UserLoged userLoged) async {
+    Map<String, dynamic> newValues = {
+      "name": userLoged.name,
+      "email": userLoged.email,
+      "community_id":
+          userLoged.community_id == null ? null : userLoged.community_id!.value,
+      "isAdmin": userLoged.is_admin == null ? null : userLoged.is_admin!
+    };
+
+    await SupabaseService().addData("User", newValues);
   }
 
   Future<UserLoged?> getUserById(Guid id) async {

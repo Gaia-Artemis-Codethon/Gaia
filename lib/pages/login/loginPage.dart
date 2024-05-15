@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/models/userLoged.dart';
 import 'package:flutter_application_huerto/pages/first_home_page.dart';
+import 'package:flutter_application_huerto/pages/register/registerPager.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -124,6 +125,36 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: Text(
                     'Login',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.0),
+              SizedBox(
+                width: double.infinity,
+                height: 45.0, // Match the height of the TextField
+                child: ElevatedButton(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RegisterPage(),
+                      ),
+                    )
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xFF67D67B)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    'Register',
                     style: TextStyle(
                       color: Colors.black,
                     ),

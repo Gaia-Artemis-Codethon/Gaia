@@ -63,7 +63,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
           community_id: community.id,
           is_admin: true //The creator is the admin
           );
-      await UserSupabase().updateUser(Id, updatedUser);
+      await UserSupabase().updateUser(updatedUser);
       print("User updated successfully");
       return Id;
     } catch (e) {
