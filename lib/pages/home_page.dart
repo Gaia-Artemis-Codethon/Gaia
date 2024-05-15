@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/components/button.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/pages/map/mapPage.dart';
 import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
@@ -20,6 +21,7 @@ import '../models/Auth.dart';
 import '../models/current_weather_model.dart';
 import '../widgets/weather_card.dart';
 import 'drawing/create_grid.dart';
+import 'login/loginPage.dart';
 import 'marketPlace/marketPlace.dart';
 
 class HomePage extends StatefulWidget {
@@ -314,6 +316,17 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            Button(
+              text: const Text("Log out"),
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                ),
+              },
+            )
           ],
         ),
       ),
