@@ -31,7 +31,18 @@ class ChatSupabase {
           "postId", postId.value).eq(
           "seller", sellerId);
 
-      return ChatDto.fromJsonList(data);
+      List<ChatDto> aux = ChatDto.fromJsonList(data);
+      List<ChatDto> sol = [];
+      Guid clientId = aux.first.client;
+
+      for(ChatDto chat in aux) {
+        if(clientId != chat.client) {
+          sol.add(chat);
+          clientId = chat.client;
+        }
+      }
+
+      return sol;
     } catch (e) {
       print('Error en clase chat_supabase al leer rooms: $e');
       return null;

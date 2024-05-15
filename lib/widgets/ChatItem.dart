@@ -1,25 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_application_huerto/service/user_supabase.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 
 import '../const/colors.dart';
 import '../models/chat.dart';
 import '../models/market.dart';
 import '../pages/chat/chat.dart';
 
-class ChatItem extends StatelessWidget {
+class ChatItem extends StatefulWidget {
   final ChatDto chatDto;
   final Market marketPost;
+  final Guid userId;
 
-  ChatItem({required this.chatDto, required this.marketPost});
+  ChatItem({required this.chatDto, required this.marketPost, required this.userId});
 
-  void _showModifyPostDialog(BuildContext context, ChatDto chatDto) {
-    TextEditingController titleController =
-        TextEditingController(text: marketPost.title);
-    TextEditingController descriptionController =
-        TextEditingController(text: marketPost.description);
+  @override
+  _ChatItemState createState() => _ChatItemState();
+}
 
-    bool isTitleEmpty = false; // Set to false because title is pre-filled
-  }
+class _ChatItemState extends State<ChatItem> {
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,7 @@ class ChatItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -50,62 +52,61 @@ class ChatItem extends StatelessWidget {
                           'images/user.png'), // Specify your image path here
                     ),
                     Text(
-                      marketPost.username,
+                      'Yourself',
                       style: const TextStyle(
-                        fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.bold
                       ),
                     ),
                   ],
                 ),
                 SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        marketPost.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
+                Icon(
+                    Icons.chevron_right
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircleAvatar(
+                      radius: 30,
+                      backgroundImage: AssetImage(
+                          'images/farmer-avatar.png'), // Specify your image path here
+                    ),
+                    Text(
+                      'Client',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        marketPost.description ?? '',
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 Column(
                   children: [
                     Visibility(
                       visible: true,
-                        child: PopupMenuButton(
-                      icon: Icon(Icons.more_vert),
-                      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                        PopupMenuItem(
-                          child: Text('Delete'),
-                          value: 'Delete',
-                        ),
-                      ],
-                      onSelected: (value) async {
-                        if (value == 'Delete') {
-                          // await MarketSupabase()
-                          //     .deleteMarketPostById(marketPost.id);
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) =>
-                          //         MarketPage(marketPost.community, userId),
-                          //   ),
-                          // );
-                        } else {
-                          return;
-                        }
-                      },
-                    ),),
+                      child: PopupMenuButton(
+                        icon: Icon(Icons.more_vert),
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                          PopupMenuItem(
+                            child: Text('Delete'),
+                            value: 'Delete',
+                          ),
+                        ],
+                        onSelected: (value) async {
+                          if (value == 'Delete') {
+                            // await MarketSupabase()
+                            //     .deleteMarketPostById(marketPost.id);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         MarketPage(marketPost.community, userId),
+                            //   ),
+                            // );
+                          } else {
+                            return;
+                          }
+                        },
+                      ),),
                     Visibility(
                       visible: true,
                       child: ElevatedButton(
@@ -114,7 +115,7 @@ class ChatItem extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ChatPage(postId: marketPost.id, client: chatDto.client, seller: marketPost.user),
+                              builder: (context) => ChatPage(postId: widget.marketPost.id, client: widget.chatDto.client, seller: widget.marketPost.user, userId: widget.userId,),
                             ),
                           );
                         },
