@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
+import 'package:flutter_application_huerto/main.dart';
+import 'package:flutter_application_huerto/pages/home_page.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
@@ -22,6 +24,18 @@ class _MarketPageState extends State<MarketPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    HomePage(widget.userId)
+              ),
+            );
+          },
+        ),
         title: Text('Market Place'),
         elevation: 1,
         backgroundColor: OurColors().sectionBackground,
