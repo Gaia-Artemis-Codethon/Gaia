@@ -119,14 +119,6 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: OurColors().backgroundColor,
         elevation: 0,
         toolbarHeight: 70,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              _showLogoutDialog(); // Mostrar el diálogo de cerrar sesión
-            },
-          ),
-        ],
         title: FutureBuilder<String>(
           future: _readCommunityName(),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -142,9 +134,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        if (session.isAdmin) {
-                          //ToDo Modify image
-                        }
+                        _showLogoutDialog(); // Mostrar el diálogo de cerrar sesión al hacer clic en el avatar
                       },
                       child: CircleAvatar(
                         radius: 27,
@@ -187,9 +177,9 @@ class _HomePageState extends State<HomePage> {
             const Text(
               "Marketplace",
               style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+                color: Colors.black,
+                fontSize: 22,
+              ),
             ),
             GestureDetector(
               onTap: () {
@@ -230,8 +220,7 @@ class _HomePageState extends State<HomePage> {
                     "Your Plot",
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
                     ),
                   ),
                   Container(
@@ -257,9 +246,9 @@ class _HomePageState extends State<HomePage> {
                   const Text(
                     "Weather",
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
+                      color: Colors.black,
+                      fontSize: 24,
+                    ),
                   ),
                   SizedBox(height: 20),
                   Container(
@@ -324,17 +313,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Button(
-              text: const Text("Log out"),
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginPage(),
-                  ),
-                ),
-              },
-            )
           ],
         ),
       ),
@@ -379,19 +357,20 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
   void _showLogoutDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Cerrar sesión"),
-          content: Text("¿Estás seguro de que quieres cerrar sesión?"),
+          title: Text("Logout"),
+          content: Text("¿Are you sure that you want to logout?"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Cerrar el diálogo
               },
-              child: Text("Cancelar"),
+              child: Text("Cancel"),
             ),
             TextButton(
               onPressed: () {
@@ -413,5 +392,4 @@ class _HomePageState extends State<HomePage> {
       (Route<dynamic> route) => false,
     );
   }
-
 }

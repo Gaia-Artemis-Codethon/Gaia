@@ -52,8 +52,6 @@ dependencies:
   fluttertoast: ^8.2.5
   flutter_chat_ui: ^1.6.12
 
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -80,6 +78,10 @@ flutter:
     - images/
   #   - images/a_dot_ham.jpeg
   fonts:
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans-VariableFont_wdth,wght.ttf
+
     - family: BlackberryJam
       fonts:
         - asset: fonts/BlackberryJamPersonalUse-rXOB.ttf
