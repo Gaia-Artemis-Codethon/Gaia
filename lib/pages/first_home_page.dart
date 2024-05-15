@@ -28,12 +28,12 @@ class FirstHomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'BIENVENID@S',
+                  'Welcome!',
                   style: TextStyle(color: Colors.black, fontSize: 28),
                 ),
                 SizedBox(height: 20),
                 Text(
-                  '¿Qué quieres hacer?',
+                  'What do you want to do?',
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
                 SizedBox(height: 40),
@@ -58,7 +58,7 @@ class FirstHomePage extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "Unirse a una comunidad",
+                      "Join a Community",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
@@ -88,7 +88,7 @@ class FirstHomePage extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "Crear una comunidad",
+                      "Create a Community",
                       style: TextStyle(fontSize: 18, color: Colors.black),
                     ),
                   ),

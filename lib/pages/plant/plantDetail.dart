@@ -130,7 +130,7 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                     Planted(
                         id: newPlantedId,
                         crop_id: newCropId,
-                        land_id: Guid('11ec8d5f-19b3-4c4a-b9bd-7046cdf411d0'),
+                        land_id: Guid('11ec8d5f-19b3-4c4a-b9bd-7046cdf411d0'), //The Land Id associated with the community Id
                         planted_time: DateTime.now(),
                         status: 0,
                         user_id: widget.user_id,
