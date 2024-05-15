@@ -175,33 +175,11 @@ class _HomePageState extends State<HomePage> {
           children: [
             const SizedBox(height: 30),
             const Text(
-              "Your Plot",
+              "Marketplace",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 24,
                   fontWeight: FontWeight.bold),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const GridPage(),
-                  ),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 20),
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.width * 0.4,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                    image: AssetImage('images/com.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
             ),
             GestureDetector(
               onTap: () {
@@ -213,11 +191,33 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               },
+              child: Container(
+                margin: EdgeInsets.only(top: 20),
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.3,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                    image: AssetImage('images/marketplace.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const GridPage(),
+                  ),
+                );
+              },
               child: Column(
                 children: [
                   SizedBox(height: 20),
                   const Text(
-                    "Marketplace",
+                    "Your Plot",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 24,
@@ -227,11 +227,11 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     margin: EdgeInsets.only(top: 20),
                     width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.width * 0.4,
+                    height: MediaQuery.of(context).size.height * 0.3,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       image: DecorationImage(
-                        image: AssetImage('images/marketplace.png'),
+                        image: AssetImage('images/com.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
