@@ -139,7 +139,7 @@ class _UserPlantsState extends State<UserPlants> {
       ),
       floatingActionButton: ClipOval(
         child: Material(
-          color: OurColors().primaryButton, // Button color
+          color: OurColors().primeWhite, // Button color
           child: InkWell(
             splashColor: Colors.white, // Splash color
             child: SizedBox(
