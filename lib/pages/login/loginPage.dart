@@ -126,6 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+              SizedBox(height: 30.0),
               SizedBox(
                 width: double.infinity,
                 height: 45.0, // Match the height of the TextField
@@ -148,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   child: Text(
-                    'Login',
+                    'Register',
                     style: TextStyle(
                       color: Colors.black,
                     ),

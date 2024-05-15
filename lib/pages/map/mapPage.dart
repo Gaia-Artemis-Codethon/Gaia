@@ -88,6 +88,25 @@ class _MapPageState extends State<MapPage> {
       lands.sort(
           (a, b) => _calculateDistance(a).compareTo(_calculateDistance(b)));
       markers = _transformLandsToMarkers(lands);
+      if (hasLocationPermission) {
+        markers.add(
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: currentPosition!,
+            child: IconButton(
+              icon: const Icon(
+                Icons.location_on,
+                color: Colors.blue,
+                size: 30.0,
+              ),
+              onPressed: () {
+                mapController.move(currentPosition!, 18);
+              },
+            ),
+          ),
+        );
+      }
     });
   }
 
