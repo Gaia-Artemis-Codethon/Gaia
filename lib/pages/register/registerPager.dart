@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/pages/login/loginPage.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
@@ -15,29 +16,25 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _nameController =
-      TextEditingController(); // Nuevo controlador para el nombre
+  final TextEditingController _nameController = TextEditingController();
 
   Future<void> _register() async {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
-    String name =
-        _nameController.text.trim(); // Obtener el valor del campo de nombre
+    String name = _nameController.text.trim();
 
     try {
-      // Registro del usuario en Supabase
       final response = await SupabaseService().client.auth.signUp(
             password: password,
             email: email,
           );
       await UserSupabase().updateUser(UserLoged(
-          id: Guid(response.user?.id),
-          name: name, 
-          email: email,
-          community_id: null,
-          is_admin: false,
-        )
-      );
+        id: Guid(response.user?.id),
+        name: name,
+        email: email,
+        community_id: null,
+        is_admin: false,
+      ));
       _showSuccess(response.toString());
 
       Navigator.push(
@@ -47,13 +44,11 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       );
     } catch (error) {
-      // Manejar otros errores
       _showError(error.toString());
     }
   }
 
   void _showSuccess(String message) {
-    // Mostrar mensaje de éxito
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
       backgroundColor: Colors.green,
@@ -61,7 +56,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _showError(String message) {
-    // Mostrar mensaje de error
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
       backgroundColor: Colors.red,
@@ -71,39 +65,89 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Register'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/login.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Stack(
           children: <Widget>[
-            TextField(
-              controller: _nameController, // Campo de nombre
-              decoration: InputDecoration(
-                labelText: 'Name',
+            Positioned(
+              top: 40,
+              left: 10,
+              child: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
+            Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Create Account',
+                        style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      SizedBox(height: 40.0),
+                      TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.7),
+                          labelText: 'Name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20.0),
+                      TextField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.7),
+                          labelText: 'Email',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20.0),
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.7),
+                          labelText: 'Password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30.0),
+                      ElevatedButton(
+                        onPressed: _register,
+                        child: Text('Register'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: OurColors().primeWhite,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 15),
+                          textStyle: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Password',
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: _register,
-              child: Text('Register'),
             ),
           ],
         ),

@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                         MaterialStateProperty.all<Color>(Color(0xFF67D67B)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2.0),
+                        borderRadius: BorderRadius.circular(15.0),
                       ),
                     ),
                   ),
@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                         MaterialStateProperty.all<Color>(Color(0xFF67D67B)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2.0),
+                        borderRadius: BorderRadius.circular(15.0),
                       ),
                     ),
                   ),
