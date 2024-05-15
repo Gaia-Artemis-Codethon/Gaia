@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/models/userLoged.dart';
 import 'package:flutter_application_huerto/pages/first_home_page.dart';
 import 'package:flutter_application_huerto/pages/register/registerPager.dart';
@@ -45,7 +46,6 @@ class _LoginPageState extends State<LoginPage> {
           );
         }
       } else {
-
         _showError('User and/or password incorrect');
       }
     } catch (error) {
@@ -110,8 +110,8 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: _login,
                   style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Color(0xFF67D67B)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        OurColors().primeWhite),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
@@ -140,8 +140,8 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   },
                   style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Color(0xFF67D67B)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        OurColors().primeWhite),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
