@@ -242,7 +242,7 @@ class _OwnPlantDetailsPageState extends State<OwnPlantDetail> {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                'Light requirements: ${_plantDetails['sunlight'].toString() ?? 'No data'}',
+                                'Time to water: ${_plantDetails['watering_period']}',
                                 textAlign: TextAlign.left,
                               ),
                             ],

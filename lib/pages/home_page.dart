@@ -21,6 +21,7 @@ import '../models/current_weather_model.dart';
 import '../widgets/weather_card.dart';
 import 'chat/chat.dart';
 import 'drawing/create_grid.dart';
+import 'marketPlace/marketPlace.dart';
 
 class HomePage extends StatefulWidget {
   final Guid userId;
@@ -150,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         children: [
                           const Text(
-                            'MY COMMUNITY:',
+                            'Community:',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
@@ -238,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    "Our Plot",
+                    "Community",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 30,
@@ -259,11 +260,33 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       margin: EdgeInsets.only(top: 20),
                       width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.width * 0.6,
+                      height: MediaQuery.of(context).size.width * 0.4,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         image: DecorationImage(
                           image: AssetImage('images/com.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MarketPage(session.community, widget.userId),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.width * 0.4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                          image: AssetImage('images/hdom.jpg'),
                           fit: BoxFit.cover,
                         ),
                       ),
