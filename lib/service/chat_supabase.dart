@@ -9,7 +9,7 @@ import '../models/chat.dart';
 class ChatSupabase {
   final service = SupabaseService().client;
 
-  Future<ChatDto?> getChatMessagesFromRoomAndUsers(Guid postId, Guid clientId, Guid sellerId) async {
+  Future<List<ChatDto>?> getChatMessagesFromRoomAndUsers(Guid postId, Guid clientId, Guid sellerId) async {
     try {
       final data =
       await service.from("ChatRooms").select("*").eq(
@@ -17,18 +17,7 @@ class ChatSupabase {
           "client", clientId).eq(
           "seller", sellerId);
 
-      if (data.isEmpty) {
-        final data = await service.from("ChatRooms").select("*").eq(
-            "postId", postId.value).eq(
-            "client", sellerId).eq(
-            "seller", clientId);
-        if (data.isEmpty) {return null;}
-        print(data);
-        return ChatDto.fromJson(data);
-      } else {
-        print(data);
-        return ChatDto.fromJson(data);
-      }
+      return ChatDto.fromJsonList(data);
     } catch (e) {
       print('Error en clase chat_supabase al leer datos: $e');
       return null;

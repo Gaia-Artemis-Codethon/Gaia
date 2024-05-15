@@ -18,21 +18,32 @@ class ChatDto {
   });
 
   static ChatDto fromJson(json) {
-    // var messageJson = json[0]['messages'];
-    //
-    // messages.author= types.User(id: Guid(messageJson['author']['id']).value);
-    // messages.createdAt= messageJson['createdAt'];
-    // messages.id= Guid(messageJson['id']);
-    // messages.text= messageJson['text'];
-    // messages.type= messageJson['type'];
+
 
     return ChatDto(
       id: Guid(json[0]['id']),
       client: Guid(json[0]['client']),
       seller: Guid(json[0]['seller']),
       messages: json[0]['messages']
-      //messages: Map<int, String>.from(json['messages']),
+
     );
+  }
+
+  static List<ChatDto> fromJsonList(List<dynamic> jsonList) {
+    List<ChatDto> chatList = [];
+
+    for (var json in jsonList) {
+      ChatDto chatDto = ChatDto(
+        id: Guid(json['id']),
+        client: Guid(json['client']),
+        seller: Guid(json['seller']),
+        messages: json['messages'],
+      );
+
+      chatList.add(chatDto);
+    }
+
+    return chatList;
   }
 
   Map<String, dynamic> toJson() {

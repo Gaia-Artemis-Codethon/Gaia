@@ -47,15 +47,17 @@ class ChatPage extends StatefulWidget{
     void _loadMessages() async {
       ChatSupabase cs = new ChatSupabase();
       //ChatDto? data = await cs.getChatMessagesFromRoomAndUsers(_postId, _clientId, _sellerId);
-      ChatDto? data = await cs.getChatMessagesFromRoomAndUsers(Guid('dff6ea21-e5a9-4331-ab3d-c10a714cd63f')
-          , Guid('70ee2b58-108b-4d5e-a40f-322eca2e2415')
-        , Guid('a9a7d6a8-95e7-41b9-b580-ccfb171b6828'));
-      print(data);
+      List<ChatDto>? data = await cs.getChatMessagesFromRoomAndUsers(Guid('7f57335b-139b-41d5-b3bd-f62e2abfadfb')
+          , Guid('e8225895-77c2-4648-bdaa-ab9145a7994a')
+        , Guid('98deadb7-ef23-493b-9044-4b76eafe044f'));
       if(data==null){return;}
-      ChatDto chatDao = data!;
-      final message = types.Message.fromJson(jsonDecode(chatDao.messages) as Map<String, dynamic>);
-      final List<types.Message> messages = [message];
-      messages.forEach((element) {print(element);});
+      List<ChatDto> chatDao = data!;
+      List<types.Message> messages = [];
+
+      for (ChatDto chatDto in data) {
+        final message = types.Message.fromJson(jsonDecode(chatDto.messages) as Map<String, dynamic>);
+        messages.add(message);
+      }
       setState(() {
         _messages = messages;
       });
@@ -79,7 +81,7 @@ class ChatPage extends StatefulWidget{
             .millisecondsSinceEpoch,
         id: '525d9a72-c93f-40e1-8f5d-77cb826e62fe',
         text: message.text,
-        //roomId: _postId+_client+_seller
+        roomId: _postId.value+_clientId.value+_sellerId.value
       );
       _addMessage(textMessage);
     }
