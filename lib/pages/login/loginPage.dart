@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Stack(
           children: <Widget>[
             Positioned(
-              top: 145, // Ajusta la posición según sea necesario
+              top: 165, // Ajusta la posición según sea necesario
               left: 20,
               right: 20,
               child: Container(
