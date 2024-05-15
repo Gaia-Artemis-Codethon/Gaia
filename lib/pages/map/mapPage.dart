@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../models/land.dart'; // Replace with your Land model definition
+import 'package:vector_map_tiles/vector_map_tiles.dart';
+import '../../models/land.dart'; // Reemplaza con la definición de tu modelo Land
 import '../../service/land_supabase.dart';
 import '../home_page.dart';
 import '../plant/userPlants.dart';
 import '../toDo/toDo.dart';
 import '../../shared/bottom_navigation_bar.dart';
-
-const MAP_KEY = '9b116f76-e8c1-4133-b90d-c7bd4b68c8c7';
-const styleUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 class MapPage extends StatefulWidget {
   final Guid userId;
@@ -27,127 +22,57 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   final MapController mapController = MapController();
-  bool hasLocationPermission = false;
   bool isLoading = true;
-  bool hasInternetConnection = true;
-
-  LatLng? myPosition;
   List<Land> lands = [];
   List<Marker> markers = [];
-
-  int _currentIndex = 3;
   int indexLand = -1;
-
-  final Connectivity connectivity = Connectivity();
+  int _currentIndex = 3;
+  LatLng? currentPosition;
 
   @override
   void initState() {
     super.initState();
-    _requestLocationPermission();
-    _checkInternetConnection();
+    _loadData();
   }
 
-  void _requestLocationPermission() async {
-    LocationPermission permission = await Geolocator.requestPermission();
-
+  Future<void> _loadData() async {
+    await _loadLands();
+    await _getCurrentLocation();
     setState(() {
-      hasLocationPermission = permission == LocationPermission.always ||
-          permission == LocationPermission.whileInUse;
+      isLoading = false;
     });
-
-    if (permission == LocationPermission.denied) {
-      setState(() {
-        isLoading = false;
-        loadLands();
-      });
-      print("Location permission denied");
-    } else if (permission == LocationPermission.deniedForever) {
-      setState(() {
-        isLoading = false;
-        loadLands();
-      });
-      print("Location permission permanently denied");
-    } else {
-      await getCurrentLocation().then((_) => setState(() {
-            isLoading = false;
-            loadLands();
-          }));
-    }
   }
 
-  Future<Position> determinePosition() async {
-    Position position = await Geolocator.getCurrentPosition();
-    return position;
+  Future<void> _loadLands() async {
+    lands = await LandSupabase().readLands();
+    setState(() {
+      lands.sort(
+          (a, b) => _calculateDistance(a).compareTo(_calculateDistance(b)));
+      markers = _transformLandsToMarkers(lands);
+    });
   }
 
-  Future<void> getCurrentLocation() async {
+  Future<void> _getCurrentLocation() async {
     try {
-      Position position = await determinePosition();
+      final Position position = await Geolocator.getCurrentPosition();
       setState(() {
-        myPosition = LatLng(position.latitude, position.longitude);
+        currentPosition = LatLng(position.latitude, position.longitude);
       });
     } catch (e) {
       debugPrint("Error getting location: $e");
     }
   }
 
-  void _checkInternetConnection() async {
-    List<ConnectivityResult> connectivityResult =
-        await connectivity.checkConnectivity();
-    if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
-      setState(() {
-        hasInternetConnection = true;
-      });
-    } else {
-      setState(() {
-        hasInternetConnection = false;
-      });
-      // Handle no internet connection scenario
-      print("No internet connection detected");
-      // You can show a dialog or snackbar to inform the user about the issue
-      // and provide options like retrying or going to settings
-    }
-  }
-
-  void loadLands() async {
-    lands = await LandSupabase().readLands();
-    setState(() {
-      lands.sort(
-          (a, b) => _calculateDistance(a).compareTo(_calculateDistance(b)));
-      markers = transformLandsToMarkers(lands);
-      if (hasLocationPermission) {
-        markers.add(
-          Marker(
-            width: 80.0,
-            height: 80.0,
-            point: myPosition!,
-            child: IconButton(
-              icon: const Icon(
-                Icons.location_on,
-                color: Colors.blue,
-                size: 30.0,
-              ),
-              onPressed: () {
-                mapController.move(myPosition!, 18);
-              },
-            ),
-          ),
-        );
-      }
-    });
-  }
-
   double _calculateDistance(Land land) {
-    if (myPosition == null) return double.infinity;
+    if (currentPosition == null) return double.infinity;
     final landPosition = LatLng(land.latitude, land.longitude);
-    var distance = const Distance();
-    return distance(myPosition!, landPosition);
+    final distance = Distance();
+    return distance(currentPosition!, landPosition);
   }
 
-  List<Marker> transformLandsToMarkers(List<Land> lands) {
+  List<Marker> _transformLandsToMarkers(List<Land> lands) {
     return lands.map((land) {
-      return Marker(
+       return Marker(
         width: 50.0,
         height: 50.0,
         point: LatLng(land.latitude, land.longitude),
@@ -174,119 +99,81 @@ class _MapPageState extends State<MapPage> {
     }).toList();
   }
 
+  Widget _buildMap() {
+    return FutureBuilder<Style>(
+      future: _readMapStyle(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          return _map(snapshot.data!);
+        }
+      },
+    );
+  }
+
+  Future<Style> _readMapStyle() {
+    return StyleReader(
+      uri:
+          'https://api.maptiler.com/maps/streets/style.json?key=HKZgWQ6cymRQiWZP0MRL',
+      apiKey: 'HKZgWQ6cymRQiWZP0MRL',
+    ).read();
+  }
+
+  Widget _map(Style style) {
+    return Column(
+      children: [
+        Expanded(
+          child: FlutterMap(
+            mapController: mapController,
+            options: MapOptions(
+              center: LatLng(lands[0].latitude, lands[0].longitude),
+              zoom: 18,
+            ),
+            children: [
+              VectorTileLayer(
+                tileProviders: style.providers,
+                theme: style.theme,
+                sprites: style.sprites,
+                maximumZoom: 22,
+                layerMode: VectorTileLayerMode.vector,
+              ),
+              MarkerLayer(markers: markers),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: lands.length,
+            itemBuilder: (context, index) {
+              final land = lands[index];
+              final distance = _calculateDistance(land).toStringAsFixed(2);
+              return ListTile(
+                title: Text(land.location),
+                subtitle: Text('Size: ${land.size}, Distance: $distance meters'),
+                onTap: () {
+                  mapController.move(
+                    LatLng(land.latitude, land.longitude),
+                    18,
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-    /*if (!hasInternetConnection) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('No internet connection detected'),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              _checkInternetConnection();
-            },
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
-    );
-  }*/
     return Scaffold(
-      backgroundColor: OurColors().backgroundColor,
-      extendBodyBehindAppBar: true,
-      body: StatefulBuilder(
-        builder: (context, setState) => Column(
-          children: [
-            Expanded(
-              flex: 3,
-              child: FlutterMap(
-                mapController: mapController,
-                options: MapOptions(
-                  initialCenter: indexLand != -1
-                      ? LatLng(
-                          lands[indexLand].latitude, lands[indexLand].longitude)
-                      : (hasLocationPermission
-                          ? myPosition!
-                          : const LatLng(39.4702, -0.3898)),
-                  zoom: 18,
-                  keepAlive: false,
-                ),
-                children: [
-                  TileLayer(
-                    urlTemplate: styleUrl,
-                    additionalOptions: const {
-                      'accessToken': MAP_KEY,
-                    },
-                  ),
-                  MarkerLayer(markers: markers),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: Scrollbar(
-                    thumbVisibility: true,
-                    child: ListView.builder(
-                      itemCount: lands.length,
-                      itemBuilder: (context, index) {
-                        final land = lands[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: ListTile(
-                            title: Text(
-                              land.location,
-                              style: TextStyle(
-                                color: index == indexLand
-                                    ? Color.fromARGB(255, 6, 96,
-                                        9) // Cambiar a verde si está seleccionado
-                                    : Colors.black,
-                              ),
-                            ),
-                            subtitle: Text(
-                              style: TextStyle(
-                                color: index == indexLand
-                                    ? Color.fromARGB(255, 6, 96,
-                                        9) // Cambiar a verde si está seleccionado
-                                    : Colors.black,
-                              ),
-                              hasLocationPermission
-                                  ? 'Size: ${land.size}, Proximity: ${_calculateDistance(land).toStringAsFixed(2)} meters'
-                                  : 'Size: ${land.size}, Proximity: Not available',
-                            ),
-                            selected: index == indexLand,
-                            onTap: () async {
-                              setState(() {
-                                indexLand = index;
-                                mapController.move(
-                                  LatLng(lands[index].latitude,
-                                      lands[index].longitude),
-                                  18,
-                                );
-                              });
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        title: Text('Map'),
       ),
+      body: isLoading ? Center(child: CircularProgressIndicator()) : _buildMap(),
       bottomNavigationBar: CustomBottomNavigationBar(
         onTap: (index) {
           if (index != _currentIndex) {
