@@ -113,14 +113,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
-  csslib:
-    dependency: transitive
-    description:
-      name: csslib
-      sha256: "706b5707578e0c1b4b7550f64078f0a0f19dec3f50a178ffae7006b0a9ca58fb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -137,22 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.10"
-  diffutil_dart:
+  executor_lib:
     dependency: transitive
     description:
-      name: diffutil_dart
-      sha256: e0297e4600b9797edff228ed60f4169a778ea357691ec98408fa3b72994c7d06
+      name: executor_lib
+      sha256: "544889daa5726462657dab6410b75f2f8e3a77479d85b307a25c346e243bc38e"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.5"
+    version: "1.1.1"
   fake_async:
     dependency: transitive
     description:
@@ -177,6 +161,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  fixnum:
+    dependency: transitive
+    description:
+      name: fixnum
+      sha256: "25517a4deb0c03aa0f32fd12db525856438902d9c16536311e76cdc57b31d7d1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -198,22 +190,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
-  flutter_chat_types:
-    dependency: transitive
-    description:
-      name: flutter_chat_types
-      sha256: e285b588f6d19d907feb1f6d912deaf22e223656769c34093b64e1c59b094fb9
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.6.2"
-  flutter_chat_ui:
-    dependency: "direct main"
-    description:
-      name: flutter_chat_ui
-      sha256: c8580c85e2d29359ffc84147e643d08d883eb6e757208652377f0105ef58807f
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.6.12"
   flutter_guid:
     dependency: "direct main"
     description:
@@ -222,22 +198,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
-  flutter_link_previewer:
-    dependency: transitive
-    description:
-      name: flutter_link_previewer
-      sha256: "007069e60f42419fb59872beb7a3cc3ea21e9f1bdff5d40239f376fa62ca9f20"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.2"
-  flutter_linkify:
-    dependency: transitive
-    description:
-      name: flutter_linkify
-      sha256: "74669e06a8f358fee4512b4320c0b80e51cffc496607931de68d28f099254073"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -254,22 +214,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
-  flutter_parsed_text:
-    dependency: transitive
-    description:
-      name: flutter_parsed_text
-      sha256: "529cf5793b7acdf16ee0f97b158d0d4ba0bf06e7121ef180abe1a5b59e32c1e2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.1"
   flutter_screenutil:
     dependency: "direct main"
     description:
       name: flutter_screenutil
-      sha256: "8cf100b8e4973dc570b6415a2090b0bfaa8756ad333db46939efc3e774ee100d"
+      sha256: b372c35a772a1dc84142a3b9c5ee89a390834bd258e5e6a450d9b975b985d1c9
       url: "https://pub.dev"
     source: hosted
-    version: "5.9.0"
+    version: "5.9.1"
   flutter_shaders:
     dependency: transitive
     description:
@@ -304,6 +256,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: "direct main"
+    description:
+      name: fluttertoast
+      sha256: "81b68579e23fcbcada2db3d50302813d2371664afe6165bc78148050ab94bf66"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.2.5"
   functions_client:
     dependency: transitive
     description:
@@ -324,10 +284,10 @@ packages:
     dependency: "direct main"
     description:
       name: geolocator
-      sha256: "694ec58afe97787b5b72b8a0ab78c1a9244811c3c10e72c4362ef3c0ceb005cd"
+      sha256: "6cb9fb6e5928b58b9a84bdf85012d757fd07aab8215c5205337021c4999bad27"
       url: "https://pub.dev"
     source: hosted
-    version: "11.0.0"
+    version: "11.1.0"
   geolocator_android:
     dependency: transitive
     description:
@@ -384,14 +344,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-  html:
-    dependency: transitive
-    description:
-      name: html
-      sha256: "3a7812d5bcd2894edf53dfaf8cd640876cf6cef50a8f238745c8b8120ea74d3a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.15.4"
   http:
     dependency: transitive
     description:
@@ -416,14 +368,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.0"
-  json_annotation:
-    dependency: transitive
-    description:
-      name: json_annotation
-      sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.9.0"
   jwt_decode:
     dependency: transitive
     description:
@@ -464,14 +408,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-  linkify:
-    dependency: transitive
-    description:
-      name: linkify
-      sha256: "4139ea77f4651ab9c315b577da2dd108d9aa0bd84b5d03d33323f1970c645832"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.0"
   lints:
     dependency: transitive
     description:
@@ -624,14 +560,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
-  photo_view:
-    dependency: transitive
-    description:
-      name: photo_view
-      sha256: "8036802a00bae2a78fc197af8a158e3e2f7b500561ed23b4c458107685e645bb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.14.0"
   platform:
     dependency: transitive
     description:
@@ -672,6 +600,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  protobuf:
+    dependency: transitive
+    description:
+      name: protobuf
+      sha256: "68645b24e0716782e58948f8467fd42a880f255096a821f9e7d0ec625b00c84d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   realtime_client:
     dependency: transitive
     description:
@@ -696,14 +632,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
-  scroll_to_index:
-    dependency: transitive
-    description:
-      name: scroll_to_index
-      sha256: b707546e7500d9f070d63e5acf74fd437ec7eeeb68d3412ef7b0afada0b4f176
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
   shared_preferences:
     dependency: transitive
     description:
@@ -942,7 +870,7 @@ packages:
     source: hosted
     version: "3.1.1"
   uuid:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: uuid
       sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
@@ -981,6 +909,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.11+1"
+  vector_map_tiles:
+    dependency: "direct main"
+    description:
+      name: vector_map_tiles
+      sha256: "79394902d04cefe6f93eb0a80afe48d8b76fec8d90cf6d6bd5a7e34abe577d1c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.3.1"
   vector_math:
     dependency: transitive
     description:
@@ -989,14 +925,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  visibility_detector:
+  vector_tile:
     dependency: transitive
     description:
-      name: visibility_detector
-      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
+      name: vector_tile
+      sha256: "3adb04426f3aebefce56f3fdf8ab2e23cc9f7d5b06ff8ca33ae87e3a1e441874"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.0+2"
+    version: "2.0.0"
+  vector_tile_renderer:
+    dependency: transitive
+    description:
+      name: vector_tile_renderer
+      sha256: b58fa02b472ced87de00de2b4d5837576239bddb21b562481f25bde39bd117ae
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.0"
   vm_service:
     dependency: transitive
     description:

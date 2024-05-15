@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_huerto/components/button.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/pages/map/mapPage.dart';
 import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
@@ -19,8 +20,8 @@ import '../const/weather_constants.dart';
 import '../models/Auth.dart';
 import '../models/current_weather_model.dart';
 import '../widgets/weather_card.dart';
-import 'chat/chat.dart';
 import 'drawing/create_grid.dart';
+import 'login/loginPage.dart';
 import 'marketPlace/marketPlace.dart';
 
 class HomePage extends StatefulWidget {
@@ -118,6 +119,14 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: OurColors().backgroundColor,
         elevation: 0,
         toolbarHeight: 70,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              _showLogoutDialog(); // Mostrar el diálogo de cerrar sesión
+            },
+          ),
+        ],
         title: FutureBuilder<String>(
           future: _readCommunityName(),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -174,10 +183,85 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 30),
+            const Text(
+              "Marketplace",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        MarketPage(session.community, widget.userId),
+                  ),
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 20),
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.3,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                    image: AssetImage('images/marketplace.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const GridPage(),
+                  ),
+                );
+              },
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  const Text(
+                    "Your Plot",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: DecorationImage(
+                        image: AssetImage('images/com.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Column(
                 children: [
+                  SizedBox(height: 20),
+                  const Text(
+                    "Weather",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -237,64 +321,20 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    "Community",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChatPage(
-                          postId: Guid.newGuid,
-                          client: Guid.newGuid,
-                          seller:Guid.newGuid),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20),
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.width * 0.4,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: AssetImage('images/com.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MarketPage(session.community, widget.userId),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20),
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.width * 0.4,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: AssetImage('images/hdom.jpg'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
+            Button(
+              text: const Text("Log out"),
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                ),
+              },
+            )
           ],
         ),
       ),
@@ -339,4 +379,39 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Cerrar sesión"),
+          content: Text("¿Estás seguro de que quieres cerrar sesión?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo
+              },
+              child: Text("Cancelar"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo
+                _logout(); // Llamar al método para cerrar sesión
+              },
+              child: Text("Cerrar sesión"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _logout() {
+    // Lógica para cerrar sesión
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => LoginPage()),
+      (Route<dynamic> route) => false,
+    );
+  }
+
 }
