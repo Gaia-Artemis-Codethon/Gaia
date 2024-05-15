@@ -15,4 +15,5 @@ class OurColors {
   Color primaryButton = const Color.fromARGB(255, 103, 214, 123);
   Color navBarDefault = Color.fromARGB(255, 104, 101, 98);
   Color navBarBackground = Color.fromARGB(255, 66, 64, 62);
+  Color primeWhite = Color(0xFF4edfa2);
 }

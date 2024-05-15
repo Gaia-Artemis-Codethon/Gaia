@@ -23,7 +23,6 @@ Future<void> initializeApp() async {
         url: "https://pxafmjqslgpswndqzfvm.supabase.co",
         anonKey:
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4YWZtanFzbGdwc3duZHF6ZnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAzNjYzNjIsImV4cCI6MjAyNTk0MjM2Mn0.xbGjWmYqPUO3i2g1_4tmE7sWhI_c9ymFqckSA_CaFOs");
-  
 
     isInitialized = true; // Marca que Supabase ya está inicializado
   }
@@ -40,6 +39,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      theme: ThemeData(
+        textTheme: Theme.of(context).textTheme.apply(
+              fontFamily: 'OpenSans',
+            ),
+      ),
       home: FutureBuilder<void>(
         future: initializeApp(),
         builder: (context, snapshot) {

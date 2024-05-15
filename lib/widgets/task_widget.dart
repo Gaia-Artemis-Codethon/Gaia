@@ -60,7 +60,7 @@ class _TaskWidgetState extends State<TaskWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(40, 0, 25, 0),
+                  padding: const EdgeInsets.fromLTRB(40, 0, 10, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -96,7 +96,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                             ),
                             SizedBox(width: 8),
                             Checkbox(
-                              activeColor: Colors.green.shade200,
+                              activeColor: OurColors().primeWhite,
                               value: isDone,
                               onChanged: (value) async {
                                 setState(() {
@@ -163,7 +163,7 @@ class _TaskWidgetState extends State<TaskWidget> {
 
   Widget editTime() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),

@@ -145,120 +145,122 @@ class _GridPageState extends State<GridPage> {
       appBar: AppBar(
         title: Text("Community's farm"),
         actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  TextEditingController widthController =
-                      TextEditingController();
-                  TextEditingController heightController =
-                      TextEditingController();
-                  int height = 10;
-                  int width = 10;
-                  return AlertDialog(
-                    title: Text('Enter Data'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        TextField(
-                          controller: widthController,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-                          ],
-                          decoration: InputDecoration(
-                            labelText: 'Width [0-10]',
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (text) {
-                            try {
-                              if (int.parse(text) > 10 || int.parse(text) < 1) {
-                                widthController.text = "";
-                              }
-                            } catch (NumberFormatException) {}
-                          },
-                        ),
-                        TextField(
-                          controller: heightController,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-                          ],
-                          decoration: InputDecoration(
-                            labelText: 'Height [0-10]',
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (text) {
-                            try {
-                              if (int.parse(text) > 10 || int.parse(text) < 1) {
-                                heightController.text = "";
-                              }
-                            } catch (NumberFormatException) {}
-                          },
-                        ),
-                      ],
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          // Close the dialog without performing any action
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          try {
-                            height = int.parse(heightController.text);
-                            width = int.parse(heightController.text);
-                          } catch (NumberFormatException) {
-                            height = 10;
-                            width = 10;
-                          }
-                          Navigator.of(context).pop();
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Warning'),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Text(
-                                        'If you proceed changing the tile distribution, '
-                                        'the current distribution will be erased.\n'
-                                        'Do you still wish to continue?'),
-                                  ],
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      _changeGridSize(width, height);
-                                    },
-                                    child: Text('OK'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        child: Text("Ok"),
-                      ),
+          session.isAdmin
+              ?           IconButton(
+      icon: Icon(Icons.settings),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            TextEditingController widthController =
+            TextEditingController();
+            TextEditingController heightController =
+            TextEditingController();
+            int height = 10;
+            int width = 10;
+            return AlertDialog(
+              title: Text('Enter Data'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextField(
+                    controller: widthController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
                     ],
-                  );
-                },
-              );
-            },
-          ),
+                    decoration: InputDecoration(
+                      labelText: 'Width [0-10]',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (text) {
+                      try {
+                        if (int.parse(text) > 10 || int.parse(text) < 1) {
+                          widthController.text = "";
+                        }
+                      } catch (NumberFormatException) {}
+                    },
+                  ),
+                  TextField(
+                    controller: heightController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                    ],
+                    decoration: InputDecoration(
+                      labelText: 'Height [0-10]',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (text) {
+                      try {
+                        if (int.parse(text) > 10 || int.parse(text) < 1) {
+                          heightController.text = "";
+                        }
+                      } catch (NumberFormatException) {}
+                    },
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    // Close the dialog without performing any action
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    try {
+                      height = int.parse(heightController.text);
+                      width = int.parse(heightController.text);
+                    } catch (NumberFormatException) {
+                      height = 10;
+                      width = 10;
+                    }
+                    Navigator.of(context).pop();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Warning'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                  'If you proceed changing the tile distribution, '
+                                      'the current distribution will be erased.\n'
+                                      'Do you still wish to continue?'),
+                            ],
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                _changeGridSize(width, height);
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Text("Ok"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    )
+              : SizedBox(),
         ],
       ),
       body: gridDao.id != Guid.defaultValue

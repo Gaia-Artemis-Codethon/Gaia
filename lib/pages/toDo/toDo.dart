@@ -51,15 +51,13 @@ class _ToDoState extends State<ToDo> {
               Tab(
                 child: Text(
                   'To Do',
-                  style:
-                      TextStyle(color: OurColors().primaryButton, fontSize: 20),
+                  style: TextStyle(color: OurColors().primeWhite, fontSize: 20),
                 ),
               ),
               Tab(
                 child: Text(
                   'Done',
-                  style:
-                      TextStyle(color: OurColors().primaryButton, fontSize: 20),
+                  style: TextStyle(color: OurColors().primeWhite, fontSize: 20),
                 ),
               ),
             ],
@@ -67,7 +65,7 @@ class _ToDoState extends State<ToDo> {
         ),
         floatingActionButton: ClipOval(
           child: Material(
-            color: OurColors().primaryButton, // Button color
+            color: OurColors().primeWhite, // Button color
             child: InkWell(
               splashColor: Colors.white, // Splash color
               child: SizedBox(
@@ -128,7 +126,8 @@ class _ToDoState extends State<ToDo> {
     return Padding(
       padding:
           //ajustamos el padding respecto las tarjetas desde aqui
-          const EdgeInsets.fromLTRB(16.0, 19.0, 16.0, 0), // Ajuste del padding
+          const EdgeInsets.fromLTRB(2, 19.0, 2, 0),
+      // Ajuste del padding
       child: StreamBuilder<List<Task>>(
         stream: completed ? _completedTasksStream : _pendingTasksStream,
         builder: (context, snapshot) {
