@@ -4,6 +4,7 @@ import 'package:flutter_application_huerto/service/user_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import '../components/button.dart';
 import '../const/colors.dart';
+import '../models/Auth.dart';
 import '../models/userLoged.dart';
 import '../service/supabaseService.dart';
 import '../models/community.dart';
@@ -63,7 +64,13 @@ class _CreateCommunityState extends State<CreateCommunity> {
           community_id: community.id,
           is_admin: true //The creator is the admin
           );
-      await UserSupabase().updateUser(updatedUser);
+      user = await UserSupabase().updateUser(updatedUser) as UserLoged;
+      Auth().initialize(
+          id: user.id,
+          username: user.name,
+          community: user.community_id!,
+          isAdmin: user.is_admin!,
+        );
       print("User updated successfully");
       return Id;
     } catch (e) {

@@ -3,6 +3,7 @@ import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/pages/home_page.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import '../components/button.dart';
+import '../models/Auth.dart';
 import '../models/community.dart';
 import '../models/userLoged.dart';
 import '../service/supabaseService.dart';
@@ -104,7 +105,13 @@ class _JoinCommunityState extends State<JoinCommunity> {
           email: user.email,
           community_id: community.id,
           is_admin: false); //Is not admin by default
-      await UserSupabase().updateUser(updatedUser);
+      user = await UserSupabase().updateUser(updatedUser) as UserLoged;
+      Auth().initialize(
+          id: user.id,
+          username: user.name,
+          community: user.community_id!,
+          isAdmin: user.is_admin!,
+        );
       print("User updated successfully");
       return userId; // Devuelve el userId
     } catch (e) {
