@@ -48,6 +48,9 @@ dependencies:
   cached_network_image:
   connectivity_plus: ^6.0.3
   android_intent_plus: ^5.0.2
+  flutter_chat_ui: ^1.6.12
+  uuid: ^3.0.7
+
 
 
 

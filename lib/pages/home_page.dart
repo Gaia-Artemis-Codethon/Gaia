@@ -19,6 +19,7 @@ import '../const/weather_constants.dart';
 import '../models/Auth.dart';
 import '../models/current_weather_model.dart';
 import '../widgets/weather_card.dart';
+import 'chat/chat.dart';
 import 'drawing/create_grid.dart';
 
 class HomePage extends StatefulWidget {
@@ -248,7 +249,10 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const GridPage(),
+                          builder: (context) => ChatPage(
+                          postId: Guid.newGuid,
+                          client: Guid.newGuid,
+                          seller:Guid.newGuid),
                         ),
                       );
                     },
