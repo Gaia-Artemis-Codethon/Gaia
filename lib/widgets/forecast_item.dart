@@ -45,7 +45,7 @@ class ForecastItem extends StatelessWidget {
                   getDayMonthFromDate(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 24,
+                      fontSize: 22,
                       color: Colors.white),
                 ),
               ],
@@ -58,7 +58,7 @@ class ForecastItem extends StatelessWidget {
               "${weather.day.avgTemp} °C",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 32,
+                  fontSize: 24,
                   color: Colors.white),
             )
           ],
