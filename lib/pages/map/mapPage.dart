@@ -174,6 +174,8 @@ class _MapPageState extends State<MapPage> {
               center: currentPosition ??
                   LatLng(39.4699, -0.3763), // Centro de Valencia
               zoom: 18,
+              minZoom: 10, // Zoom mínimo
+              maxZoom: 22, // Zoom máximo
             ),
             children: [
               VectorTileLayer(
@@ -214,9 +216,6 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Map'),
-      ),
       body:
           isLoading ? Center(child: CircularProgressIndicator()) : _buildMap(),
       bottomNavigationBar: CustomBottomNavigationBar(
