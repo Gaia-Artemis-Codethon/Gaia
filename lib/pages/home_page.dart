@@ -173,10 +173,85 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 30),
+            const Text(
+              "Your Plot",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const GridPage(),
+                  ),
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 20),
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.width * 0.4,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                    image: AssetImage('images/com.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        MarketPage(session.community, widget.userId),
+                  ),
+                );
+              },
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  const Text(
+                    "Marketplace",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.width * 0.4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: DecorationImage(
+                        image: AssetImage('images/marketplace.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Column(
                 children: [
+                  SizedBox(height: 20),
+                  const Text(
+                    "Weather",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -234,58 +309,6 @@ class _HomePageState extends State<HomePage> {
                           },
                         ),
                       ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    "Community",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const GridPage(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20),
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.width * 0.4,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: AssetImage('images/com.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MarketPage(session.community, widget.userId),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20),
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.width * 0.4,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: AssetImage('images/hdom.jpg'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
                     ),
                   ),
                 ],
