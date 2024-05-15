@@ -218,7 +218,7 @@ class _ForecastState extends State<ForecastPage> {
                     ),
                     SingleChildScrollView(
                         padding:
-                            EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                            EdgeInsets.only(top: 5, left: 20, right: 20),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
