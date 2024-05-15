@@ -28,6 +28,7 @@ class _MapPageState extends State<MapPage> {
   int indexLand = -1;
   int _currentIndex = 3;
   LatLng? currentPosition;
+   bool hasLocationPermission = false;
 
   @override
   void initState() {
@@ -36,12 +37,48 @@ class _MapPageState extends State<MapPage> {
   }
 
   Future<void> _loadData() async {
-    await _loadLands();
-    await _getCurrentLocation();
+    await _requestPermissionAndLoadData(); // Cambiado a nuevo método que solicita permiso
     setState(() {
       isLoading = false;
     });
   }
+
+  Future<void> _requestPermissionAndLoadData() async {
+  final permissionStatus = await Geolocator.requestPermission();
+  setState(() {
+    hasLocationPermission = permissionStatus == LocationPermission.always ||
+        permissionStatus == LocationPermission.whileInUse;
+  });
+  if (permissionStatus == LocationPermission.deniedForever) {
+    setState(() {
+      currentPosition = LatLng(39.4699, -0.3763); // Latitud y longitud de Valencia
+    });
+  } else if (permissionStatus == LocationPermission.denied) {
+    // Si el usuario negó los permisos, puedes mostrar un diálogo o mensaje para informar y solicitar permisos nuevamente.
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Permiso de ubicación necesario'),
+          content: Text('La aplicación necesita permiso de ubicación para funcionar correctamente. Por favor, habilite los permisos en la configuración de la aplicación.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _requestPermissionAndLoadData(); // Solicita permisos nuevamente
+              },
+            ),
+          ],
+        );
+      },
+    );
+  } else {
+    // Si se otorgan permisos, obtén la ubicación actual y carga los datos
+    await _getCurrentLocation();
+  }
+  await _loadLands();
+}
 
   Future<void> _loadLands() async {
     lands = await LandSupabase().readLands();
@@ -60,6 +97,11 @@ class _MapPageState extends State<MapPage> {
       });
     } catch (e) {
       debugPrint("Error getting location: $e");
+      // Si ocurre un error al obtener la ubicación, muestra una ubicación inicial en Valencia
+      setState(() {
+        currentPosition =
+            LatLng(39.4699, -0.3763); // Latitud y longitud de Valencia
+      });
     }
   }
 
@@ -72,7 +114,7 @@ class _MapPageState extends State<MapPage> {
 
   List<Marker> _transformLandsToMarkers(List<Land> lands) {
     return lands.map((land) {
-       return Marker(
+      return Marker(
         width: 50.0,
         height: 50.0,
         point: LatLng(land.latitude, land.longitude),
@@ -129,7 +171,8 @@ class _MapPageState extends State<MapPage> {
           child: FlutterMap(
             mapController: mapController,
             options: MapOptions(
-              center: LatLng(lands[0].latitude, lands[0].longitude),
+              center: currentPosition ??
+                  LatLng(39.4699, -0.3763), // Centro de Valencia
               zoom: 18,
             ),
             children: [
@@ -152,7 +195,8 @@ class _MapPageState extends State<MapPage> {
               final distance = _calculateDistance(land).toStringAsFixed(2);
               return ListTile(
                 title: Text(land.location),
-                subtitle: Text('Size: ${land.size}, Distance: $distance meters'),
+                subtitle:
+                    Text('Size: ${land.size}, Distance: $distance meters'),
                 onTap: () {
                   mapController.move(
                     LatLng(land.latitude, land.longitude),
@@ -173,7 +217,8 @@ class _MapPageState extends State<MapPage> {
       appBar: AppBar(
         title: Text('Map'),
       ),
-      body: isLoading ? Center(child: CircularProgressIndicator()) : _buildMap(),
+      body:
+          isLoading ? Center(child: CircularProgressIndicator()) : _buildMap(),
       bottomNavigationBar: CustomBottomNavigationBar(
         onTap: (index) {
           if (index != _currentIndex) {
