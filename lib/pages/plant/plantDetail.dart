@@ -380,16 +380,19 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                               const SizedBox(height: 10),
                               growthCard(
                                   'Maximum height',
+                                  (_plantDetails['dimensions']['max_value'] == null) ? 'No data available' :
                                   '${_plantDetails['dimensions']['max_value']} feet',
                                   Icons.height),
                               const SizedBox(height: 10),
                               growthCard(
                                   'Watering frequency',
+                                  (_plantDetails['watering_general_benchmark']['value'] == null) ? 'No data available' :
                                   '${_plantDetails['watering_general_benchmark']['value']} days',
                                   Icons.water_drop_outlined),
                               const SizedBox(height: 10),
                               growthCard(
                                   'Light requirements',
+                                  (_plantDetails['sunlight'] == null) ? 'No data available' :
                                   parseArray(
                                       _plantDetails['sunlight'].toString()),
                                   Icons.wb_sunny_outlined),
@@ -400,7 +403,7 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                'Time to water: ${_plantDetails['watering_period']}',
+                                'Time to water: ${_plantDetails['watering_period'] ?? 'No information available'}',
                                 textAlign: TextAlign.left,
                               ),
                             ],

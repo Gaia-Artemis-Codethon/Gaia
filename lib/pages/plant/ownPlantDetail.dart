@@ -114,6 +114,17 @@ class _OwnPlantDetailsPageState extends State<OwnPlantDetail> {
     }
   }
 
+  String parseArray(String inp) {
+    return inp.substring(1, inp.length - 1);
+  }
+
+  String capitalizeFirstChar(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input[0].toUpperCase() + input.substring(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,14 +181,14 @@ class _OwnPlantDetailsPageState extends State<OwnPlantDetail> {
                         ),
                       ),
                       Text(
-                        _plantDetails['scientific_name'][0] ?? 'No name',
+                        capitalizeFirstChar(_plantDetails['scientific_name'][0] ?? 'No name'),
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 10),
                       Text(
-                        _plantDetails['common_name'] ??
-                            'No information available',
+                        capitalizeFirstChar(_plantDetails['common_name'] ??
+                            'No information available'),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 10),
@@ -225,17 +236,21 @@ class _OwnPlantDetailsPageState extends State<OwnPlantDetail> {
                               const SizedBox(height: 10),
                               growthCard(
                                   'Maximum height',
+                                  (_plantDetails['dimensions']['max_value'] == null) ? 'No data available' :
                                   '${_plantDetails['dimensions']['max_value']} feet',
                                   Icons.height),
                               const SizedBox(height: 10),
                               growthCard(
                                   'Watering frequency',
+                                  (_plantDetails['watering_general_benchmark']['value'] == null) ? 'No data available' :
                                   '${_plantDetails['watering_general_benchmark']['value']} days',
                                   Icons.water_drop_outlined),
                               const SizedBox(height: 10),
                               growthCard(
                                   'Light requirements',
-                                  '${_plantDetails['sunlight'].toString()}',
+                                  (_plantDetails['sunlight'] == null) ? 'No data available' :
+                                  parseArray(
+                                      _plantDetails['sunlight'].toString()),
                                   Icons.wb_sunny_outlined),
                               const SizedBox(height: 20),
                               const Text(
@@ -244,7 +259,7 @@ class _OwnPlantDetailsPageState extends State<OwnPlantDetail> {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                'Time to water: ${_plantDetails['watering_period']}',
+                                'Time to water: ${_plantDetails['watering_period'] ?? 'No information available'}',
                                 textAlign: TextAlign.left,
                               ),
                             ],
