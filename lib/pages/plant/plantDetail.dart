@@ -31,6 +31,8 @@ class _PlantDetailsPageState extends State<PlantDetail> {
 
   //static const String PERENUAL_TOKEN_AUX = 'sk-FM4q66298823e4ac15244';
 
+	static const String AUX_TOKEN = 'sk-jFnU66466c8b53a1f5535';
+
   @override
   void initState() {
     super.initState();
