@@ -38,11 +38,12 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
         scrolledUnderElevation: 0,
         title: Text('Post\'s chats'),
         elevation: 1,
-        backgroundColor: OurColors().sectionBackground,
+        backgroundColor: Colors.transparent,
       ),
       body: StreamBuilder<List<ChatDto>?>(
         stream: _chatStream,

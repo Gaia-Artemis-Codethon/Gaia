@@ -8,6 +8,7 @@ import '../const/colors.dart';
 import '../models/chat.dart';
 import '../models/market.dart';
 import '../pages/chat/chat.dart';
+import '../service/market_supabase.dart';
 
 class ChatItem extends StatefulWidget {
   final ChatDto chatDto;
@@ -22,6 +23,32 @@ class ChatItem extends StatefulWidget {
 }
 
 class _ChatItemState extends State<ChatItem> {
+  void _showDeleteConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Deletion'),
+          content: Text('Are you sure you want to delete this post?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text('Confirm'),
+              onPressed: () async {
+                //añade aqui el codigo
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -57,8 +84,11 @@ class _ChatItemState extends State<ChatItem> {
                     ),
                   ],
                 ),
-                SizedBox(width: 12),
+                SizedBox(
+                    width:
+                        24), // Increased width to move the 'Yourself' avatar right
                 Icon(Icons.chevron_right),
+                SizedBox(width: 12), // Added to move the arrow icon left
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -77,29 +107,12 @@ class _ChatItemState extends State<ChatItem> {
                   children: [
                     Visibility(
                       visible: true,
-                      child: PopupMenuButton(
-                        icon: Icon(Icons.more_vert),
-                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                          PopupMenuItem(
-                            child: Text('Delete'),
-                            value: 'Delete',
-                          ),
-                        ],
-                        onSelected: (value) async {
-                          if (value == 'Delete') {
-                            // await MarketSupabase()
-                            //     .deleteMarketPostById(marketPost.id);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) =>
-                            //         MarketPage(marketPost.community, userId),
-                            //   ),
-                            // );
-                          } else {
-                            return;
-                          }
-                        },
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: _showDeleteConfirmationDialog,
                       ),
                     ),
                     Visibility(
