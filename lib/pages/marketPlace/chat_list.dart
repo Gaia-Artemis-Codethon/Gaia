@@ -64,9 +64,9 @@ class _ChatListPageState extends State<ChatListPage> {
                     height: 200,
                   ),
                   Container(
-                    width: 300,
+                    width: 270,
                     child: const Text(
-                      'You do not have any chat :(',
+                      'You do not have any reply :(',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

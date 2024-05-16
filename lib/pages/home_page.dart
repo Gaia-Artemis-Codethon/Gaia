@@ -139,7 +139,6 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: CircleAvatar(
                         radius: 27,
-                        backgroundColor: Color.fromARGB(108, 155, 79, 1),
                         child: CircleAvatar(
                           radius: 25,
                           backgroundImage: AssetImage('images/granjero.png'),

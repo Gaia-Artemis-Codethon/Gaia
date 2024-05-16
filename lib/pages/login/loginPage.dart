@@ -28,19 +28,17 @@ class _LoginPageState extends State<LoginPage> {
       await SupabaseService().signInWithEmailAndPassword(email, password);
       Guid? userId = await SupabaseService().getUserId();
       UserLoged? user = await UserSupabase().getUserById(userId!);
-      if(user == null){
+      if (user == null) {
         _showError('User and/or password incorrect');
-      }else{
+      } else {
         if (user.community_id != null) {
-
           Auth session = Auth();
-          if (user != null) {
-            session.initialize(
-              id: user!.id,
-              username: user!.name,
-              community: user!.community_id!,
-              isAdmin: user!.is_admin!
-            );
+          session.initialize(
+            id: user.id,
+            username: user.name,
+            community: user.community_id!,
+            isAdmin: user.is_admin!,
+          );
 
           Navigator.push(
             context,
@@ -49,15 +47,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else {
-            _showError('User and/or password incorrect');
-        }
-      } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const FirstHomePage(),
-            ),
-          );
+          _showError('User and/or password incorrect');
         }
       }
     } catch (error) {
@@ -78,105 +68,106 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/login.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 165, // Ajusta la posición según sea necesario
-              left: 20,
-              right: 20,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 20.0),
-                    TextField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.7),
-                        labelText: 'Email',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 15.0),
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.7),
-                        labelText: 'Password',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 30.0),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 45.0, // Match the height of the TextField
-                      child: ElevatedButton(
-                        onPressed: _login,
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              OurColors().primeWhite),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 30.0),
-                    GestureDetector(
-                      onTap: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegisterPage(),
-                          ),
-                        )
-                      },
-                      child: Text(
-                        "Don't have an account? Register",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2191FB),
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+      resizeToAvoidBottomInset:
+          false, // Evita que el teclado empuje el contenido
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/login.png'),
+                fit: BoxFit.cover,
               ),
             ),
-          ],
-        ),
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment
+                    .center, // Centra los elementos verticalmente
+                children: <Widget>[
+                  Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  TextField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.7),
+                      labelText: 'Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 15.0),
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.7),
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30.0),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 45.0, // Match the height of the TextField
+                    child: ElevatedButton(
+                      onPressed: _login,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            OurColors().primeWhite),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30.0),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RegisterPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Don't have an account? Register",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2191FB),
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
