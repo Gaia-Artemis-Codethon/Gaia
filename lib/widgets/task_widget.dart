@@ -214,8 +214,8 @@ class _TaskWidgetState extends State<TaskWidget> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Eliminar tarea"),
-          content: Text("¿Estás seguro de querer eliminar esta tarea?"),
+          title: Text("Delete task"),
+          content: Text("Are you sure that you want to delete the task?"),
           actions: <Widget>[
             TextButton(
               onPressed: () async {
