@@ -15,42 +15,58 @@ Then, download the APK and install it on your device
 
 ### Home page
 
-<img src="readmeAssets/home.png" alt="Home page first part" width="230" height="400"><img src="readmeAssets/homePage_with_weather.png" alt="Home page second part" width="230" height="400">
+<p align="center">
+<img src="readmeAssets/home.png" alt="Home page first part" width="230" height="450"> <img src="readmeAssets/homePage_with_weather.png" alt="Home page second part" width="230" height="450">
+</p>
 
 Here you will find three useful sections, the Marketplace, the Land, and the Weather forecast:
 
 #### MarketPlace
 
-<img src="readmeAssets/marketPosts.png" alt="MarketPlace" width="230" height="400"><img src="readmeAssets/listOfChats.png" alt="Chats received on one post" width="230" height="400"><img src="readmeAssets/messaging.png" alt="Chat example" width="230" height="400">
+<p align="center">
+<img src="readmeAssets/marketPosts.png" alt="MarketPlace" width="230" height="450"> <img src="readmeAssets/listOfChats.png" alt="Chats received on one post" width="230" height="450"> <img src="readmeAssets/messaging.png" alt="Chat example" width="230" height="450">
+</p>
+
 Here you will be able to upload posts in which you can sell your products within your community, or you can also search for other members' posts, and send them a message related to their post.
 
 #### Land
 
-<img src="readmeAssets/grid.png" alt="Land distribution" width="230" height="400">
+<p align="center">
+<img src="readmeAssets/grid.png" alt="Land distribution" width="230" height="450">
+</p>
 
 In order to manage the distribution of the lands, the manager of the community will be able to determine the land size and to select which plots correspond to which user, and the users can take a look to this distribution.
 
 #### Weather forecast
 
-<img src="readmeAssets/weather.png" alt="Weather forecast" width="230" height="400">
+<p align="center">
+<img src="readmeAssets/weather.png" alt="Weather forecast" width="230" height="450">
+</p>
+
 Obtain a forecast of the weather to prepare yourself and your plants for any situation.
 
 ### To-Do
 
-<img src="readmeAssets/Todo.png" alt="To-do list" width="230" height="400">
-<img src="readmeAssets/todoDone.png" alt="Done section" width="230" height="400">
+<p align="center">
+<img src="readmeAssets/Todo.png" alt="To-do list" width="230" height="450"> <img src="readmeAssets/todoDone.png" alt="Done section" width="230" height="450">
+</p>
 
 Manage your tasks and remind yourself of the things you have to do. You can also set a priority on this tasks in order to know what are the most important.
 
 ### Plants
 
-<img src="readmeAssets/userPlants.png" alt="User Plants" width="230" height="400"><img src="readmeAssets/plantSearch.png" alt="Searching plant" width="230" height="400"><img src="readmeAssets/plantDetails.png" alt="Plant information" width="230" height="400">
+<p align="center">
+<img src="readmeAssets/userPlants.png" alt="User Plants" width="230" height="450"> <img src="readmeAssets/plantSearch.png" alt="Searching plant" width="230" height="450"> <img src="readmeAssets/plantDetails.png" alt="Plant information" width="230" height="450">
+</p>
 
 Manage the crops that you are growing, and obtain useful information about how to grow them.
 
 ### Map
 
-<img src="readmeAssets/map.png" alt="map" width="230" height="400">
+<p align="center">
+<img src="readmeAssets/map.png" alt="map" width="230" height="450">
+</p>
+
 Locate the nearest 'urgan garden' communities and connect with their members
 
 ## Tech Stack
