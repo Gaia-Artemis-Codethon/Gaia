@@ -1,4 +1,5 @@
 <img src="readmeAssets/gaiaNew.psd" alt="Logo" width="200" height="200">
+
 # Gaia, an Artemis' project
 
 Gaia is a urban garden management app that aims to help participants to organize the personal tasks, the crops they are taking care of and exchange products within their communities.
