@@ -28,9 +28,20 @@ class _LoginPageState extends State<LoginPage> {
       await SupabaseService().signInWithEmailAndPassword(email, password);
       Guid? userId = await SupabaseService().getUserId();
       UserLoged? user = await UserSupabase().getUserById(userId!);
-
-      if (user != null) {
+      if(user == null){
+        _showError('User and/or password incorrect');
+      }else{
         if (user.community_id != null) {
+
+          Auth session = Auth();
+          if (user != null) {
+            session.initialize(
+              id: user!.id,
+              username: user!.name,
+              community: user!.community_id!,
+              isAdmin: user!.is_admin!
+            );
+
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -45,11 +56,10 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         }
-      } else {
-        _showError('User and/or password incorrect');
+      }
       }
     } catch (error) {
-      _showError(error.toString());
+      _showError('User and/or password incorrect');
     }
   }
 
