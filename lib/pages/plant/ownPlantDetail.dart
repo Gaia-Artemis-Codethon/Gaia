@@ -27,9 +27,9 @@ class OwnPlantDetail extends StatefulWidget {
 class _OwnPlantDetailsPageState extends State<OwnPlantDetail> {
   late Map<String, dynamic> _plantDetails;
 
-  static const String PERENUAL_TOKEN = 'sk-CgNd6623dc0d606905197';
+  static const String PERENUAL_TOKEN_AUX = 'sk-CgNd6623dc0d606905197';
 
-  static const String PERENUAL_TOKEN_AUX = 'sk-FM4q66298823e4ac15244';
+  //static const String PERENUAL_TOKEN_AUX = 'sk-FM4q66298823e4ac15244';
 
   @override
   void initState() {

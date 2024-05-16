@@ -170,7 +170,7 @@ class MarketCard extends StatelessWidget {
                 SizedBox(width: 12),
                 Expanded(
                   child: Transform.translate(
-                    offset: Offset(15, -20), // Move the text up
+                    offset: Offset(10, -10), // Move the text up
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -189,7 +189,7 @@ class MarketCard extends StatelessWidget {
                           offset: Offset(4, 0), // Move the text to the right
                           child: Text(
                             marketPost.description ?? '',
-                            maxLines: 3,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
