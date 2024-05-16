@@ -16,14 +16,15 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
-import '../const/weather_constants.dart';
-import '../models/Auth.dart';
-import '../models/current_weather_model.dart';
-import '../widgets/weather_card.dart';
-import 'QRCode/qr_code_viewer.dart';
-import 'drawing/create_grid.dart';
-import 'login/loginPage.dart';
-import 'marketPlace/marketPlace.dart';
+import '../../const/weather_constants.dart';
+import '../../models/Auth.dart';
+import '../../models/current_weather_model.dart';
+import '../../widgets/weather_card.dart';
+import '../QRCode/qr_code_viewer.dart';
+import '../drawing/create_grid.dart';
+import '../login/loginPage.dart';
+import '../marketPlace/marketPlace.dart';
+
 
 class HomePage extends StatefulWidget {
   final Guid userId;

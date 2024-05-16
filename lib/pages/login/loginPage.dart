@@ -47,7 +47,12 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else {
-          _showError('User and/or password incorrect');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FirstHomePage(),
+            ),
+          );
         }
       }
     } catch (error) {
