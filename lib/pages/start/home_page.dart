@@ -16,13 +16,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
-import '../../const/weather_constants.dart';
-import '../../models/Auth.dart';
-import '../../models/current_weather_model.dart';
-import '../../widgets/weather_card.dart';
-import '../drawing/create_grid.dart';
-import '../login/loginPage.dart';
-import '../marketPlace/marketPlace.dart';
+import '../const/weather_constants.dart';
+import '../models/Auth.dart';
+import '../models/current_weather_model.dart';
+import '../widgets/weather_card.dart';
+import 'QRCode/qr_code_viewer.dart';
+import 'drawing/create_grid.dart';
+import 'login/loginPage.dart';
+import 'marketPlace/marketPlace.dart';
 
 class HomePage extends StatefulWidget {
   final Guid userId;
@@ -150,17 +151,40 @@ class _HomePageState extends State<HomePage> {
                       alignment: Alignment.centerRight,
                       child: Column(
                         children: [
-                          const Text(
-                            'Community:',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                    QrViewerPage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Community:',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
-                          Text(
-                            snapshot.data ?? 'Default Community Name',
-                            style: const TextStyle(color: Colors.black),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      QrViewerPage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              snapshot.data ?? 'Default Community Name',
+                              style: const TextStyle(color: Colors.black),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
+
                         ],
                       ),
                     ),

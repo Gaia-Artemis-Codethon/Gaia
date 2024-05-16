@@ -24,7 +24,7 @@ class GridPage extends StatefulWidget {
 class _GridPageState extends State<GridPage> {
   List<Owner> owners = <Owner>[
     Owner("Gabriel", Colors.blue, <int>[]),
-    Owner("Laijie", Colors.red, <int>[]),
+    Owner("Laijie", Colors.blue, <int>[]),
     Owner("Dani", Colors.green, <int>[]),
     Owner("Luis", Colors.yellow, <int>[]),
   ];
@@ -348,6 +348,7 @@ class _GridPageState extends State<GridPage> {
                           }),
                       SizedBox(
                           height: 275,
+                          width: MediaQuery.of(context).size.width * 0.8,
                           child: gridDao.communityId != Guid.defaultValue
                               ? ListView.builder(
                                   scrollDirection: Axis.vertical,
@@ -404,50 +405,47 @@ class _GridPageState extends State<GridPage> {
               height: 50,
               margin: const EdgeInsets.all(10),
               child: (session.isAdmin && gridDao.id != Guid.defaultValue)
-                  ? ElevatedButton(
-                      onPressed: () {},
-                      child: Center(
-                          child: Button(
-                        text: Text(
-                          "Save changes",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              OurColors().primaryButton),
-                          foregroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                        ),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Save changes'),
-                                content: Text(
-                                    'Are you sure you want to update the distribution?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      _updateGridData();
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Yes'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                      )),
-                    )
+                  ? Center(
+                      child: Button(
+                      text: Text(
+                        "Save changes",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(OurColors().primeWhite),
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Save changes'),
+                              content: Text(
+                                  'Are you sure you want to update the distribution?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    _updateGridData();
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Yes'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ))
                   : Container(),
             ),
           );
@@ -456,7 +454,7 @@ class _GridPageState extends State<GridPage> {
   Color getFontColorForText(Color background) {
     return (background.computeLuminance() > 0.179)
         ? Colors.black
-        : Colors.white;
+        : Colors.black;
   }
 
   Color getColorByOwner(int index) {
