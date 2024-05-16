@@ -32,6 +32,8 @@ class _PlantSearchState extends State<SearchPage> {
   //Use this second token if the limit of requests is reached
   //static const String PERENUAL_TOKEN_AUX = 'sk-FM4q66298823e4ac15244';
 
+	static const String AUX_TOKEN = 'sk-jFnU66466c8b53a1f5535';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
