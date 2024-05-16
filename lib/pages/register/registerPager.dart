@@ -90,7 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             Positioned(
-              top: 145,
+              top: 175,
               left: 20,
               right: 20,
               child: Form(

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/models/userLoged.dart';
-import 'package:flutter_application_huerto/pages/register/registerPager.dart';
 import 'package:flutter_application_huerto/pages/start/first_home_page.dart';
-import 'package:flutter_application_huerto/pages/start/home_page.dart';
+import 'package:flutter_application_huerto/pages/register/registerPager.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../models/Auth.dart';
 import '../../service/supabaseService.dart';
 import '../../service/user_supabase.dart';
+import '../start/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -33,27 +33,24 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         if (user.community_id != null) {
           Auth session = Auth();
-          if (user != null) {
-            session.initialize(
-                id: user!.id,
-                username: user!.name,
-                community: user!.community_id!,
-                isAdmin: user!.is_admin!);
+          session.initialize(
+            id: user.id,
+            username: user.name,
+            community: user.community_id!,
+            isAdmin: user.is_admin!,
+          );
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(user.id),
-              ),
-            );
-          } else {
-            _showError('User and/or password incorrect');
-          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(user.id),
+            ),
+          );
         } else {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const FirstHomePage(),
+              builder: (context) => FirstHomePage(),
             ),
           );
         }
@@ -76,22 +73,27 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/login.png'),
-            fit: BoxFit.cover,
+      resizeToAvoidBottomInset:
+          false, // Evita que el teclado empuje el contenido
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/login.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 165, // Ajusta la posición según sea necesario
-              left: 20,
-              right: 20,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 24.0),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 180.0), // Ajusta este valor según lo necesites
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment
+                      .start, // Alinea los elementos al principio del eje vertical
                   children: <Widget>[
                     Text(
                       'Login',
@@ -152,13 +154,13 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 30.0),
                     GestureDetector(
-                      onTap: () => {
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => RegisterPage(),
                           ),
-                        )
+                        );
                       },
                       child: Text(
                         "Don't have an account? Register",
@@ -173,8 +175,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
