@@ -1,5 +1,4 @@
-![Logo](readmeAssets/gaiaNew.psd)
-
+<img src="readmeAssets/gaiaNew.psd" alt="Logo" width="200" height="200">
 # Gaia, an Artemis' project
 
 Gaia is a urban garden management app that aims to help participants to organize the personal tasks, the crops they are taking care of and exchange products within their communities.
@@ -15,8 +14,9 @@ Then, download the APK and install it on your device
 ## Usage
 
 ### Home page
-![First part of the home page](readmeAssets/home.png)
-![Second part of the home page](readmeAssets/homePage_with_weather.png)
+
+<img src="readmeAssets/home.png" alt="Home page first part" width="200" height="350">
+<img src="readmeAssets/homePage_with_weather.png" alt="Home page second part" width="200" height="350">
 
 Here you will find three useful sections, the Marketplace, the Land, and the Weather forecast:
 
