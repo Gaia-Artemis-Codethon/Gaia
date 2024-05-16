@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/pages/chat/chat.dart';
+import 'package:flutter_application_huerto/pages/home_page.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_guid/flutter_guid.dart';
@@ -24,10 +25,23 @@ class _MarketPageState extends State<MarketPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         title: Text('Market Place'),
         elevation: 1,
-        backgroundColor: OurColors().sectionBackground,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Lleva siempre a la HomePage
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage(widget.userId)),
+              (route) => false,
+            );
+          },
+        ),
       ),
       body: StreamBuilder<List<Market>>(
         stream: MarketSupabase().getMarketByCommunityId(widget.communityId),
@@ -83,7 +97,7 @@ class _MarketPageState extends State<MarketPage> {
           color: OurColors().backgroundColor,
           size: 40,
         ),
-        backgroundColor: OurColors().primaryButton,
+        backgroundColor: OurColors().primeWhite,
         shape: const CircleBorder(),
       ),
     );
@@ -157,8 +171,9 @@ class _MarketPageState extends State<MarketPage> {
                               title: title,
                               community: widget.communityId,
                               description: description,
-                              username: (await UserSupabase().getUserById(widget.userId) as UserLoged).name
-                          ));
+                              username: (await UserSupabase()
+                                      .getUserById(widget.userId) as UserLoged)
+                                  .name));
 
                           Navigator.push(
                             context,
@@ -201,7 +216,7 @@ class _MarketPageState extends State<MarketPage> {
 
 class MarketCard extends StatelessWidget {
   final Market marketPost; // Each post of the market, note that they also have
-                          //  user property, which contains id of the poster
+  //  user property, which contains id of the poster
   final Guid userId; // userId of the own user
 
   MarketCard({required this.marketPost, required this.userId});
@@ -271,13 +286,12 @@ class MarketCard extends StatelessWidget {
                           MarketSupabase().updateMarketPostById(
                               marketPost.id,
                               Market(
-                                id: marketPost.id,
-                                user: marketPost.user,
-                                title: title,
-                                community: marketPost.community,
-                                description: description,
-                                username: marketPost.username
-                              ));
+                                  id: marketPost.id,
+                                  user: marketPost.user,
+                                  title: title,
+                                  community: marketPost.community,
+                                  description: description,
+                                  username: marketPost.username));
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -329,7 +343,9 @@ class MarketCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0), // Set the border radius here
       ),
       elevation: 3,
-      surfaceTintColor: (marketPost.user == userId) ? OurColors().primary : OurColors().sectionBackground,
+      surfaceTintColor: (marketPost.user == userId)
+          ? OurColors().primary
+          : OurColors().sectionBackground,
       margin: EdgeInsets.all(10),
       child: Padding(
         padding: EdgeInsets.all(12.0),
@@ -347,88 +363,105 @@ class MarketCard extends StatelessWidget {
                           'images/user.png'), // Specify your image path here
                     ),
                     Text(
-                        (marketPost.user == userId) ? 'Yourself': marketPost.username,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold
-                      ),
+                      (marketPost.user == userId)
+                          ? 'Yourself'
+                          : marketPost.username,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
                 SizedBox(width: 12),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        marketPost.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                  child: Transform.translate(
+                    offset: Offset(15, -20), // Move the text up
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Transform.translate(
+                          offset: Offset(4, 0), // Move the text to the right
+                          child: Text(
+                            marketPost.title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        marketPost.description ?? '',
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                        SizedBox(height: 4),
+                        Transform.translate(
+                          offset: Offset(4, 0), // Move the text to the right
+                          child: Text(
+                            marketPost.description ?? '',
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Column(
                   children: [
                     Visibility(
                       visible: (marketPost.user == userId),
-                        child: PopupMenuButton(
-                      icon: Icon(Icons.more_vert),
-                      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                        PopupMenuItem(
-                          child: Text('Delete'),
-                          value: 'Delete',
-                        ),
-                        PopupMenuItem(
-                          child: Text('Modify'),
-                          value: 'Modify',
-                        ),
-                      ],
-                      onSelected: (value) async {
-                        if (value == 'Delete') {
-                          await MarketSupabase()
-                              .deleteMarketPostById(marketPost.id);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  MarketPage(marketPost.community, userId),
-                            ),
-                          );
-                        } else if (value == 'Modify') {
-                          _showModifyPostDialog(context, marketPost);
-                        } else {
-                          return;
-                        }
-                      },
-                    ),),
+                      child: PopupMenuButton(
+                        icon: Icon(Icons.more_vert),
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                          PopupMenuItem(
+                            child: Text('Modify'),
+                            value: 'Modify',
+                          ),
+                          PopupMenuItem(
+                            child: Text('Delete'),
+                            value: 'Delete',
+                          ),
+                        ],
+                        onSelected: (value) async {
+                          if (value == 'Delete') {
+                            await MarketSupabase()
+                                .deleteMarketPostById(marketPost.id);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    MarketPage(marketPost.community, userId),
+                              ),
+                            );
+                          } else if (value == 'Modify') {
+                            _showModifyPostDialog(context, marketPost);
+                          } else {
+                            return;
+                          }
+                        },
+                      ),
+                    ),
                     Visibility(
                       visible: true,
                       child: ElevatedButton(
                         onPressed: () {
-                          if(marketPost.user == userId){
+                          if (marketPost.user == userId) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatListPage(marketPost: marketPost, clientId: marketPost.user,),
+                                builder: (context) => ChatListPage(
+                                  marketPost: marketPost,
+                                  clientId: marketPost.user,
+                                ),
                               ),
                             );
-                          }else{
+                          } else {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatPage(postId: marketPost.id, client: userId, seller: marketPost.user, userId: userId,),
+                                builder: (context) => ChatPage(
+                                  postId: marketPost.id,
+                                  client: userId,
+                                  seller: marketPost.user,
+                                  userId: userId,
+                                ),
                               ),
                             );
                           }
-
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
@@ -437,7 +470,7 @@ class MarketCard extends StatelessWidget {
                         ),
                         child: Icon(
                           Icons.message,
-                          color: OurColors().primary,
+                          color: OurColors().primeWhite,
                         ),
                       ),
                     ),

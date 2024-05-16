@@ -14,14 +14,14 @@ class ChatItem extends StatefulWidget {
   final Market marketPost;
   final Guid userId;
 
-  ChatItem({required this.chatDto, required this.marketPost, required this.userId});
+  ChatItem(
+      {required this.chatDto, required this.marketPost, required this.userId});
 
   @override
   _ChatItemState createState() => _ChatItemState();
 }
 
 class _ChatItemState extends State<ChatItem> {
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -53,16 +53,12 @@ class _ChatItemState extends State<ChatItem> {
                     ),
                     Text(
                       'Yourself',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-
-                Icon(
-                    Icons.chevron_right
-                ),
+                SizedBox(width: 12),
+                Icon(Icons.chevron_right),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -73,16 +69,14 @@ class _ChatItemState extends State<ChatItem> {
                     ),
                     Text(
                       'Client',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
                 Column(
                   children: [
                     Visibility(
-                      visible: false, //Delete button is disabled.
+                      visible: true,
                       child: PopupMenuButton(
                         icon: Icon(Icons.more_vert),
                         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -106,16 +100,21 @@ class _ChatItemState extends State<ChatItem> {
                             return;
                           }
                         },
-                      ),),
+                      ),
+                    ),
                     Visibility(
                       visible: true,
                       child: ElevatedButton(
                         onPressed: () {
-
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ChatPage(postId: widget.marketPost.id, client: widget.chatDto.client, seller: widget.marketPost.user, userId: widget.userId,),
+                              builder: (context) => ChatPage(
+                                postId: widget.marketPost.id,
+                                client: widget.chatDto.client,
+                                seller: widget.marketPost.user,
+                                userId: widget.userId,
+                              ),
                             ),
                           );
                         },

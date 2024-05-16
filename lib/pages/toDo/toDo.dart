@@ -42,6 +42,7 @@ class _ToDoState extends State<ToDo> {
       child: Scaffold(
         backgroundColor: OurColors().backgroundColor,
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           automaticallyImplyLeading: false,
           backgroundColor: OurColors().backgroundColor,
           elevation: 0,
