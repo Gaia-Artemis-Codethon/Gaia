@@ -142,7 +142,7 @@ class _ChatItemState extends State<ChatItem> {
                   Column(
                     children: [
                       Visibility(
-                        visible: false,
+                        visible: true,
                         child: IconButton(
                           icon: Icon(
                             Icons.delete,
@@ -153,7 +153,28 @@ class _ChatItemState extends State<ChatItem> {
                       ),
                       Visibility(
                         visible: true,
-                        child: ElevatedButton(
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.message,
+                            color: OurColors().primeWhite,
+                          ),
+                          onPressed: () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ChatPage(
+                                      postId: widget.marketPost.id,
+                                      client: widget.chatDto.client,
+                                      seller: widget.marketPost.user,
+                                      userId: widget.userId,
+                                    ),
+                              ),
+                            )
+                          },
+                        ),
+
+                        /*ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -177,7 +198,7 @@ class _ChatItemState extends State<ChatItem> {
                             Icons.message,
                             color: OurColors().primeWhite,
                           ),
-                        ),
+                        ),*/
                       ),
                     ],
                   ),
