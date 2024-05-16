@@ -15,44 +15,41 @@ Then, download the APK and install it on your device
 
 ### Home page
 
-<img src="readmeAssets/home.png" alt="Home page first part" width="200" height="350">
-<img src="readmeAssets/homePage_with_weather.png" alt="Home page second part" width="200" height="350">
+<img src="readmeAssets/home.png" alt="Home page first part" width="230" height="400"><img src="readmeAssets/homePage_with_weather.png" alt="Home page second part" width="230" height="400">
 
 Here you will find three useful sections, the Marketplace, the Land, and the Weather forecast:
 
 #### MarketPlace
 
-![MarketPlace](readmeAssets/marketPosts.png)
-![Chats received on one post](readmeAssets/listOfChats.png)
-![Chat example](readmeAssets/messaging.png)
+<img src="readmeAssets/marketPosts.png" alt="MarketPlace" width="230" height="400"><img src="readmeAssets/listOfChats.png" alt="Chats received on one post" width="230" height="400"><img src="readmeAssets/messaging.png" alt="Chat example" width="230" height="400">
 Here you will be able to upload posts in which you can sell your products within your community, or you can also search for other members' posts, and send them a message related to their post.
 
 #### Land
 
-![Land distribution](readmeAssets/grid.png)
+<img src="readmeAssets/grid.png" alt="Land distribution" width="230" height="400">
+
 In order to manage the distribution of the lands, the manager of the community will be able to determine the land size and to select which plots correspond to which user, and the users can take a look to this distribution.
 
 #### Weather forecast
 
-![Weather forecast](readmeAssets/weather.png)
+<img src="readmeAssets/weather.png" alt="Weather forecast" width="230" height="400">
 Obtain a forecast of the weather to prepare yourself and your plants for any situation.
 
 ### To-Do
 
-![To-do List](readmeAssets/Todo.png)
-![To-do, done section](readmeAssets/todoDone.png)
+<img src="readmeAssets/Todo.png" alt="To-do list" width="230" height="400">
+<img src="readmeAssets/todoDone.png" alt="Done section" width="230" height="400">
+
 Manage your tasks and remind yourself of the things you have to do. You can also set a priority on this tasks in order to know what are the most important.
 
 ### Plants
 
-![Plants of an user](readmeAssets/userPlants.png)
-![Searching for a new plant to add](readmeAssets/plantSearch.png)
-![Info about a plant](readmeAssets/plantDetails.png)
+<img src="readmeAssets/userPlants.png" alt="User Plants" width="230" height="400"><img src="readmeAssets/plantSearch.png" alt="Searching plant" width="230" height="400"><img src="readmeAssets/plantDetails.png" alt="Plant information" width="230" height="400">
 Manage the crops that you are growing, and obtain useful information about how to grow them.
 
 ### Map
 
-![Map](readmeAssets/messaging.png)
+<img src="readmeAssets/map.png" alt="map" width="230" height="400">
 Locate the nearest 'urgan garden' communities and connect with their members
 
 ## Tech Stack
