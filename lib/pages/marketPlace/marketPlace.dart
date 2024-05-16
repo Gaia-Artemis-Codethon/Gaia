@@ -30,7 +30,7 @@ class _MarketPageState extends State<MarketPage> {
         backgroundColor: Colors.transparent,
         scrolledUnderElevation: 0,
         title: Text('Market Place'),
-        elevation: 1,
+        elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {

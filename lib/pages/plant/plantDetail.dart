@@ -220,6 +220,7 @@ class _PlantDetailsPageState extends State<PlantDetail> {
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
         scrolledUnderElevation: 0,
+        elevation: 0,
         backgroundColor: OurColors().backgroundColor,
         title: const Text('Plant Details'),
         leading: IconButton(

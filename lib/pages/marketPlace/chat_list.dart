@@ -42,7 +42,7 @@ class _ChatListPageState extends State<ChatListPage> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         title: Text('Post\'s chats'),
-        elevation: 1,
+        elevation: 0,
         backgroundColor: Colors.transparent,
       ),
       body: StreamBuilder<List<ChatDto>?>(
