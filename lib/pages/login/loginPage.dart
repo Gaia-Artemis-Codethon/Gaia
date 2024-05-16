@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/models/userLoged.dart';
-import 'package:flutter_application_huerto/pages/first_home_page.dart';
+import 'package:flutter_application_huerto/pages/start/first_home_page.dart';
 import 'package:flutter_application_huerto/pages/register/registerPager.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../models/Auth.dart';
 import '../../service/supabaseService.dart';
 import '../../service/user_supabase.dart';
-import '../home_page.dart';
+import '../start/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override

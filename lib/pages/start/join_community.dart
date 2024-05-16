@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
-import 'package:flutter_application_huerto/pages/home_page.dart';
+import 'package:flutter_application_huerto/pages/start/home_page.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import '../components/button.dart';
-import '../models/Auth.dart';
-import '../models/community.dart';
-import '../models/userLoged.dart';
-import '../service/supabaseService.dart';
+import '../../components/button.dart';
+import '../../models/Auth.dart';
+import '../../models/community.dart';
+import '../../models/userLoged.dart';
+import '../../service/supabaseService.dart';
 import 'package:flutter/widgets.dart';
 
-import '../service/community_supabase.dart';
-import '../service/user_supabase.dart';
+import '../../service/community_supabase.dart';
+import '../../service/user_supabase.dart';
 
 class JoinCommunity extends StatefulWidget {
   const JoinCommunity({Key? key}) : super(key: key);

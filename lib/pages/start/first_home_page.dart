@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
-import 'package:flutter_application_huerto/pages/create_community.dart';
-import 'package:flutter_application_huerto/pages/join_community.dart';
+import 'package:flutter_application_huerto/pages/start/create_community.dart';
+import 'package:flutter_application_huerto/pages/start/join_community.dart';
 import 'package:http/http.dart' as http;
 
-import '../components/button.dart';
+import '../../components/button.dart';
 
 class FirstHomePage extends StatelessWidget {
   const FirstHomePage({super.key});

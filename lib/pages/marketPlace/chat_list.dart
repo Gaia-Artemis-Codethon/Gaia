@@ -5,7 +5,7 @@ import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/pages/chat/chat.dart';
 import 'package:flutter_application_huerto/service/chat_supabase.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
-import 'package:flutter_application_huerto/widgets/ChatItem.dart';
+import 'package:flutter_application_huerto/widgets/marketPlace/ChatItem.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
 import '../../models/chat.dart';

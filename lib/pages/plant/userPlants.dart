@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/models/task.dart';
-import 'package:flutter_application_huerto/pages/home_page.dart';
+import 'package:flutter_application_huerto/pages/start/home_page.dart';
 import 'package:flutter_application_huerto/pages/map/mapPage.dart';
 import 'package:flutter_application_huerto/pages/plant/plantSearch.dart';
 import 'package:flutter_application_huerto/pages/toDo/toDo.dart';

@@ -4,12 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
-import '../const/colors.dart';
-import '../models/chat.dart';
-import '../models/market.dart';
-import '../pages/chat/chat.dart';
-import '../service/chat_supabase.dart';
-import '../service/market_supabase.dart';
+import '../../const/colors.dart';
+import '../../models/chat.dart';
+import '../../models/market.dart';
+import '../../pages/chat/chat.dart';
+import '../../service/chat_supabase.dart';
+import '../../service/market_supabase.dart';
 
 class ChatItem extends StatefulWidget {
   final ChatDto chatDto;
@@ -18,9 +18,7 @@ class ChatItem extends StatefulWidget {
   final VoidCallback onChatStatusChanged;
 
   ChatItem(this.onChatStatusChanged,
-      {required this.chatDto,
-      required this.marketPost,
-      required this.userId});
+      {required this.chatDto, required this.marketPost, required this.userId});
 
   @override
   _ChatItemState createState() => _ChatItemState();
@@ -124,7 +122,25 @@ class _ChatItemState extends State<ChatItem> {
                     ),
                     Visibility(
                       visible: true,
-                      child: ElevatedButton(
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.message,
+                            color: OurColors().primeWhite,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatPage(
+                                postId: widget.marketPost.id,
+                                client: widget.chatDto.client,
+                                seller: widget.marketPost.user,
+                                userId: widget.userId,
+                              ),
+                            ),
+                          );
+                          }),
+                      /*ElevatedButton(
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -147,7 +163,7 @@ class _ChatItemState extends State<ChatItem> {
                           Icons.message,
                           color: OurColors().primary,
                         ),
-                      ),
+                      ),*/
                     ),
                   ],
                 ),
