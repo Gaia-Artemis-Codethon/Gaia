@@ -43,7 +43,7 @@ class QrViewerPageState extends State<QrViewerPage> {
               height: 300,
               color: OurColors().primeWhite,
               child: QrImageView(
-                embeddedImage: AssetImage('images/gaiaLogo.png'),
+                embeddedImage: AssetImage('images/gaiaIcon.png'),
                 data: session.community.value,
                 version: QrVersions.auto,
                 size: 200.0,
