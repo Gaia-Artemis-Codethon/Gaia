@@ -49,6 +49,9 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else {
+            _showError('User and/or password incorrect');
+        }
+      } else {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -56,7 +59,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         }
-      }
       }
     } catch (error) {
       _showError('User and/or password incorrect');
