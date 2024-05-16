@@ -471,7 +471,7 @@ class MarketCard extends StatelessWidget {
                             OurColors().sectionBackground,
                           ),
                         ),
-                        child: Icon(
+                        child: Icon((marketPost.user == userId) ? Icons.chevron_right :
                           Icons.message,
                           color: OurColors().primeWhite,
                         ),
