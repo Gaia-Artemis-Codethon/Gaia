@@ -357,10 +357,13 @@ class MarketCard extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 30,
                       backgroundImage: AssetImage(
-                          'images/user.png'), // Specify your image path here
+                        marketPost.user == userId
+                            ? 'images/granjero.png'
+                            : 'images/user.png',
+                      ),
                     ),
                     Text(
                       (marketPost.user == userId)
