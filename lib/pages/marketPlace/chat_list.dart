@@ -5,7 +5,7 @@ import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/pages/chat/chat.dart';
 import 'package:flutter_application_huerto/service/chat_supabase.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
-import 'package:flutter_application_huerto/widgets/ChatItem.dart';
+import 'package:flutter_application_huerto/widgets/marketPlace/ChatItem.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
 import '../../models/chat.dart';
@@ -64,9 +64,9 @@ class _ChatListPageState extends State<ChatListPage> {
                     height: 200,
                   ),
                   Container(
-                    width: 300,
+                    width: 270,
                     child: const Text(
-                      'You do not have any chat :(',
+                      'You do not have any reply :(',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 import '../../models/land.dart'; // Reemplaza con la definición de tu modelo Land
 import '../../service/land_supabase.dart';
-import '../home_page.dart';
+import '../start/home_page.dart';
 import '../plant/userPlants.dart';
 import '../toDo/toDo.dart';
 import '../../shared/bottom_navigation_bar.dart';
