@@ -45,6 +45,7 @@ Manage your tasks and remind yourself of the things you have to do. You can also
 ### Plants
 
 <img src="readmeAssets/userPlants.png" alt="User Plants" width="230" height="400"><img src="readmeAssets/plantSearch.png" alt="Searching plant" width="230" height="400"><img src="readmeAssets/plantDetails.png" alt="Plant information" width="230" height="400">
+
 Manage the crops that you are growing, and obtain useful information about how to grow them.
 
 ### Map
