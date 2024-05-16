@@ -59,7 +59,7 @@ class _ChatItemState extends State<ChatItem> {
                     ),
                   ],
                 ),
-                SizedBox(width: 12),
+
                 Icon(
                     Icons.chevron_right
                 ),
@@ -82,7 +82,7 @@ class _ChatItemState extends State<ChatItem> {
                 Column(
                   children: [
                     Visibility(
-                      visible: true,
+                      visible: false, //Delete button is disabled.
                       child: PopupMenuButton(
                         icon: Icon(Icons.more_vert),
                         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
