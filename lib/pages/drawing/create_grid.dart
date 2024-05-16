@@ -172,6 +172,7 @@ class _GridPageState extends State<GridPage> {
         : Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
+              elevation: 0,
               scrolledUnderElevation: 0,
               title: Text("Community's farm"),
               actions: [

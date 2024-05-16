@@ -38,11 +38,12 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
         scrolledUnderElevation: 0,
         title: Text('Post\'s chats'),
-        elevation: 1,
-        backgroundColor: OurColors().sectionBackground,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
       ),
       body: StreamBuilder<List<ChatDto>?>(
         stream: _chatStream,
@@ -84,6 +85,7 @@ class _ChatListPageState extends State<ChatListPage> {
                   chatDto: snapshot.data![index],
                   marketPost: widget.marketPost,
                   userId: widget.clientId,
+                  updateChatList,
                 );
               },
             );
@@ -91,5 +93,16 @@ class _ChatListPageState extends State<ChatListPage> {
         },
       ),
     );
+  }
+
+  Future<void> updateChatList() async {
+    // Realizar la operación asíncrona fuera del setState
+    List<ChatDto>? chatStream = await ChatSupabase()
+        .getRoomsFromPost(widget.marketPost.id, widget.marketPost.user);
+
+    // Actualizar el estado dentro de setState después de completar la operación asíncrona
+    setState(() {
+      _chatStream = Stream.value(chatStream);
+    });
   }
 }

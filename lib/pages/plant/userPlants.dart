@@ -73,11 +73,18 @@ class _UserPlantsState extends State<UserPlants> {
                         height: 200,
                         width: 200,
                       ),
-                      Text(
-                        'No plant was found, do you want to add any?',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                          child: Text(
+                            'No plant was found, do you want to add any?',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center, // Center the text
+                          ),
                         ),
                       ),
                       const SizedBox(

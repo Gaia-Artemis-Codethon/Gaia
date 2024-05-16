@@ -30,7 +30,7 @@ class _MarketPageState extends State<MarketPage> {
         backgroundColor: Colors.transparent,
         scrolledUnderElevation: 0,
         title: Text('Market Place'),
-        elevation: 1,
+        elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -357,10 +357,13 @@ class MarketCard extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 30,
                       backgroundImage: AssetImage(
-                          'images/user.png'), // Specify your image path here
+                        marketPost.user == userId
+                            ? 'images/granjero.png'
+                            : 'images/user.png',
+                      ),
                     ),
                     Text(
                       (marketPost.user == userId)
@@ -468,7 +471,7 @@ class MarketCard extends StatelessWidget {
                             OurColors().sectionBackground,
                           ),
                         ),
-                        child: Icon(
+                        child: Icon((marketPost.user == userId) ? Icons.chevron_right :
                           Icons.message,
                           color: OurColors().primeWhite,
                         ),

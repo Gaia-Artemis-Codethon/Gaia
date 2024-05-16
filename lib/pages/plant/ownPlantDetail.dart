@@ -120,6 +120,7 @@ class _OwnPlantDetailsPageState extends State<OwnPlantDetail> {
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
         scrolledUnderElevation: 0,
+        elevation: 0,
         backgroundColor: OurColors().backgroundColor,
         title: const Text('Plant Details'),
       ),

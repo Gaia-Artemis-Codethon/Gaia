@@ -92,8 +92,8 @@ class _ChatPageState extends State<ChatPage> {
         appBar: AppBar(
           scrolledUnderElevation: 0,
           title: Text('Chat with ${clientName}'),
-          elevation: 1,
-          backgroundColor: OurColors().sectionBackground,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
         ),
         body: _client != null && _seller != null
             ? Chat(
