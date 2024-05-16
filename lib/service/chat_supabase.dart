@@ -10,6 +10,7 @@ class ChatSupabase {
   Future<List<ChatDto>?> getChatMessagesFromRoomAndUsers(
       Guid postId, Guid clientId, Guid sellerId) async {
     try {
+
       final data = await service
           .from("ChatRooms")
           .select("*")
