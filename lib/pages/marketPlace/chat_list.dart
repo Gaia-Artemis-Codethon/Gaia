@@ -85,6 +85,7 @@ class _ChatListPageState extends State<ChatListPage> {
                   chatDto: snapshot.data![index],
                   marketPost: widget.marketPost,
                   userId: widget.clientId,
+                  updateChatList,
                 );
               },
             );
@@ -92,5 +93,16 @@ class _ChatListPageState extends State<ChatListPage> {
         },
       ),
     );
+  }
+
+  Future<void> updateChatList() async {
+    // Realizar la operación asíncrona fuera del setState
+    List<ChatDto>? chatStream = await ChatSupabase()
+        .getRoomsFromPost(widget.marketPost.id, widget.marketPost.user);
+
+    // Actualizar el estado dentro de setState después de completar la operación asíncrona
+    setState(() {
+      _chatStream = Stream.value(chatStream);
+    });
   }
 }

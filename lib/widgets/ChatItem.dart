@@ -8,15 +8,19 @@ import '../const/colors.dart';
 import '../models/chat.dart';
 import '../models/market.dart';
 import '../pages/chat/chat.dart';
+import '../service/chat_supabase.dart';
 import '../service/market_supabase.dart';
 
 class ChatItem extends StatefulWidget {
   final ChatDto chatDto;
   final Market marketPost;
   final Guid userId;
+  final VoidCallback onChatStatusChanged;
 
-  ChatItem(
-      {required this.chatDto, required this.marketPost, required this.userId});
+  ChatItem(this.onChatStatusChanged,
+      {required this.chatDto,
+      required this.marketPost,
+      required this.userId});
 
   @override
   _ChatItemState createState() => _ChatItemState();
@@ -40,6 +44,9 @@ class _ChatItemState extends State<ChatItem> {
             TextButton(
               child: Text('Confirm'),
               onPressed: () async {
+                await ChatSupabase().deleteChatRoomById(widget.chatDto.id);
+                widget.onChatStatusChanged();
+                Navigator.of(context).pop();
                 //añade aqui el codigo
               },
             ),
