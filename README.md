@@ -1,4 +1,4 @@
-<img src="readmeAssets/gaiaNew.psd" alt="Logo" width="200" height="200">
+<img src="readmeAssets/GaiaBackground.jpg" alt="Logo" width="200" height="200">
 
 # Gaia, an Artemis' project
 
