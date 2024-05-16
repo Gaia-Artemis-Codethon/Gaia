@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
         community_id: null,
         is_admin: false,
       ));
-      _showSuccess(response.toString());
+      _showSuccess("Account created successfully!");
 
       Navigator.push(
         context,
@@ -51,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       );
     } catch (error) {
-      _showError(error.toString());
+      _showError("Error creating you account.\nPlease, contact support");
     }
   }
 

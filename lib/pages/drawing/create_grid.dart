@@ -173,7 +173,7 @@ class _GridPageState extends State<GridPage> {
             appBar: AppBar(
               title: Text("Community's farm"),
               actions: [
-                session.isAdmin
+                session.isAdmin && gridDao.id != Guid.defaultValue
                     ? IconButton(
                         icon: Icon(Icons.settings),
                         onPressed: () {
@@ -400,7 +400,7 @@ class _GridPageState extends State<GridPage> {
             floatingActionButton: Container(
               height: 50,
               margin: const EdgeInsets.all(10),
-              child: session.isAdmin
+              child: (session.isAdmin && gridDao.id != Guid.defaultValue)
                   ? ElevatedButton(
                       onPressed: () {},
                       child: Center(
