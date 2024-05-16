@@ -3,27 +3,26 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/components/button.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
+import 'package:flutter_application_huerto/const/weather_constants.dart';
+import 'package:flutter_application_huerto/models/Auth.dart';
+import 'package:flutter_application_huerto/models/current_weather_model.dart';
+import 'package:flutter_application_huerto/pages/QRCode/qr_code_viewer.dart';
+import 'package:flutter_application_huerto/pages/drawing/create_grid.dart';
+import 'package:flutter_application_huerto/pages/login/loginPage.dart';
 import 'package:flutter_application_huerto/pages/map/mapPage.dart';
+import 'package:flutter_application_huerto/pages/marketPlace/marketPlace.dart';
 import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
 import 'package:flutter_application_huerto/pages/toDo/toDo.dart';
 import 'package:flutter_application_huerto/service/community_supabase.dart';
 import 'package:flutter_application_huerto/service/supabaseService.dart';
 import 'package:flutter_application_huerto/shared/bottom_navigation_bar.dart';
+import 'package:flutter_application_huerto/widgets/weather_card.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocode/geocode.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-
-import '../const/weather_constants.dart';
-import '../models/Auth.dart';
-import '../models/current_weather_model.dart';
-import '../widgets/weather_card.dart';
-import 'QRCode/qr_code_viewer.dart';
-import 'drawing/create_grid.dart';
-import 'login/loginPage.dart';
-import 'marketPlace/marketPlace.dart';
 
 class HomePage extends StatefulWidget {
   final Guid userId;
@@ -156,8 +155,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                    QrViewerPage(),
+                                  builder: (context) => QrViewerPage(),
                                 ),
                               );
                             },
@@ -173,8 +171,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      QrViewerPage(),
+                                  builder: (context) => QrViewerPage(),
                                 ),
                               );
                             },
@@ -184,7 +181,6 @@ class _HomePageState extends State<HomePage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                           )
-
                         ],
                       ),
                     ),

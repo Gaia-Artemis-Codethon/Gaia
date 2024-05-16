@@ -7,7 +7,6 @@ import '../../const/colors.dart';
 import '../../models/Auth.dart';
 
 class QrViewerPage extends StatefulWidget {
-
   QrViewerPage();
 
   @override
@@ -15,7 +14,6 @@ class QrViewerPage extends StatefulWidget {
 }
 
 class QrViewerPageState extends State<QrViewerPage> {
-
   late Auth session;
 
   @override
@@ -43,7 +41,7 @@ class QrViewerPageState extends State<QrViewerPage> {
             Container(
               width: 300,
               height: 300,
-              color: OurColors().primaryButton,
+              color: OurColors().primeWhite,
               child: QrImageView(
                 data: session.community.value,
                 version: QrVersions.auto,
@@ -52,31 +50,28 @@ class QrViewerPageState extends State<QrViewerPage> {
             ),
             SizedBox(height: 10),
             ElevatedButton(
-                onPressed: () async {
-                  Clipboard.setData(ClipboardData(text: session.community.value)).then((_){
-                    _showSuccess("Community ID copied successfully!");
-                  });
-                },
-              child: Center(
-                  child: Button(
-                    text: Text(
-                      "Copy Community ID",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          OurColors().primaryButton),
-                      foregroundColor:
-                      MaterialStateProperty.all(Colors.black),
-                    ),
-                  )),
-            )
+              onPressed: () async {
+                Clipboard.setData(ClipboardData(text: session.community.value))
+                    .then((_) {
+                  _showSuccess("Community ID copied successfully!");
+                });
+              },
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(OurColors().primeWhite),
+                foregroundColor: MaterialStateProperty.all(Colors.black),
+              ),
+              child: Text(
+                "Copy Community ID",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ),
           ],
-        )
+        ),
       ),
     );
   }
+
   void _showSuccess(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
