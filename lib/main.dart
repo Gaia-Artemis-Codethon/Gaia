@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/models/Auth.dart';
-import 'package:flutter_application_huerto/pages/first_home_page.dart';
+import 'package:flutter_application_huerto/pages/start/first_home_page.dart';
 import 'package:flutter_application_huerto/pages/login/loginPage.dart';
 import 'package:flutter_application_huerto/pages/register/registerPager.dart';
 import 'package:flutter_application_huerto/service/supabaseService.dart';
 import 'package:flutter_application_huerto/service/user_supabase.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:flutter_application_huerto/pages/home_page.dart';
+import 'package:flutter_application_huerto/pages/start/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'models/userLoged.dart';

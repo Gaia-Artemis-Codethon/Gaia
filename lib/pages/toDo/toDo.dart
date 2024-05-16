@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_huerto/const/colors.dart';
 import 'package:flutter_application_huerto/models/task.dart';
-import 'package:flutter_application_huerto/pages/home_page.dart';
+import 'package:flutter_application_huerto/pages/start/home_page.dart';
 import 'package:flutter_application_huerto/pages/map/mapPage.dart';
 import 'package:flutter_application_huerto/pages/plant/userPlants.dart';
 import 'package:flutter_application_huerto/pages/toDo/add_task.dart';
@@ -12,7 +12,7 @@ import 'package:flutter_application_huerto/shared/bottom_navigation_bar.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../widgets/strem_note.dart';
+import '../../widgets/toDo/strem_note.dart';
 
 class ToDo extends StatefulWidget {
   final Guid userId;
