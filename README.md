@@ -68,7 +68,7 @@ Manage the crops that you are growing, and obtain useful information about how t
 <img src="readmeAssets/map.png" alt="map" width="230" height="450">
 </p>
 
-Locate the nearest 'urgan garden' communities and connect with their members
+Locate the nearest 'Urban garden' communities and connect with their members
 
 ## Tech Stack
 
@@ -76,5 +76,5 @@ Locate the nearest 'urgan garden' communities and connect with their members
 
 **Backend:** Supabase
 
-**Other tools:** Perenual API, Google Maps API
+**Other tools:** Perenual API, Google Maps API, Weather API
 
