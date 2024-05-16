@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_huerto/models/userLoged.dart';
 import 'package:flutter_application_huerto/pages/chat/custom_chat_theme.dart';
 import 'package:flutter_application_huerto/service/chat_supabase.dart';
+import 'package:flutter_application_huerto/service/user_supabase.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -18,7 +20,8 @@ class ChatPage extends StatefulWidget{
   final Guid postId;
   final Guid client;
   final Guid seller;
-  const ChatPage({super.key,required this.postId, required this.client, required this.seller});
+  final Guid userId;
+  const ChatPage({super.key,required this.postId, required this.client, required this.seller, required this.userId});
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -26,6 +29,7 @@ class ChatPage extends StatefulWidget{
 }
 
   class _ChatPageState extends State<ChatPage> {
+    String clientName = '';
     late List<types.Message> _messages = [];
     late Guid _postId;
     late Guid _clientId;
@@ -49,6 +53,15 @@ class ChatPage extends StatefulWidget{
     }
 
     void _loadMessages() async {
+      if(_sellerId == widget.userId) {
+        UserLoged? user = await UserSupabase().getUserById(_clientId);
+        clientName = user!.name;
+      } else {
+        UserLoged? user = await UserSupabase().getUserById(_sellerId);
+        clientName = user!.name;
+      }
+
+
       ChatSupabase cs = new ChatSupabase();
       //ChatDto? data = await cs.getChatMessagesFromRoomAndUsers(_postId, _clientId, _sellerId);
       List<ChatDto>? data = await cs.getChatMessagesFromRoomAndUsers(_postId
@@ -73,7 +86,7 @@ class ChatPage extends StatefulWidget{
     Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Chat with '),
+          title: Text('Chat with ${clientName}'),
           elevation: 1,
           backgroundColor: OurColors().sectionBackground,
         ),

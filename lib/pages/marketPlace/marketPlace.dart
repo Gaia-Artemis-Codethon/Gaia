@@ -417,14 +417,14 @@ class MarketCard extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatListPage(marketPost: marketPost, clientId: userId),
+                                builder: (context) => ChatListPage(marketPost: marketPost, clientId: marketPost.user,),
                               ),
                             );
                           }else{
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatPage(postId: marketPost.id, client: userId, seller: marketPost.user,),
+                                builder: (context) => ChatPage(postId: marketPost.id, client: userId, seller: marketPost.user, userId: userId,),
                               ),
                             );
                           }

@@ -18,7 +18,7 @@ class ChatListPage extends StatefulWidget {
   final Guid clientId;
 
 
-  ChatListPage({required this.marketPost, required this.clientId});
+  ChatListPage({required this.marketPost, required this.clientId,});
 
   @override
   _ChatListPageState createState() => _ChatListPageState();
@@ -27,7 +27,6 @@ class ChatListPage extends StatefulWidget {
 
 class _ChatListPageState extends State<ChatListPage> {
   late Stream<List<ChatDto>?> _chatStream;
-
   @override
   void initState() {
     super.initState();
@@ -63,7 +62,7 @@ class _ChatListPageState extends State<ChatListPage> {
                   Container(
                     width: 300,
                     child: const Text(
-                      'Yo do not have any chat :(',
+                      'You do not have any chat :(',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -78,7 +77,7 @@ class _ChatListPageState extends State<ChatListPage> {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return ChatItem(chatDto: snapshot.data![index], marketPost: widget.marketPost);
+                return ChatItem(chatDto: snapshot.data![index], marketPost: widget.marketPost, userId: widget.clientId,);
               },
             );
           }

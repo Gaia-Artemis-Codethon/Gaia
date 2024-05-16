@@ -60,7 +60,7 @@ class _Add_TaskState extends State<Add_Task> {
       children: [
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green.shade200,
+            backgroundColor: OurColors().primeWhite,
             minimumSize: const Size(170, 48),
           ),
           onPressed: isEnabled &&
@@ -81,12 +81,12 @@ class _Add_TaskState extends State<Add_Task> {
               : null,
           child: Text(
             'Add task',
-            style: TextStyle(color: OurColors().primaryTextColor, fontSize: 16),
+            style: TextStyle(color: Colors.black, fontSize: 16),
           ),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
+            backgroundColor: Color.fromARGB(255, 184, 51, 51),
             minimumSize: const Size(170, 48),
           ),
           onPressed: () {
@@ -94,7 +94,7 @@ class _Add_TaskState extends State<Add_Task> {
           },
           child: Text(
             'Cancel',
-            style: TextStyle(color: OurColors().primaryTextColor, fontSize: 16),
+            style: TextStyle(color: Colors.black, fontSize: 16),
           ),
         ),
       ],
