@@ -148,6 +148,7 @@ class _ForecastState extends State<ForecastPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           backgroundColor: Color(0xFF7CB9FF),
           title: Text(
             "Weather forecast",
@@ -217,8 +218,7 @@ class _ForecastState extends State<ForecastPage> {
                       ],
                     ),
                     SingleChildScrollView(
-                        padding:
-                            EdgeInsets.only(top: 5, left: 20, right: 20),
+                        padding: EdgeInsets.only(top: 5, left: 20, right: 20),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [

@@ -145,6 +145,7 @@ class _GridPageState extends State<GridPage> {
     return gridDao == null
         ? Scaffold(
             appBar: AppBar(
+              scrolledUnderElevation: 0,
               title: Text("Community's farm"),
             ),
             body: Center(
@@ -171,6 +172,7 @@ class _GridPageState extends State<GridPage> {
         : Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
+              scrolledUnderElevation: 0,
               title: Text("Community's farm"),
               actions: [
                 session.isAdmin && gridDao.id != Guid.defaultValue
@@ -375,26 +377,26 @@ class _GridPageState extends State<GridPage> {
                     ],
                   )
                 : Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 117),
-                      Image.asset(
-                        'images/junimo.png',
-                        width: 200,
-                        height: 200,
-                      ),
-                      Text(
-                        'Your community does not have a plot :(',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 117),
+                        Image.asset(
+                          'images/junimo.png',
+                          width: 200,
+                          height: 200,
                         ),
-                      ),
-                    ],
+                        Text(
+                          'Your community does not have a plot :(',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: Container(

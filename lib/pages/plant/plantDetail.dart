@@ -219,6 +219,7 @@ class _PlantDetailsPageState extends State<PlantDetail> {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: OurColors().backgroundColor,
         title: const Text('Plant Details'),
         leading: IconButton(

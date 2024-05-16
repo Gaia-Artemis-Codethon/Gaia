@@ -27,9 +27,10 @@ class _MarketPageState extends State<MarketPage> {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         title: Text('Market Place'),
         elevation: 1,
-        backgroundColor: OurColors().backgroundColor,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -407,12 +408,12 @@ class MarketCard extends StatelessWidget {
                         icon: Icon(Icons.more_vert),
                         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                           PopupMenuItem(
-                            child: Text('Delete'),
-                            value: 'Delete',
-                          ),
-                          PopupMenuItem(
                             child: Text('Modify'),
                             value: 'Modify',
+                          ),
+                          PopupMenuItem(
+                            child: Text('Delete'),
+                            value: 'Delete',
                           ),
                         ],
                         onSelected: (value) async {

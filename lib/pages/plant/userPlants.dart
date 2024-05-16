@@ -43,6 +43,7 @@ class _UserPlantsState extends State<UserPlants> {
     return Scaffold(
       backgroundColor: OurColors().backgroundColor,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: OurColors().backgroundColor,
         elevation: 0,
@@ -91,7 +92,7 @@ class _UserPlantsState extends State<UserPlants> {
                         ),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                            OurColors().primary,
+                            OurColors().primeWhite,
                           ),
                           elevation: MaterialStateProperty.all<double>(2.0),
                         ),
