@@ -131,7 +131,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      "Nombre de la comunidad",
+                      "Community name",
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -153,7 +153,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
                   Center(
                     child: Button(
                       text: const Text(
-                        "Continuar",
+                        "Continue",
                         style: TextStyle(color: Colors.black),
                         textAlign: TextAlign.center,
                       ),

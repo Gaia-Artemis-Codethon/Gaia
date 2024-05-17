@@ -51,7 +51,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
           await CommunitySupabase().readCommunityById(communityId);
       if (community == null) {
         _showErrorDialog(
-            context, "La comunidad con el ID proporcionado no existe.");
+            context, "That ID isn't asociated to a community.");
         return null;
       }
       Guid? userId = await _updateUserIdCommunity(community);
@@ -66,7 +66,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
       }
       return community;
     } catch (e) {
-      _showErrorDialog(context, "Error al leer la comunidad: ID incorrecto.");
+      _showErrorDialog(context, "Error reading the community, the ID does not exist.");
       return null;
     }
   }
@@ -80,7 +80,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
           content: Text(message),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cerrar'),
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -157,7 +157,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
                       padding: const EdgeInsets.only(
                           top: 10.0), // Ajusta la distancia hacia abajo
                       child: Text(
-                        "Únete a una comunidad",
+                        "Join a community",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -167,13 +167,13 @@ class _JoinCommunityState extends State<JoinCommunity> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      "Comienza a plantar junto a tus vecinos!",
+                      "Start planting with your neighbors!",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 18),
                     ),
                     SizedBox(height: 24.0),
                     Text(
-                      "ID de la comunidad",
+                      "Community ID",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -200,7 +200,7 @@ class _JoinCommunityState extends State<JoinCommunity> {
                     ),
                     Button(
                       text: Text(
-                        "Continuar",
+                        "Continue",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.black),
                       ),
