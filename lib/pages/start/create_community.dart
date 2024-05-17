@@ -114,7 +114,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      "Crea una nueva comunidad",
+                      "Create a new community",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -124,7 +124,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      "Disfruta creando el mejor huerto urbano de Valencia",
+                      "Enjoy creating the best urban garden in Valencia",
                       textAlign: TextAlign.left,
                     ),
                   ),
