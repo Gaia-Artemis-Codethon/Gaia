@@ -57,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _showSuccess(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
+      content: Text(message, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
       backgroundColor: Colors.green,
     ));
   }

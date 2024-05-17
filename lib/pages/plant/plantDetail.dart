@@ -27,9 +27,11 @@ class PlantDetail extends StatefulWidget {
 class _PlantDetailsPageState extends State<PlantDetail> {
   late Map<String, dynamic> _plantDetails;
 
-  static const String PERENUAL_TOKEN = 'sk-CgNd6623dc0d606905197';
+  static const String PERENUAL_TOKEN_AUX = 'sk-CgNd6623dc0d606905197';
 
-  static const String PERENUAL_TOKEN_AUX = 'sk-FM4q66298823e4ac15244';
+  //static const String PERENUAL_TOKEN_AUX = 'sk-FM4q66298823e4ac15244';
+
+	static const String AUX_TOKEN = 'sk-jFnU66466c8b53a1f5535';
 
   @override
   void initState() {
@@ -380,16 +382,19 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                               const SizedBox(height: 10),
                               growthCard(
                                   'Maximum height',
+                                  (_plantDetails['dimensions']['max_value'] == null) ? 'No data available' :
                                   '${_plantDetails['dimensions']['max_value']} feet',
                                   Icons.height),
                               const SizedBox(height: 10),
                               growthCard(
                                   'Watering frequency',
+                                  (_plantDetails['watering_general_benchmark']['value'] == null) ? 'No data available' :
                                   '${_plantDetails['watering_general_benchmark']['value']} days',
                                   Icons.water_drop_outlined),
                               const SizedBox(height: 10),
                               growthCard(
                                   'Light requirements',
+                                  (_plantDetails['sunlight'] == null) ? 'No data available' :
                                   parseArray(
                                       _plantDetails['sunlight'].toString()),
                                   Icons.wb_sunny_outlined),
@@ -400,7 +405,7 @@ class _PlantDetailsPageState extends State<PlantDetail> {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                'Time to water: ${_plantDetails['watering_period']}',
+                                'Time to water: ${_plantDetails['watering_period'] ?? 'No information available'}',
                                 textAlign: TextAlign.left,
                               ),
                             ],

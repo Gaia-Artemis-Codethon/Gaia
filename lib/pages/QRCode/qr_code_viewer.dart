@@ -43,6 +43,7 @@ class QrViewerPageState extends State<QrViewerPage> {
               height: 300,
               color: OurColors().primeWhite,
               child: QrImageView(
+                embeddedImage: AssetImage('images/gaiaIcon.png'),
                 data: session.community.value,
                 version: QrVersions.auto,
                 size: 200.0,
@@ -74,7 +75,7 @@ class QrViewerPageState extends State<QrViewerPage> {
 
   void _showSuccess(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
+      content: Text(message, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
       backgroundColor: Colors.green,
     ));
   }

@@ -194,7 +194,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             const Text(
               "Marketplace",
               style: TextStyle(
