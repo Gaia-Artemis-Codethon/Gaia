@@ -86,7 +86,7 @@ class _Add_TaskState extends State<Add_Task> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: OurColors().backgroundText,
+            backgroundColor: OurColors().deleteButton,
             minimumSize: const Size(170, 48),
           ),
           onPressed: () {
