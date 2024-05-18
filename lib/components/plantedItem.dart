@@ -40,8 +40,8 @@ class _PlantedItemState extends State<PlantedItem> {
           content: Text("Do you want to delete this plant?"),
           actions: <Widget>[
             TextButton(
-                onPressed: () {
-                  PlantedSupabase().deletePlantedById(widget.plant.id);
+                onPressed: () async {
+                  await PlantedSupabase().deletePlantedById(widget.plant.id);
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -90,75 +90,108 @@ class _PlantedItemState extends State<PlantedItem> {
             );
           } else {
             return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OwnPlantDetail(plantId: widget.plant.perenual_id, user_id: widget.userId),
-                  ),
-                );
-              },
-              child: Container(
-                height: 140,
-                width: 300,
-                child: Card(
-                    elevation: 0,
-                    color: OurColors().primaryTextColor,
-                    margin: EdgeInsets.fromLTRB(16.0, 0, 16.0, 10),
-                    child: Center(
-                      child: ListTile(
-                        visualDensity: VisualDensity(vertical: 4),
-                        leading: imgURL != null || imgURL != ''
-                            ? SizedBox(
-                          height: 120,
-                          width: 80,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Dialog(
-                                      child: Container(
-                                        width: 300, // Adjust the width as needed
-                                        height: 330, // Adjust the height as needed
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(12),
-                                          child: Image.network(
-                                            imgURL.replaceFirst('thumbnail', 'regular'),
-                                            width: 300,
-                                            height: 330,
-                                            fit: BoxFit.fill,
-                                            errorBuilder: (context, error, stackTrace) {
-                                              return Container(
-                                                width: 120,
-                                                height: 120,
-                                                decoration: BoxDecoration(
-                                                  color: OurColors().backgroundColor,
-                                                  borderRadius: BorderRadius.circular(15),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OwnPlantDetail(
+                          plantId: widget.plant.perenual_id,
+                          user_id: widget.userId),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 140,
+                  width: 300,
+                  child: Card(
+                      elevation: 0,
+                      color: OurColors().primaryTextColor,
+                      margin: EdgeInsets.fromLTRB(16.0, 0, 16.0, 10),
+                      child: Center(
+                        child: ListTile(
+                          visualDensity: VisualDensity(vertical: 4),
+                          leading: imgURL != null || imgURL != ''
+                              ? SizedBox(
+                                  height: 120,
+                                  width: 80,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Dialog(
+                                              child: Container(
+                                                width:
+                                                    300, // Adjust the width as needed
+                                                height:
+                                                    330, // Adjust the height as needed
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  child: Image.network(
+                                                    imgURL.replaceFirst(
+                                                        'thumbnail', 'regular'),
+                                                    width: 300,
+                                                    height: 330,
+                                                    fit: BoxFit.fill,
+                                                    errorBuilder: (context,
+                                                        error, stackTrace) {
+                                                      return Container(
+                                                        width: 120,
+                                                        height: 120,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: OurColors()
+                                                              .backgroundColor,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.local_florist,
+                                                          size: 60,
+                                                          color: OurColors()
+                                                              .primary,
+                                                        ),
+                                                      );
+                                                    }, // Adjust the fit property as needed
+                                                  ),
                                                 ),
-                                                child: Icon(
-                                                  Icons.local_florist,
-                                                  size: 60,
-                                                  color: OurColors().primary,
-                                                ),
-                                              );
-                                            },   // Adjust the fit property as needed
-                                          ),
-                                        ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Image.network(
+                                        imgURL,
+                                        width: 80,
+                                        height: 120,
+                                        fit: BoxFit.fill,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Container(
+                                            width: 60,
+                                            height: 80,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  OurColors().backgroundColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Icon(
+                                              Icons.local_florist,
+                                              size: 40,
+                                              color: OurColors().primary,
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Image.network(
-                              imgURL,
-                              width: 80,
-                              height: 120,
-                              fit: BoxFit.fill,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
+                                    ),
+                                  ),
+                                )
+                              : Container(
                                   width: 60,
                                   height: 80,
                                   decoration: BoxDecoration(
@@ -170,41 +203,20 @@ class _PlantedItemState extends State<PlantedItem> {
                                     size: 40,
                                     color: OurColors().primary,
                                   ),
-                                );
-                              },
-                            ),
-                            ),
-                          ),
-                        )
-                            : Container(
-                          width: 60,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: OurColors().backgroundColor,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Icon(
-                            Icons.local_florist,
-                            size: 40,
-                            color: OurColors().primary,
+                                ),
+                          title: Text(cropName),
+                          subtitle: Text(
+                              'Planted on: ${widget.plant.planted_time.toString().split(' ')[0] ?? 'Unknown Date'}\n' +
+                                  'Status: ${Planted.parseStatus(widget.plant.status)}'),
+                          trailing: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              showConfirmationDialog(context);
+                            },
                           ),
                         ),
-                        title: Text(cropName),
-                        subtitle: Text(
-                            'Planted on: ${widget.plant.planted_time.toString().split(' ')[0] ?? 'Unknown Date'}\n' +
-                                'Status: ${Planted.parseStatus(widget.plant.status)}'),
-                        trailing: IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: () {
-                            showConfirmationDialog(context);
-                          },
-                        ),
-                      ),
-                    )),
-              )
-            );
-
-
+                      )),
+                ));
           }
         });
   }
