@@ -186,9 +186,7 @@ class _MarketPageState extends State<MarketPage> {
                         },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          isTitleEmpty
-                              ? Colors.grey
-                              : OurColors().primaryButton)),
+                          isTitleEmpty ? Colors.grey : OurColors().primeWhite)),
                   child: Text(
                     'Create',
                     style: TextStyle(color: OurColors().backgroundText),
